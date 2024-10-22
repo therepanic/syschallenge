@@ -1,0 +1,4 @@
+rootProject.name = 'syschallenge-parent'
+
+include 'main-service'
+project(":main-service").name = "main-service"

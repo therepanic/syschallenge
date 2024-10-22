@@ -1,0 +1,12 @@
+allprojects {
+    group = 'com.syschallenge'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+}
