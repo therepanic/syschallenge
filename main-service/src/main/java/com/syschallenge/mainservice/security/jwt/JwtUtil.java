@@ -31,6 +31,9 @@ import java.util.function.Function;
 
 /**
  * Utility class for generating and validating JWT tokens
+ *
+ * @author panic08
+ * @since 1.0.0
  */
 @Component
 public class JwtUtil {
@@ -38,9 +41,9 @@ public class JwtUtil {
     private String SECRET;
 
     /**
-     * Generate a JWT token for the given user details
+     * Generates a JWT token for the given user details
      *
-     * @param userDetails the user details for whom the token is created
+     * @param userDetails user details for whom the token is created
      * @return signed JWT token as a string
      */
     public String generateToken(UserDetails userDetails){
@@ -56,19 +59,19 @@ public class JwtUtil {
     }
 
     /**
-     * Extract the expiration date from a given JWT token
+     * Extracts the expiration date from a given JWT token
      *
-     * @param token the JWT token
-     * @return the expiration date of the token
+     * @param token JWT token
+     * @return expiration date of the token
      */
     public Date extractExpiration(String token){
         return extractClaim(token, Claims::getExpiration);
     }
 
     /**
-     * Check if a given JWT token is valid by verifying its signature and structure
+     * Checks if a given JWT token is valid by verifying its signature and structure
      *
-     * @param token the JWT token to validate
+     * @param token JWT token
      * @return {@code true} if the token is valid; {@code false} otherwise
      */
     public boolean isTokenValid(String token) {
@@ -87,7 +90,7 @@ public class JwtUtil {
     /**
      * Checks if a given JWT token is expired
      *
-     * @param token the JWT token to check
+     * @param token JWT token
      * @return {@code true} if the token is expired; {@code false} otherwise
      */
     public boolean isTokenExpired(String token){
@@ -97,8 +100,8 @@ public class JwtUtil {
     /**
      * Extracts the subject (typically user ID) from a given JWT token
      *
-     * @param token the JWT token
-     * @return the subject of the token as a string
+     * @param token JWT token
+     * @return subject of the token as a string
      */
     public String extractIdFromToken(String token){
         return extractClaim(token, Claims::getSubject);

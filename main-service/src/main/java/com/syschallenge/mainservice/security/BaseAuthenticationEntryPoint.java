@@ -28,8 +28,23 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Entry point for handling unauthorized access
+ *
+ * @author panic08
+ * @since 1.0.0
+ */
 @Component
 public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    /**
+     * Commences an authentication scheme, returning an unauthorized response
+     *
+     * @param request incoming HTTP request
+     * @param response outgoing HTTP response
+     * @param authException the authentication exception
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

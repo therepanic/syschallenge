@@ -22,17 +22,39 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+/**
+ * A record representing user details for authentication
+ *
+ * @author panic08
+ * @since 1.0.0
+ */
 public record UserDetails(UUID id) implements org.springframework.security.core.userdetails.UserDetails {
+
+    /**
+     * Returns the authorities granted to the user
+     *
+     * @return empty collection as this implementation does not use the authorities
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptySet();
     }
 
+    /**
+     * Returns the password used for authentication
+     *
+     * @return empty string as this implementation does not use a password
+     */
     @Override
     public String getPassword() {
         return "";
     }
 
+    /**
+     * Returns the username for the user
+     *
+     * @return user's unique identifier as a string
+     */
     @Override
     public String getUsername() {
         return id.toString();
