@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice;
+package com.syschallenge.mainservice.security;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.core.GrantedAuthority;
 
-@SpringBootApplication
-public class MainServiceApplication {
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
 
-    public static void main(String[] args) {
-        SpringApplication.run(MainServiceApplication.class, args);
+public record UserDetails(UUID id) implements org.springframework.security.core.userdetails.UserDetails {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.emptySet();
     }
 
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
+        return id.toString();
+    }
 }
