@@ -42,7 +42,7 @@ public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
      *
      * @param request incoming HTTP request
      * @param response outgoing HTTP response
-     * @param authException the authentication exception
+     * @param authException authentication exception
      * @throws IOException if an I/O error occurs
      */
     @Override
