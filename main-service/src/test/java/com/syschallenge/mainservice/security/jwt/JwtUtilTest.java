@@ -19,7 +19,6 @@ package com.syschallenge.mainservice.security.jwt;
 import com.syschallenge.mainservice.security.UserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -34,7 +33,6 @@ import static org.mockito.Mockito.when;
  * @since 1.0.0
  */
 class JwtUtilTest {
-    @InjectMocks
     private JwtUtil jwtUtil;
 
     @Mock
@@ -42,8 +40,10 @@ class JwtUtilTest {
 
     @BeforeEach
     void setUp() {
+        this.jwtUtil = new JwtUtil();
+
         MockitoAnnotations.openMocks(this);
-        when(userDetails.getUsername()).thenReturn("testUUID");
+        when(userDetails.getUsername()).thenReturn("test-UUID");
 
         ReflectionTestUtils.setField(jwtUtil, "SECRET", "Z3dlZ2VHR0dHRVdnd2Vhc2Rhc2RzYWRhc2Rhc2RzYWQ=");
     }
@@ -52,7 +52,7 @@ class JwtUtilTest {
     void testGenerateToken() {
         String token = jwtUtil.generateToken(userDetails);
         assertNotNull(token);
-        assertEquals("testUUID", jwtUtil.extractIdFromToken(token));
+        assertEquals("test-UUID", jwtUtil.extractIdFromToken(token));
     }
 
     @Test
@@ -78,6 +78,6 @@ class JwtUtilTest {
     @Test
     void testExtractIdFromToken() {
         String token = jwtUtil.generateToken(userDetails);
-        assertEquals("testUUID", jwtUtil.extractIdFromToken(token));
+        assertEquals("test-UUID", jwtUtil.extractIdFromToken(token));
     }
 }
