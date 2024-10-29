@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.api;
+package com.syschallenge.mainservice.oauth;
 
-import com.syschallenge.mainservice.api.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.mainservice.api.response.GoogleOAuthV4TokenResponse;
+import com.syschallenge.mainservice.oauth.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.mainservice.oauth.response.GoogleOAuthV4TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.api;
+package com.syschallenge.mainservice.oauth;
 
-import com.syschallenge.mainservice.api.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.mainservice.api.response.GoogleOAuthV4TokenResponse;
+import com.syschallenge.mainservice.oauth.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.mainservice.oauth.response.GoogleOAuthV4TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -34,11 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.0.0
  */
 class GoogleOAuthV4ApiTest {
+
     private GoogleOAuthV4Api googleOAuthApi;
     private MockRestServiceServer mockRestServiceServer;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         RestTemplate restTemplate = new RestTemplate();
 
         this.googleOAuthApi = new GoogleOAuthV4Api(restTemplate);
@@ -46,8 +47,8 @@ class GoogleOAuthV4ApiTest {
     }
 
     @Test
-    public void testRequestToken() {
-        GoogleOAuthV4TokenRequest request = GoogleOAuthV4TokenRequest.builder().build();
+    void testRequestToken() {
+        GoogleOAuthV4TokenRequest request = new GoogleOAuthV4TokenRequest(null, null, null, null, null);
 
         String expectedResponse = "{ " +
                 "\"access_token\": \"test-access_token\", " +
@@ -63,11 +64,11 @@ class GoogleOAuthV4ApiTest {
 
         GoogleOAuthV4TokenResponse response = googleOAuthApi.requestToken(request);
 
-        assertEquals("test-access_token", response.getAccessToken());
-        assertEquals(1, response.getExpiresIn());
-        assertEquals("test-scope", response.getScope());
-        assertEquals("test-token_type", response.getTokenType());
-        assertEquals("test-id_token", response.getIdToken());
+        assertEquals("test-access_token", response.accessToken());
+        assertEquals(1, response.expiresIn());
+        assertEquals("test-scope", response.scope());
+        assertEquals("test-token_type", response.tokenType());
+        assertEquals("test-id_token", response.idToken());
 
         mockRestServiceServer.verify();
     }
