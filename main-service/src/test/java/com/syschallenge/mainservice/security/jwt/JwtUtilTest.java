@@ -33,8 +33,8 @@ import static org.mockito.Mockito.when;
  * @since 1.0.0
  */
 class JwtUtilTest {
-    private JwtUtil jwtUtil;
 
+    private JwtUtil jwtUtil;
     @Mock
     private UserDetails userDetails;
 

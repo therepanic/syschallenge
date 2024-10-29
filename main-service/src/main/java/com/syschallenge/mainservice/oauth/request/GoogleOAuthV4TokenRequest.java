@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.api.request;
-
-import lombok.Builder;
-import lombok.Getter;
+package com.syschallenge.mainservice.oauth.request;
 
 /**
  * Represents a request payload for Google OAuth V4 token request
@@ -25,16 +22,9 @@ import lombok.Getter;
  * @author panic08
  * @since 1.0.0
  */
-@Getter
-@Builder
-public class GoogleOAuthV4TokenRequest {
-    private String clientId;
-
-    private String clientSecret;
-
-    private String redirectUri;
-
-    private String code;
-
-    private String grantType;
+public record GoogleOAuthV4TokenRequest(String clientId,
+                                        String clientSecret,
+                                        String redirectUri,
+                                        String code,
+                                        String grantType) {
 }

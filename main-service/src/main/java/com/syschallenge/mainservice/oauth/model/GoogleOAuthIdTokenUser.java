@@ -14,30 +14,15 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.api.response;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
+package com.syschallenge.mainservice.oauth.model;
 
 /**
- * Represents a response payload from a Google OAuth V4 token response
- *
- * @author panic08
- * @since 1.0.0
+ * A record representing a user extracted from a Google OAuth ID token
  */
-@Getter
-public class GoogleOAuthV4TokenResponse {
-    @JsonProperty("access_token")
-    private String accessToken;
-
-    @JsonProperty("expires_in")
-    private int expiresIn;
-
-    private String scope;
-
-    @JsonProperty("token_type")
-    private String tokenType;
-
-    @JsonProperty("id_token")
-    private String idToken;
+public record GoogleOAuthIdTokenUser(String userId,
+                                     String email,
+                                     boolean isEmailVerified,
+                                     String name,
+                                     String pictureUrl,
+                                     String givenName) {
 }

@@ -19,6 +19,7 @@ package com.syschallenge.mainservice.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -35,7 +36,10 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Component
+@RequiredArgsConstructor
 public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    private final ObjectMapper mapper;
 
     /**
      * Commences an authentication scheme, returning an unauthorized response
@@ -56,7 +60,6 @@ public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
         body.put("message", authException.getMessage());
         body.put("path", request.getServletPath());
 
-        ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
     }
 }
