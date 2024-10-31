@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.configuration;
+package com.syschallenge.mainservice.user.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
- * Configuration class for setting up {@link ObjectMapper} in the application
+ * Entity class representing a user in the system
  *
  * @author panic08
  * @since 1.0.0
  */
-@Configuration
-public class JacksonConfiguration {
+@Data
+@Builder
+@Table(name = "users_table")
+public class User {
+    @Id
+    private UUID id;
 
-    /**
-     * Creates a {@link ObjectMapper} bean
-     *
-     * @return new {@link ObjectMapper} instance
-     */
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
+    private String email;
+
+    private String password;
+
+    private LocalDateTime registeredAt;
 }

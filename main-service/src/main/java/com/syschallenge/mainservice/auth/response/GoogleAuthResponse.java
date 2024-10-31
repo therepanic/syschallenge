@@ -14,28 +14,15 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.configuration;
+package com.syschallenge.mainservice.auth.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Configuration class for setting up {@link ObjectMapper} in the application
+ * Response record for Google authentication
  *
  * @author panic08
  * @since 1.0.0
  */
-@Configuration
-public class JacksonConfiguration {
-
-    /**
-     * Creates a {@link ObjectMapper} bean
-     *
-     * @return new {@link ObjectMapper} instance
-     */
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
+public record GoogleAuthResponse(@JsonProperty("jwt_token") String jwtToken) {
 }
