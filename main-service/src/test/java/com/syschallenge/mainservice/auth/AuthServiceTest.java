@@ -40,6 +40,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+/**
+ * @author panic08
+ * @since 1.0.0
+ */
 class AuthServiceTest {
     @Mock
     private JwtUtil jwtUtil;

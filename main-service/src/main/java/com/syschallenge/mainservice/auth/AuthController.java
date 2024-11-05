@@ -16,13 +16,14 @@
 
 package com.syschallenge.mainservice.auth;
 
+import com.syschallenge.mainservice.auth.model.Me;
 import com.syschallenge.mainservice.auth.response.GoogleAuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * REST controller for handling authentication requests
@@ -46,5 +47,16 @@ public class AuthController {
     @PostMapping("/google")
     public ResponseEntity<GoogleAuthResponse> authByGoogle(@RequestParam("code") String code) {
         return ResponseEntity.ok(authService.authByGoogle(code));
+    }
+
+    /**
+     * Retrieves information about the authenticated user
+     *
+     * @param auth the authentication token, which contains the user ID as the principal name
+     * @return response entity containing user information (Me) for the authenticated user
+     */
+    @GetMapping("/me")
+    public ResponseEntity<Me> me(UsernamePasswordAuthenticationToken auth) {
+        return ResponseEntity.ok(new Me(UUID.fromString(auth.getName())));
     }
 }
