@@ -16,7 +16,8 @@
 
 package com.syschallenge.mainservice.security.jwt;
 
-import com.syschallenge.mainservice.security.UserDetails;
+import com.syschallenge.mainservice.shared.security.UserDetails;
+import com.syschallenge.mainservice.shared.security.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

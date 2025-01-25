@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.oauth;
+package com.syschallenge.mainservice.oauth.google;
 
-import com.syschallenge.mainservice.oauth.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.mainservice.oauth.response.GoogleOAuthV4TokenResponse;
+import com.syschallenge.mainservice.oauth.google.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.mainservice.oauth.google.response.GoogleOAuthV4TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;

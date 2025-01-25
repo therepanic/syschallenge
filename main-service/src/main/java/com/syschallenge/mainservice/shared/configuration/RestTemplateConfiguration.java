@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.configuration;
+package com.syschallenge.mainservice.shared.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

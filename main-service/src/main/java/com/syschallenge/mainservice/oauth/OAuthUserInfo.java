@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.property;
+package com.syschallenge.mainservice.oauth;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties("google.oauth")
-@Getter
-@Setter
-public class GoogleOAuthProperty {
-    private String clientId;
-    private String clientSecret;
-    private String redirectUri;
-    private String grantType;
+/**
+ * Represents user information obtained from OAuth provider authentication
+ *
+ * @param providerUserId unique user identifier from OAuth provider
+ * @param email user's email address
+ *
+ * @author panic08
+ * @since 1.0.0
+ */
+public record OAuthUserInfo(String providerUserId, String email) {
 }

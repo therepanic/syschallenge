@@ -17,11 +17,11 @@
 package com.syschallenge.mainservice.auth;
 
 import com.syschallenge.mainservice.auth.response.GoogleAuthResponse;
-import com.syschallenge.mainservice.oauth.GoogleOAuthV4Service;
-import com.syschallenge.mainservice.oauth.model.GoogleOAuthIdTokenUser;
-import com.syschallenge.mainservice.property.GoogleOAuthProperty;
-import com.syschallenge.mainservice.security.UserDetails;
-import com.syschallenge.mainservice.security.jwt.JwtUtil;
+import com.syschallenge.mainservice.oauth.OAuthProviderFactory;
+import com.syschallenge.mainservice.oauth.OAuthType;
+import com.syschallenge.mainservice.oauth.OAuthUserInfo;
+import com.syschallenge.mainservice.shared.security.UserDetails;
+import com.syschallenge.mainservice.shared.security.jwt.JwtUtil;
 import com.syschallenge.mainservice.user.UserLinkedSocialRepository;
 import com.syschallenge.mainservice.user.UserRepository;
 import com.syschallenge.mainservice.user.model.User;
@@ -45,11 +45,10 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final JwtUtil jwtUtil;
-    private final GoogleOAuthV4Service googleOAuthService;
-    private final GoogleOAuthProperty googleOAuthProperty;
+    private final OAuthProviderFactory providerFactory;
     private final UserRepository userRepository;
     private final UserLinkedSocialRepository userLinkedSocialRepository;
+    private final JwtUtil jwtUtil;
 
 
     /**
@@ -60,14 +59,11 @@ public class AuthService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public GoogleAuthResponse authByGoogle(String code) {
-        GoogleOAuthIdTokenUser googleOAuthIdTokenUser =
-                googleOAuthService.extractGoogleOAuthIdTokenUser(googleOAuthProperty.getClientId(),
-                        googleOAuthProperty.getClientSecret(), googleOAuthProperty.getRedirectUri(),
-                        code, googleOAuthProperty.getGrantType());
+        OAuthUserInfo userInfo = providerFactory.getProvider(OAuthType.GOOGLE).extractUser(code);
 
-        if (userLinkedSocialRepository.existsByVerification(googleOAuthIdTokenUser.userId())) {
+        if (userLinkedSocialRepository.existsByVerification(userInfo.providerUserId())) {
             User currentUser = userRepository.findById(
-                    userLinkedSocialRepository.findUserIdByVerification(googleOAuthIdTokenUser.userId())
+                    userLinkedSocialRepository.findUserIdByVerification(userInfo.providerUserId())
             );
 
             String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId()));
@@ -76,7 +72,7 @@ public class AuthService {
         } else {
             User newUser = userRepository.save(
                     User.builder()
-                            .email(googleOAuthIdTokenUser.email())
+                            .email(userInfo.email())
                             .registeredAt(LocalDateTime.now())
                             .build()
             );
@@ -86,7 +82,7 @@ public class AuthService {
                         UserLinkedSocial.builder()
                                 .userId(newUser.getId())
                                 .type(UserLinkedSocialType.GOOGLE)
-                                .verification(googleOAuthIdTokenUser.userId())
+                                .verification(userInfo.providerUserId())
                                 .build()
                 );
             });

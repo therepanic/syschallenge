@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.syschallenge.mainservice.oauth;
 
 /**
- * Configuration class for setting up {@link ObjectMapper} in the application
+ * Interface for OAuth provider implementations
  *
  * @author panic08
  * @since 1.0.0
  */
-@Configuration
-public class JacksonConfiguration {
-
+public interface OAuthProvider {
     /**
-     * Creates a {@link ObjectMapper} bean
+     * Extracts user information from OAuth provider using authorization code
      *
-     * @return new {@link ObjectMapper} instance
+     * @param code authorization code received from OAuth provider
+     * @return user information
      */
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
+    OAuthUserInfo extractUser(String code);
 }

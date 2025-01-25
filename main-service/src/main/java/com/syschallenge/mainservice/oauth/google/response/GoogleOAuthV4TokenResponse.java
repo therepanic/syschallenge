@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.oauth.response;
+package com.syschallenge.mainservice.oauth.google.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.oauth.model;
+package com.syschallenge.mainservice.oauth.google.request;
 
 /**
- * A record representing a user extracted from a Google OAuth ID token
+ * Represents a request payload for Google OAuth V4 token request
+ *
+ * @author panic08
+ * @since 1.0.0
  */
-public record GoogleOAuthIdTokenUser(String userId,
-                                     String email,
-                                     boolean isEmailVerified,
-                                     String name,
-                                     String pictureUrl,
-                                     String givenName) {
+public record GoogleOAuthV4TokenRequest(String clientId,
+                                        String clientSecret,
+                                        String redirectUri,
+                                        String code,
+                                        String grantType) {
 }

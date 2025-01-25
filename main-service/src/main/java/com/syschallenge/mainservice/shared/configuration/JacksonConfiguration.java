@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.oauth.request;
+package com.syschallenge.mainservice.shared.configuration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Represents a request payload for Google OAuth V4 token request
+ * Configuration class for setting up {@link ObjectMapper} in the application
  *
  * @author panic08
  * @since 1.0.0
  */
-public record GoogleOAuthV4TokenRequest(String clientId,
-                                        String clientSecret,
-                                        String redirectUri,
-                                        String code,
-                                        String grantType) {
+@Configuration
+public class JacksonConfiguration {
+
+    /**
+     * Creates a {@link ObjectMapper} bean
+     *
+     * @return new {@link ObjectMapper} instance
+     */
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 }

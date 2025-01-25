@@ -49,29 +49,36 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-def profile = System.getProperty('spring.profiles.active', 'dev')
-def props = new Properties()
-file("src/main/resources/application-${profile}.properties").withInputStream {
-    props.load(it)
+
+def getConfigProperty(String key, String defaultValue) {
+    def value = System.getenv(key)
+    if (value != null) return value
+
+    value = System.getProperty(key)
+    if (value != null) return value
+
+    value = project.hasProperty(key) ? project.property(key) : null
+    if (value != null) return value
+
+    return defaultValue
 }
 
 flyway {
-    url = "${props.get('spring.flyway.url')}"
-    user = "${props.get('spring.flyway.user')}"
-    password = "${props.get('spring.flyway.password')}"
-    locations = "${props.get('spring.flyway.locations')}".split("\\,")
+    url = getConfigProperty('SPRING_FLYWAY_URL', '')
+    user = getConfigProperty('SPRING_FLYWAY_USER', '')
+    password = getConfigProperty('SPRING_FLYWAY_PASSWORD', '')
+    locations = getConfigProperty('SPRING_FLYWAY_LOCATIONS', '').split(',')
 }
-
 jooq {
     configurations {
         main {
             generateSchemaSourceOnCompilation = false
             generationTool {
                 jdbc {
-                    driver = "${props.get('spring.datasource.driver-class-name')}"
-                    url = "${props.get('spring.datasource.url')}"
-                    user = "${props.get('spring.datasource.username')}"
-                    password = "${props.get('spring.datasource.password')}"
+                    driver = getConfigProperty('SPRING_DATASOURCE_DRIVER_CLASS_NAME', 'org.postgresql.Driver')
+                    url = getConfigProperty('SPRING_DATASOURCE_URL', '')
+                    user = getConfigProperty('SPRING_DATASOURCE_USERNAME', '')
+                    password = getConfigProperty('SPRING_DATASOURCE_PASSWORD', '')
                 }
 
                 generator {

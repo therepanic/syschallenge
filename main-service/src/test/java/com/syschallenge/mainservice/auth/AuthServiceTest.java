@@ -17,42 +17,43 @@
 package com.syschallenge.mainservice.auth;
 
 import com.syschallenge.mainservice.auth.response.GoogleAuthResponse;
-import com.syschallenge.mainservice.oauth.GoogleOAuthV4Service;
-import com.syschallenge.mainservice.oauth.model.GoogleOAuthIdTokenUser;
-import com.syschallenge.mainservice.property.GoogleOAuthProperty;
-import com.syschallenge.mainservice.security.UserDetails;
-import com.syschallenge.mainservice.security.jwt.JwtUtil;
+import com.syschallenge.mainservice.oauth.OAuthProvider;
+import com.syschallenge.mainservice.oauth.OAuthProviderFactory;
+import com.syschallenge.mainservice.oauth.OAuthType;
+import com.syschallenge.mainservice.oauth.OAuthUserInfo;
+import com.syschallenge.mainservice.shared.security.jwt.JwtUtil;
 import com.syschallenge.mainservice.user.UserLinkedSocialRepository;
 import com.syschallenge.mainservice.user.UserRepository;
 import com.syschallenge.mainservice.user.model.User;
-import com.syschallenge.mainservice.user.model.UserLinkedSocial;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
  * @author panic08
  * @since 1.0.0
  */
+@ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
     @Mock
     private JwtUtil jwtUtil;
 
     @Mock
-    private GoogleOAuthV4Service googleOAuthService;
+    private OAuthProviderFactory providerFactory;
 
     @Mock
-    private GoogleOAuthProperty googleOAuthProperty;
+    private OAuthProvider oAuthProvider;
 
     @Mock
     private UserRepository userRepository;
@@ -64,71 +65,79 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        when(providerFactory.getProvider(OAuthType.GOOGLE))
+                .thenReturn(oAuthProvider);
     }
 
+    private final String testCode = "test_code";
+    private final String testUserId = "google_user_123";
+    private final String testEmail = "test@example.com";
+    private final UUID uuid = UUID.randomUUID();
+    private final String testToken = "test.jwt.token";
+
     @Test
-    public void testAuthByGoogleUserExists() {
-        String code = "authCode";
-        String userId = "googleUserId";
+    void authByGoogle_ExistingUser_ReturnsToken() {
+        // Arrange
+        OAuthUserInfo userInfo = new OAuthUserInfo(
+                testUserId,
+                testEmail
+        );
 
-        UUID existingUserId = UUID.randomUUID();
-
-        String expectedJwtToken = "jwtToken";
-
-        GoogleOAuthIdTokenUser googleUser = new GoogleOAuthIdTokenUser(userId, "email@example.com", true, "test",
-                "test", "test");
-
-        when(googleOAuthProperty.getClientId()).thenReturn("clientId");
-        when(googleOAuthProperty.getClientSecret()).thenReturn("clientSecret");
-        when(googleOAuthProperty.getRedirectUri()).thenReturn("redirectUri");
-        when(googleOAuthProperty.getGrantType()).thenReturn("authorization_code");
-
-        when(googleOAuthService.extractGoogleOAuthIdTokenUser(any(), any(), any(), eq(code), any())).thenReturn(googleUser);
-        when(userLinkedSocialRepository.existsByVerification(userId)).thenReturn(true);
-        when(userLinkedSocialRepository.findUserIdByVerification(userId)).thenReturn(existingUserId);
-
-        User existingUser = User.builder()
-                .id(existingUserId)
-                .email("email@example.com")
+        User mockUser = User.builder()
+                .id(uuid)
+                .email(testEmail)
                 .registeredAt(LocalDateTime.now())
                 .build();
 
-        when(userRepository.findById(existingUserId)).thenReturn(existingUser);
-        when(jwtUtil.generateToken(any(UserDetails.class))).thenReturn(expectedJwtToken);
+        when(providerFactory.getProvider(OAuthType.GOOGLE)).thenReturn(oAuthProvider);
+        when(oAuthProvider.extractUser(testCode)).thenReturn(userInfo);
+        when(userLinkedSocialRepository.existsByVerification(testUserId)).thenReturn(true);
+        when(userLinkedSocialRepository.findUserIdByVerification(testUserId)).thenReturn(uuid);
+        when(userRepository.findById(uuid)).thenReturn(mockUser);
+        when(jwtUtil.generateToken(any())).thenReturn(testToken);
 
-        GoogleAuthResponse response = authService.authByGoogle(code);
+        // Act
+        GoogleAuthResponse response = authService.authByGoogle(testCode);
 
-        assertEquals(expectedJwtToken, response.jwtToken());
+        // Assert
+        assertEquals(testToken, response.jwtToken());
+        verify(providerFactory).getProvider(OAuthType.GOOGLE);
+        verify(userLinkedSocialRepository).existsByVerification(testUserId);
+        verify(userRepository).findById(uuid);
     }
 
     @Test
-    public void testAuthByGoogleUserNotExists() {
-        String code = "authCode";
-        String userId = "googleUserId";
+    void authByGoogle_NewUser_CreatesUserAndSocialLink() {
+        // Arrange
+        OAuthUserInfo userInfo = new OAuthUserInfo(
+                testUserId,
+                testEmail
+        );
 
-        UUID newUserId = UUID.randomUUID();
+        User newUser = User.builder()
+                .id(uuid)
+                .email(testEmail)
+                .registeredAt(LocalDateTime.now())
+                .build();
 
-        String expectedJwtToken = "jwtToken";
+        when(providerFactory.getProvider(OAuthType.GOOGLE)).thenReturn(oAuthProvider);
+        when(oAuthProvider.extractUser(testCode)).thenReturn(userInfo);
+        when(userLinkedSocialRepository.existsByVerification(testUserId)).thenReturn(false);
+        when(userRepository.save(any())).thenReturn(newUser);
+        when(jwtUtil.generateToken(any())).thenReturn(testToken);
 
-        GoogleOAuthIdTokenUser googleUser = new GoogleOAuthIdTokenUser(userId, "newuser@example.com", true, "test",
-                "test", "test");
+        // Act
+        GoogleAuthResponse response = authService.authByGoogle(testCode);
 
-        when(googleOAuthProperty.getClientId()).thenReturn("clientId");
-        when(googleOAuthProperty.getClientSecret()).thenReturn("clientSecret");
-        when(googleOAuthProperty.getRedirectUri()).thenReturn("redirectUri");
-        when(googleOAuthProperty.getGrantType()).thenReturn("authorization_code");
+        // Assert
+        assertEquals(testToken, response.jwtToken());
 
-        when(googleOAuthService.extractGoogleOAuthIdTokenUser(any(), any(), any(), eq(code), any())).thenReturn(googleUser);
-        when(userLinkedSocialRepository.existsByVerification(userId)).thenReturn(false);
+        // Verify user creation
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+        assertEquals(testEmail, userCaptor.getValue().getEmail());
 
-        User newUser = User.builder().id(newUserId).email("newuser@example.com").registeredAt(LocalDateTime.now()).build();
-        when(userRepository.save(any(User.class))).thenReturn(newUser);
-        when(jwtUtil.generateToken(any(UserDetails.class))).thenReturn(expectedJwtToken);
-
-        GoogleAuthResponse response = authService.authByGoogle(code);
-
-        assertEquals(expectedJwtToken, response.jwtToken());
-        verify(userLinkedSocialRepository, times(1)).save(any(UserLinkedSocial.class));
+        // Verify async social link creation
+        verify(userLinkedSocialRepository, timeout(1000)).save(any());
     }
 }

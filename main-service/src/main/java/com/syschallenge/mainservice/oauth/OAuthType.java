@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.user.model;
+package com.syschallenge.mainservice.oauth;
 
 /**
- * Enumeration of socials that can be linked to a user
+ * Enumeration of supported OAuth providers
  *
  * @author panic08
  * @since 1.0.0
  */
-public enum UserLinkedSocialType {
+public enum OAuthType {
     GOOGLE
 }
