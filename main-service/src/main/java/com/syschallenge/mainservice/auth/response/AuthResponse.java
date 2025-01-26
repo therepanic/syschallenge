@@ -19,10 +19,10 @@ package com.syschallenge.mainservice.auth.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response record for Google authentication
+ * Response record for authentication
  *
  * @author panic08
  * @since 1.0.0
  */
-public record GoogleAuthResponse(@JsonProperty("jwt_token") String jwtToken) {
+public record AuthResponse(@JsonProperty("jwt_token") String jwtToken) {
 }

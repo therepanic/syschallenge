@@ -17,7 +17,8 @@
 package com.syschallenge.mainservice.auth;
 
 import com.syschallenge.mainservice.auth.model.Me;
-import com.syschallenge.mainservice.auth.response.GoogleAuthResponse;
+import com.syschallenge.mainservice.auth.response.AuthResponse;
+import com.syschallenge.mainservice.oauth.OAuthType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,18 +40,19 @@ public class AuthController {
     private final AuthService authService;
 
     /**
-     * Endpoint for Google OAuth authentication
+     * Endpoint for OAuth authentication
      *
-     * @param code authorization code received from Google OAuth
-     * @return response entity containing the Google authentication response with the JWT token
+     * @param type social type for OAuth
+     * @param code authorization code received from OAuth
+     * @return response entity containing the response with the JWT token
      */
-    @PostMapping("/google")
-    public ResponseEntity<GoogleAuthResponse> authByGoogle(@RequestParam("code") String code) {
-        return ResponseEntity.ok(authService.authByGoogle(code));
+    @PostMapping("/social")
+    public ResponseEntity<AuthResponse> authBySocial(@RequestParam("type") OAuthType type, @RequestParam("code") String code) {
+        return ResponseEntity.ok(authService.authBySocial(type, code));
     }
 
     /**
-     * Retrieves information about the authenticated user
+     * Endpoint for retrieve the information about the authenticated user
      *
      * @param auth the authentication token, which contains the user ID as the principal name
      * @return response entity containing user information (Me) for the authenticated user

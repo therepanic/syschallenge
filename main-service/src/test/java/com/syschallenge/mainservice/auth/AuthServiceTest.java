@@ -16,7 +16,7 @@
 
 package com.syschallenge.mainservice.auth;
 
-import com.syschallenge.mainservice.auth.response.GoogleAuthResponse;
+import com.syschallenge.mainservice.auth.response.AuthResponse;
 import com.syschallenge.mainservice.oauth.OAuthProvider;
 import com.syschallenge.mainservice.oauth.OAuthProviderFactory;
 import com.syschallenge.mainservice.oauth.OAuthType;
@@ -97,7 +97,7 @@ class AuthServiceTest {
         when(jwtUtil.generateToken(any())).thenReturn(testToken);
 
         // Act
-        GoogleAuthResponse response = authService.authByGoogle(testCode);
+        AuthResponse response = authService.authBySocial(OAuthType.GOOGLE, testCode);
 
         // Assert
         assertEquals(testToken, response.jwtToken());
@@ -127,7 +127,7 @@ class AuthServiceTest {
         when(jwtUtil.generateToken(any())).thenReturn(testToken);
 
         // Act
-        GoogleAuthResponse response = authService.authByGoogle(testCode);
+        AuthResponse response = authService.authBySocial(OAuthType.GOOGLE, testCode);
 
         // Assert
         assertEquals(testToken, response.jwtToken());

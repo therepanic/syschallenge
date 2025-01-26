@@ -16,7 +16,7 @@
 
 package com.syschallenge.mainservice.auth;
 
-import com.syschallenge.mainservice.auth.response.GoogleAuthResponse;
+import com.syschallenge.mainservice.auth.response.AuthResponse;
 import com.syschallenge.mainservice.oauth.OAuthProviderFactory;
 import com.syschallenge.mainservice.oauth.OAuthType;
 import com.syschallenge.mainservice.oauth.OAuthUserInfo;
@@ -52,14 +52,15 @@ public class AuthService {
 
 
     /**
-     * Authenticates a user through Google OAuth using an authorization code
+     * Authenticates a user through OAuth using an authorization code
      *
-     * @param code authorization code provided by Google OAuth
-     * @return response containing the Google authentication response with the JWT token
+     * @param type social type for OAuth
+     * @param code authorization code provided by OAuth
+     * @return response containing the authentication response with the JWT token
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public GoogleAuthResponse authByGoogle(String code) {
-        OAuthUserInfo userInfo = providerFactory.getProvider(OAuthType.GOOGLE).extractUser(code);
+    public AuthResponse authBySocial(OAuthType type, String code) {
+        OAuthUserInfo userInfo = providerFactory.getProvider(type).extractUser(code);
 
         if (userLinkedSocialRepository.existsByVerification(userInfo.providerUserId())) {
             User currentUser = userRepository.findById(
@@ -68,7 +69,7 @@ public class AuthService {
 
             String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId()));
 
-            return new GoogleAuthResponse(jwtToken);
+            return new AuthResponse(jwtToken);
         } else {
             User newUser = userRepository.save(
                     User.builder()
@@ -89,7 +90,7 @@ public class AuthService {
 
             String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId()));
 
-            return new GoogleAuthResponse(jwtToken);
+            return new AuthResponse(jwtToken);
         }
     }
 }
