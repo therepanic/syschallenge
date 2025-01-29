@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
-public class GoogleOAuthProviderTest {
+class GoogleOAuthProviderTest {
     @Mock
     private GoogleOAuthV4Api googleOAuthApi;
     @Mock

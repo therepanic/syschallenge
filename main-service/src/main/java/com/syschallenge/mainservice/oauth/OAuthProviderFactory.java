@@ -16,6 +16,7 @@
 
 package com.syschallenge.mainservice.oauth;
 
+import com.syschallenge.mainservice.oauth.github.GithubOAuthProvider;
 import com.syschallenge.mainservice.oauth.google.GoogleOAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 public class OAuthProviderFactory {
 
     private final GoogleOAuthProvider googleProvider;
+    private final GithubOAuthProvider githubProvider;
 
     /**
      * Returns OAuth provider implementation for specified type
@@ -42,6 +44,7 @@ public class OAuthProviderFactory {
     public OAuthProvider getProvider(OAuthType type) {
         return switch (type) {
             case GOOGLE -> googleProvider;
+            case GITHUB -> githubProvider;
             default -> throw new IllegalArgumentException("Unsupported OAuth provider");
         };
     }

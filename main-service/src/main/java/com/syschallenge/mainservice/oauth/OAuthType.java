@@ -23,5 +23,6 @@ package com.syschallenge.mainservice.oauth;
  * @since 1.0.0
  */
 public enum OAuthType {
-    GOOGLE
+    GOOGLE,
+    GITHUB
 }
