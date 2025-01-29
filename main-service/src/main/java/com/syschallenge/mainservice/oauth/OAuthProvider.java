@@ -23,6 +23,7 @@ package com.syschallenge.mainservice.oauth;
  * @since 1.0.0
  */
 public interface OAuthProvider {
+
     /**
      * Extracts user information from OAuth provider using authorization code
      *

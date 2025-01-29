@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Service for handling authentication-related operations
@@ -50,7 +49,6 @@ public class AuthService {
     private final UserLinkedSocialRepository userLinkedSocialRepository;
     private final JwtUtil jwtUtil;
 
-
     /**
      * Authenticates a user through OAuth using an authorization code
      *
@@ -66,9 +64,7 @@ public class AuthService {
             User currentUser = userRepository.findById(
                     userLinkedSocialRepository.findUserIdByVerification(userInfo.providerUserId())
             );
-
             String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId()));
-
             return new AuthResponse(jwtToken);
         } else {
             User newUser = userRepository.save(
@@ -77,19 +73,14 @@ public class AuthService {
                             .registeredAt(LocalDateTime.now())
                             .build()
             );
-
-            CompletableFuture.runAsync(() -> {
-                userLinkedSocialRepository.save(
-                        UserLinkedSocial.builder()
-                                .userId(newUser.getId())
-                                .type(UserLinkedSocialType.GOOGLE)
-                                .verification(userInfo.providerUserId())
-                                .build()
-                );
-            });
-
+            userLinkedSocialRepository.save(
+                    UserLinkedSocial.builder()
+                            .userId(newUser.getId())
+                            .type(UserLinkedSocialType.valueOf(type.name()))
+                            .verification(userInfo.providerUserId())
+                            .build()
+            );
             String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId()));
-
             return new AuthResponse(jwtToken);
         }
     }

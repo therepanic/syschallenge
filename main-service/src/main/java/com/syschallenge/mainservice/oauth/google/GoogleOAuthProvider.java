@@ -55,7 +55,6 @@ public class GoogleOAuthProvider implements OAuthProvider {
                         properties.getGrantType()
                 )
         );
-
         return parseIdToken(response.idToken());
     }
 

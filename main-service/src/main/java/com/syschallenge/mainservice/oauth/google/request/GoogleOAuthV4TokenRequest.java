@@ -22,9 +22,10 @@ package com.syschallenge.mainservice.oauth.google.request;
  * @author panic08
  * @since 1.0.0
  */
-public record GoogleOAuthV4TokenRequest(String clientId,
-                                        String clientSecret,
-                                        String redirectUri,
-                                        String code,
-                                        String grantType) {
+public record GoogleOAuthV4TokenRequest(
+        String clientId,
+        String clientSecret,
+        String redirectUri,
+        String code,
+        String grantType) {
 }

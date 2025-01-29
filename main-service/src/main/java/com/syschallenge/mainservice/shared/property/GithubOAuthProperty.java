@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.user.model;
+package com.syschallenge.mainservice.shared.property;
 
-/**
- * Enumeration of socials that can be linked to a user
- *
- * @author panic08
- * @since 1.0.0
- */
-public enum UserLinkedSocialType {
-    GOOGLE,
-    GITHUB
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties("github.oauth")
+@Getter
+@Setter
+public class GithubOAuthProperty {
+    private String clientId;
+    private String clientSecret;
+    private String redirectUri;
 }

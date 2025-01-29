@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
-public class OAuthProviderFactoryTest {
+class OAuthProviderFactoryTest {
     @Mock
     private GoogleOAuthProvider googleProvider;
 

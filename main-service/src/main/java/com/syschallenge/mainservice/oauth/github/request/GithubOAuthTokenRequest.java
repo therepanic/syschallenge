@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.user.model;
+package com.syschallenge.mainservice.oauth.github.request;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
- * Enumeration of socials that can be linked to a user
+ * Represents a request payload for Github OAuth token request
  *
  * @author panic08
  * @since 1.0.0
  */
-public enum UserLinkedSocialType {
-    GOOGLE,
-    GITHUB
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record GithubOAuthTokenRequest(
+        String clientId,
+        String clientSecret,
+        String code,
+        String redirectUri
+) {
 }
