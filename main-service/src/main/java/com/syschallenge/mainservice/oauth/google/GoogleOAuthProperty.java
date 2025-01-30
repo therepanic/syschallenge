@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.shared.property;
+package com.syschallenge.mainservice.oauth.google;
 
 import lombok.Getter;
 import lombok.Setter;

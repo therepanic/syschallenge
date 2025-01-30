@@ -19,7 +19,6 @@ package com.syschallenge.mainservice.oauth.github;
 import com.syschallenge.mainservice.oauth.OAuthUserInfo;
 import com.syschallenge.mainservice.shared.api.GithubApi;
 import com.syschallenge.mainservice.shared.api.response.GithubUser;
-import com.syschallenge.mainservice.shared.property.GithubOAuthProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

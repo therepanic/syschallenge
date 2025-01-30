@@ -19,7 +19,6 @@ package com.syschallenge.mainservice.oauth.google;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syschallenge.mainservice.oauth.OAuthUserInfo;
 import com.syschallenge.mainservice.oauth.google.response.GoogleOAuthV4TokenResponse;
-import com.syschallenge.mainservice.shared.property.GoogleOAuthProperty;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

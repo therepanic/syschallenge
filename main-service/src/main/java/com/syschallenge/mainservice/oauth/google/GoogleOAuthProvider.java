@@ -22,7 +22,6 @@ import com.syschallenge.mainservice.oauth.OAuthProvider;
 import com.syschallenge.mainservice.oauth.OAuthUserInfo;
 import com.syschallenge.mainservice.oauth.google.request.GoogleOAuthV4TokenRequest;
 import com.syschallenge.mainservice.oauth.google.response.GoogleOAuthV4TokenResponse;
-import com.syschallenge.mainservice.shared.property.GoogleOAuthProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
