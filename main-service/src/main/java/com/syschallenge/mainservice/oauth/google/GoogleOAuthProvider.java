@@ -67,9 +67,11 @@ public class GoogleOAuthProvider implements OAuthProvider {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        String email = (String) decodedIdTokenBodyMap.get("email");
         return new OAuthUserInfo(
                 (String) decodedIdTokenBodyMap.get("sub"),
-                (String) decodedIdTokenBodyMap.get("email")
+                email.split("@")[0],
+                email
         );
     }
 }

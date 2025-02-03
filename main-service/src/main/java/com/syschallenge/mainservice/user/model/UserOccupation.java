@@ -22,25 +22,32 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Entity class representing a user linked social in the system
+ * Entity class representing a user occupation in the system
  *
  * @author panic08
  * @since 1.0.0
  */
 @Data
 @Builder
-@Table(name = "users_linked_social_table")
-public class UserLinkedSocial {
+@Table(name = "users_occupation_table")
+public class UserOccupation {
     @Id
     private UUID id;
 
     @Column("user_id")
     private UUID userId;
 
-    private UserLinkedSocialType type;
+    private String company;
 
-    private String verification;
+    private String title;
+
+    @Column("start_date")
+    private LocalDateTime startDate;
+
+    @Column("end_date")
+    private LocalDateTime endDate;
 }

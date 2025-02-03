@@ -71,6 +71,7 @@ class AuthServiceTest {
 
     private final String testCode = "test_code";
     private final String testUserId = "google_user_123";
+    private final String testUsername = "google_user";
     private final String testEmail = "test@example.com";
     private final UUID uuid = UUID.randomUUID();
     private final String testToken = "test.jwt.token";
@@ -80,6 +81,7 @@ class AuthServiceTest {
         // Arrange
         OAuthUserInfo userInfo = new OAuthUserInfo(
                 testUserId,
+                testUsername,
                 testEmail
         );
 
@@ -111,6 +113,7 @@ class AuthServiceTest {
         // Arrange
         OAuthUserInfo userInfo = new OAuthUserInfo(
                 testUserId,
+                testUsername,
                 testEmail
         );
 

@@ -16,15 +16,18 @@
 
 package com.syschallenge.mainservice.auth;
 
+import com.syschallenge.mainservice.auth.model.Me;
 import com.syschallenge.mainservice.auth.response.AuthResponse;
 import com.syschallenge.mainservice.oauth.OAuthProviderFactory;
 import com.syschallenge.mainservice.oauth.OAuthType;
 import com.syschallenge.mainservice.oauth.OAuthUserInfo;
 import com.syschallenge.mainservice.shared.security.UserDetails;
 import com.syschallenge.mainservice.shared.security.jwt.JwtUtil;
+import com.syschallenge.mainservice.user.UserBasicInfoRepository;
 import com.syschallenge.mainservice.user.UserLinkedSocialRepository;
 import com.syschallenge.mainservice.user.UserRepository;
 import com.syschallenge.mainservice.user.model.User;
+import com.syschallenge.mainservice.user.model.UserBasicInfo;
 import com.syschallenge.mainservice.user.model.UserLinkedSocial;
 import com.syschallenge.mainservice.user.model.UserLinkedSocialType;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Service for handling authentication-related operations
@@ -46,6 +50,7 @@ public class AuthService {
 
     private final OAuthProviderFactory providerFactory;
     private final UserRepository userRepository;
+    private final UserBasicInfoRepository userBasicInfoRepository;
     private final UserLinkedSocialRepository userLinkedSocialRepository;
     private final JwtUtil jwtUtil;
 
@@ -70,7 +75,14 @@ public class AuthService {
             User newUser = userRepository.save(
                     User.builder()
                             .email(userInfo.email())
+                            .username(userInfo.username())
                             .registeredAt(LocalDateTime.now())
+                            .build()
+            );
+            userBasicInfoRepository.save(
+                    UserBasicInfo.builder()
+                            .userId(newUser.getId())
+                            .name(newUser.getUsername())
                             .build()
             );
             userLinkedSocialRepository.save(
@@ -83,5 +95,9 @@ public class AuthService {
             String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId()));
             return new AuthResponse(jwtToken);
         }
+    }
+
+    public Me me(UUID userId) {
+        return new Me(userId, userRepository.findUsernameById(userId), userBasicInfoRepository.findNameByUserId(userId));
     }
 }

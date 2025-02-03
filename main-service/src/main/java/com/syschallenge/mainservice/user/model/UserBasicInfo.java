@@ -14,15 +14,38 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.auth.model;
+package com.syschallenge.mainservice.user.model;
 
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Record representing basic information about an authenticated user
+ * Entity class representing a user basic info in the system
  *
  * @author panic08
  * @since 1.0.0
  */
-public record Me(UUID id, String username, String name) {
+@Data
+@Builder
+@Table(name = "users_basic_info_table")
+public class UserBasicInfo {
+    @Id
+    private UUID id;
+
+    @Column("user_id")
+    private UUID userId;
+
+    private String name;
+
+    private String summary;
+
+    private LocalDateTime birthday;
+
+    private UserBasicInfoGender gender;
 }

@@ -59,6 +59,6 @@ public class AuthController {
      */
     @GetMapping("/me")
     public ResponseEntity<Me> me(UsernamePasswordAuthenticationToken auth) {
-        return ResponseEntity.ok(new Me(UUID.fromString(auth.getName())));
+        return ResponseEntity.ok(authService.me(UUID.fromString(auth.getName())));
     }
 }
