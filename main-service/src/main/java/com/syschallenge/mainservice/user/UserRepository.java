@@ -45,6 +45,7 @@ public class UserRepository {
     public User save(User user) {
         return ctx.insertInto(UsersTable.USERS_TABLE)
                 .set(UsersTable.USERS_TABLE.EMAIL, user.getEmail())
+                .set(UsersTable.USERS_TABLE.USERNAME, user.getUsername())
                 .set(UsersTable.USERS_TABLE.PASSWORD, user.getPassword())
                 .set(UsersTable.USERS_TABLE.REGISTERED_AT, user.getRegisteredAt())
                 .returningResult(UsersTable.USERS_TABLE)
@@ -61,5 +62,18 @@ public class UserRepository {
         return ctx.selectFrom(UsersTable.USERS_TABLE)
                 .where(UsersTable.USERS_TABLE.ID.eq(id))
                 .fetchOneInto(User.class);
+    }
+
+    /**
+     * Finds a username by their id
+     *
+     * @param id UUID of the user to find
+     * @return username associated with the given id
+     */
+    public String findUsernameById(UUID id) {
+        return ctx.select(UsersTable.USERS_TABLE.USERNAME)
+                .from(UsersTable.USERS_TABLE)
+                .where(UsersTable.USERS_TABLE.ID.eq(id))
+                .fetchOneInto(String.class);
     }
 }

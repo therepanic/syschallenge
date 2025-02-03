@@ -57,6 +57,7 @@ public class GithubOAuthProvider implements OAuthProvider {
         GithubUser authorizedGithubUser = githubApi.getUser(extractedAccessToken);
         return new OAuthUserInfo(
                 String.valueOf(authorizedGithubUser.id()),
+                authorizedGithubUser.login(),
                 authorizedGithubUser.email()
         );
     }

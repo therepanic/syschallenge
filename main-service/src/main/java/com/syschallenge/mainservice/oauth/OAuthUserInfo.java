@@ -19,11 +19,8 @@ package com.syschallenge.mainservice.oauth;
 /**
  * Represents user information obtained from OAuth provider authentication
  *
- * @param providerUserId unique user identifier from OAuth provider
- * @param email user's email address
- *
  * @author panic08
  * @since 1.0.0
  */
-public record OAuthUserInfo(String providerUserId, String email) {
+public record OAuthUserInfo(String providerUserId, String username, String email) {
 }

@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package com.syschallenge.mainservice.auth.model;
-
-import java.util.UUID;
+package com.syschallenge.mainservice.user.model;
 
 /**
- * Record representing basic information about an authenticated user
+ * Enumeration of genders that can be linked to a user basic info
  *
  * @author panic08
  * @since 1.0.0
  */
-public record Me(UUID id, String username, String name) {
+public enum UserBasicInfoGender {
+    MALE,
+    FEMALE,
+    OTHER
 }
