@@ -1,4 +1,4 @@
 rootProject.name = 'syschallenge-parent'
 
-include 'main-service'
-project(":main-service").name = "main-service"
+include 'domain-service'
+project(":domain-service").name = "domain-service"

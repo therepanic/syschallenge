@@ -9,7 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/main-service" />
+            <option value="$PROJECT_DIR$/domain-service" />
           </set>
         </option>
       </GradleProjectSettings>
