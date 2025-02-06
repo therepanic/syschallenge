@@ -17,7 +17,7 @@
 package com.syschallenge.auth;
 
 import com.syschallenge.auth.model.Me;
-import com.syschallenge.auth.response.AuthResponse;
+import com.syschallenge.auth.payload.response.AuthResponse;
 import com.syschallenge.oauth.OAuthType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

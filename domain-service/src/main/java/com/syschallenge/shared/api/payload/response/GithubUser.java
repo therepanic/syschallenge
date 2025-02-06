@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.syschallenge.shared.api.response;
+package com.syschallenge.shared.api.payload.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

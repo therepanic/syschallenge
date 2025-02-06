@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.syschallenge.oauth.google.request;
+package com.syschallenge.shared.exception;
 
 /**
- * Represents a request payload for Google OAuth V4 token request
+ * Exception thrown when a user attempts an action without sufficient permissions
+ * This exception is typically used to indicate that the user does not have the necessary rights to perform a specific operation
  *
  * @author panic08
  * @since 1.0.0
  */
-public record GoogleOAuthV4TokenRequest(
-        String clientId,
-        String clientSecret,
-        String redirectUri,
-        String code,
-        String grantType) {
+public class PermissionDeniedException extends RuntimeException {
+    public PermissionDeniedException(String message) {
+        super(message);
+    }
 }

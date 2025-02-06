@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.syschallenge.user;
+package com.syschallenge.user.repository;
 
 import com.syschallenge.public_.tables.UsersTable;
-import com.syschallenge.user.model.User;
 import com.syschallenge.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

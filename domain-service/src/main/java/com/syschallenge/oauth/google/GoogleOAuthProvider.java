@@ -20,8 +20,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syschallenge.oauth.OAuthProvider;
 import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.oauth.google.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.oauth.google.response.GoogleOAuthV4TokenResponse;
+import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

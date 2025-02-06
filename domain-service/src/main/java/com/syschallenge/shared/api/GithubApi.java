@@ -16,7 +16,7 @@
 
 package com.syschallenge.shared.api;
 
-import com.syschallenge.shared.api.response.GithubUser;
+import com.syschallenge.shared.api.payload.response.GithubUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

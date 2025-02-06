@@ -17,16 +17,16 @@
 package com.syschallenge.auth;
 
 import com.syschallenge.auth.model.Me;
-import com.syschallenge.auth.response.AuthResponse;
+import com.syschallenge.auth.payload.response.AuthResponse;
 import com.syschallenge.oauth.OAuthProvider;
 import com.syschallenge.oauth.OAuthProviderFactory;
 import com.syschallenge.oauth.OAuthType;
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.security.UserDetails;
 import com.syschallenge.shared.security.jwt.JwtUtil;
-import com.syschallenge.user.UserBasicInfoRepository;
-import com.syschallenge.user.UserLinkedSocialRepository;
-import com.syschallenge.user.UserRepository;
+import com.syschallenge.user.repository.UserBasicInfoRepository;
+import com.syschallenge.user.repository.UserLinkedSocialRepository;
+import com.syschallenge.user.repository.UserRepository;
 import com.syschallenge.user.model.User;
 import com.syschallenge.user.model.UserBasicInfo;
 import com.syschallenge.user.model.UserLinkedSocial;

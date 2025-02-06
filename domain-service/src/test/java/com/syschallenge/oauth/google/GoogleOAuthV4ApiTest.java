@@ -16,8 +16,8 @@
 
 package com.syschallenge.oauth.google;
 
-import com.syschallenge.oauth.google.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.oauth.google.response.GoogleOAuthV4TokenResponse;
+import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;

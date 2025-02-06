@@ -15,8 +15,8 @@
  */
 
 package com.syschallenge.oauth.google;
-import com.syschallenge.oauth.google.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.oauth.google.response.GoogleOAuthV4TokenResponse;
+import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

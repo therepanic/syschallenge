@@ -16,9 +16,7 @@
 
 package com.syschallenge.oauth.github;
 
-import com.syschallenge.oauth.github.GithubOAuthApi;
-import com.syschallenge.oauth.github.request.GithubOAuthTokenRequest;
-import com.syschallenge.oauth.github.request.GithubOAuthTokenRequest;
+import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;

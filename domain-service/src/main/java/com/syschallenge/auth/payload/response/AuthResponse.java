@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.syschallenge.auth.response;
+package com.syschallenge.auth.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

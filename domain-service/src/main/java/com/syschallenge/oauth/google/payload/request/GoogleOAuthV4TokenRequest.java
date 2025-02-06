@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package com.syschallenge.oauth.github.request;
-
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+package com.syschallenge.oauth.google.payload.request;
 
 /**
- * Represents a request payload for Github OAuth token request
+ * Represents a request payload for Google OAuth V4 token request
  *
  * @author panic08
  * @since 1.0.0
  */
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record GithubOAuthTokenRequest(
+public record GoogleOAuthV4TokenRequest(
         String clientId,
         String clientSecret,
+        String redirectUri,
         String code,
-        String redirectUri
-) {
+        String grantType) {
 }

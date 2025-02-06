@@ -18,9 +18,9 @@ package com.syschallenge.oauth.github;
 
 import com.syschallenge.oauth.OAuthProvider;
 import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.oauth.github.request.GithubOAuthTokenRequest;
+import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
 import com.syschallenge.shared.api.GithubApi;
-import com.syschallenge.shared.api.response.GithubUser;
+import com.syschallenge.shared.api.payload.response.GithubUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
