@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users_table(
     username VARCHAR(30) NOT NULL,
     email VARCHAR(320) UNIQUE NOT NULL,
     password VARCHAR(73),
+    role VARCHAR(20) NOT NULL,
     registered_at TIMESTAMP NOT NULL
 );
 

@@ -18,6 +18,7 @@ package com.syschallenge.user.repository;
 
 import com.syschallenge.public_.tables.UsersTable;
 import com.syschallenge.user.model.User;
+import com.syschallenge.user.model.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -47,6 +48,7 @@ public class UserRepository {
                 .set(UsersTable.USERS_TABLE.EMAIL, user.getEmail())
                 .set(UsersTable.USERS_TABLE.USERNAME, user.getUsername())
                 .set(UsersTable.USERS_TABLE.PASSWORD, user.getPassword())
+                .set(UsersTable.USERS_TABLE.ROLE, user.getRole().toString())
                 .set(UsersTable.USERS_TABLE.REGISTERED_AT, user.getRegisteredAt())
                 .returningResult(UsersTable.USERS_TABLE)
                 .fetchOneInto(User.class);
@@ -76,4 +78,18 @@ public class UserRepository {
                 .where(UsersTable.USERS_TABLE.ID.eq(id))
                 .fetchOneInto(String.class);
     }
+
+    /**
+     * Finds a role by their id
+     *
+     * @param id UUID of the user to find
+     * @return role associated with the given id
+     */
+    public UserRole findRoleById(UUID id) {
+        return ctx.select(UsersTable.USERS_TABLE.ROLE)
+                .from(UsersTable.USERS_TABLE)
+                .where(UsersTable.USERS_TABLE.ID.eq(id))
+                .fetchOneInto(UserRole.class);
+    }
+
 }

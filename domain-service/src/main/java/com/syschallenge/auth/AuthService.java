@@ -23,13 +23,10 @@ import com.syschallenge.oauth.OAuthType;
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.security.UserDetails;
 import com.syschallenge.shared.security.jwt.JwtUtil;
+import com.syschallenge.user.model.*;
 import com.syschallenge.user.repository.UserBasicInfoRepository;
 import com.syschallenge.user.repository.UserLinkedSocialRepository;
 import com.syschallenge.user.repository.UserRepository;
-import com.syschallenge.user.model.User;
-import com.syschallenge.user.model.UserBasicInfo;
-import com.syschallenge.user.model.UserLinkedSocial;
-import com.syschallenge.user.model.UserLinkedSocialType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -76,6 +73,7 @@ public class AuthService {
                     User.builder()
                             .email(userInfo.email())
                             .username(userInfo.username())
+                            .role(UserRole.DEFAULT)
                             .registeredAt(LocalDateTime.now())
                             .build()
             );

@@ -20,9 +20,11 @@ import com.syschallenge.shared.exception.PermissionDeniedException;
 import com.syschallenge.user.dto.UserOccupationDto;
 import com.syschallenge.user.mapper.UserOccupationToUserOccupationDtoMapperImpl;
 import com.syschallenge.user.model.UserOccupation;
+import com.syschallenge.user.model.UserRole;
 import com.syschallenge.user.repository.UserOccupationRepository;
 import com.syschallenge.user.payload.request.CreateOccupationRequest;
 import com.syschallenge.user.payload.request.UpdateOccupationRequest;
+import com.syschallenge.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -40,6 +42,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserOccupationService {
 
+    private final UserRepository userRepository;
     private final UserOccupationRepository userOccupationRepository;
     private final UserOccupationToUserOccupationDtoMapperImpl userOccupationToUserOccupationDtoMapper;
 
@@ -67,9 +70,8 @@ public class UserOccupationService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public UserOccupationDto createOccupation(UUID id, CreateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
-        //TODO: When roles appear, change the logic for checking the id and principalId
-        if (!id.equals(principalId)) {
-            throw new PermissionDeniedException("You can only update your own occupation.");
+        if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+            throw new PermissionDeniedException("You can only create your own occupation.");
         }
         return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
                 userOccupationRepository.save(UserOccupation.builder()
@@ -93,8 +95,7 @@ public class UserOccupationService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public UserOccupationDto updateOccupation(UUID id, UpdateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
-        //TODO: When roles appear, change the logic for checking the id and principalId
-        if (!id.equals(principalId)) {
+        if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only update your own occupation.");
         }
         return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
@@ -117,9 +118,8 @@ public class UserOccupationService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteOccupation(UUID id, UUID principalId) throws PermissionDeniedException {
-        //TODO: When roles appear, change the logic for checking the id and principalId
-        if (!id.equals(principalId)) {
-            throw new PermissionDeniedException("You can only update your own occupation.");
+        if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+            throw new PermissionDeniedException("You can only delete your own occupation.");
         }
         userOccupationRepository.deleteByUserId(id);
     }

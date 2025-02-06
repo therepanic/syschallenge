@@ -24,6 +24,7 @@ import com.syschallenge.oauth.OAuthType;
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.security.UserDetails;
 import com.syschallenge.shared.security.jwt.JwtUtil;
+import com.syschallenge.user.model.UserRole;
 import com.syschallenge.user.repository.UserBasicInfoRepository;
 import com.syschallenge.user.repository.UserLinkedSocialRepository;
 import com.syschallenge.user.repository.UserRepository;
@@ -96,6 +97,7 @@ class AuthServiceTest {
                 .id(existingUserId)
                 .email(email)
                 .username(username)
+                .role(UserRole.DEFAULT)
                 .registeredAt(LocalDateTime.now())
                 .build();
 
@@ -125,6 +127,7 @@ class AuthServiceTest {
                 .id(newUserId)
                 .email(email)
                 .username(username)
+                .role(UserRole.DEFAULT)
                 .registeredAt(LocalDateTime.now())
                 .build();
         when(userRepository.save(any(User.class))).thenReturn(savedUser);

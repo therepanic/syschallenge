@@ -16,34 +16,13 @@
 
 package com.syschallenge.user.model;
 
-import lombok.Builder;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 /**
- * Entity class representing a user in the system
+ * Enumeration of roles that can be linked to a user
  *
  * @author panic08
  * @since 1.0.0
  */
-@Data
-@Builder
-@Table(name = "users_table")
-public class User {
-    @Id
-    private UUID id;
-
-    private String username;
-
-    private String email;
-
-    private String password;
-
-    private UserRole role;
-
-    private LocalDateTime registeredAt;
+public enum UserRole {
+    DEFAULT,
+    ADMIN
 }
