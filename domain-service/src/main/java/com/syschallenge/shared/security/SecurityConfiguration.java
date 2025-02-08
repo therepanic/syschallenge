@@ -31,6 +31,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -45,6 +46,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private final AccessDeniedHandler accessDeniedHandler;
     private final BaseAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAuthFilter jwtAuthFilter;
 
@@ -60,7 +62,10 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .authorizeHttpRequests(auth -> {
                     auth
                             .requestMatchers("/api/v1/auth/social").permitAll()

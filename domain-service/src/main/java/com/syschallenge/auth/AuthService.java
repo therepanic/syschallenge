@@ -66,7 +66,7 @@ public class AuthService {
             User currentUser = userRepository.findById(
                     userLinkedSocialRepository.findUserIdByVerification(userInfo.providerUserId())
             );
-            String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId()));
+            String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
             return new AuthResponse(jwtToken);
         } else {
             User newUser = userRepository.save(
@@ -90,7 +90,7 @@ public class AuthService {
                             .verification(userInfo.providerUserId())
                             .build()
             );
-            String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId()));
+            String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
             return new AuthResponse(jwtToken);
         }
     }

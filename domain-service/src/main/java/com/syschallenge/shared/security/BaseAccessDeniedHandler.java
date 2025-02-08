@@ -20,43 +20,41 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.ErrorMessage;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Entry point for handling unauthorized access
+ * Entry point for handling access denial errors
  *
  * @author panic08
  * @since 1.0.0
  */
 @Component
 @RequiredArgsConstructor
-public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class BaseAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper mapper;
 
     /**
-     * Commences an authentication scheme, returning an unauthorized response
+     * Handles an access denial scenario, returning a forbidden response
      *
      * @param request incoming HTTP request
      * @param response outgoing HTTP response
-     * @param authException authentication exception
+     * @param accessDeniedException access denial exception
      * @throws IOException if an I/O error occurs
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         Map<String, Object> body = Map.ofEntries(
-                Map.entry("error", "Unauthorized"),
-                Map.entry("message", authException.getMessage()),
+                Map.entry("error", "Forbidden"),
+                Map.entry("message", "You don't have the rights"),
                 Map.entry("path", request.getServletPath())
         );
         mapper.writeValue(response.getOutputStream(), body);

@@ -28,16 +28,16 @@ import java.util.UUID;
  * @author panic08
  * @since 1.0.0
  */
-public record UserDetails(UUID id) implements org.springframework.security.core.userdetails.UserDetails {
+public record UserDetails(UUID id, Collection<? extends GrantedAuthority> authorities) implements org.springframework.security.core.userdetails.UserDetails {
 
     /**
      * Returns the authorities granted to the user
      *
-     * @return empty collection as this implementation does not use the authorities
+     * @return the authorities granted to the user
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptySet();
+        return this.authorities;
     }
 
     /**
@@ -57,6 +57,6 @@ public record UserDetails(UUID id) implements org.springframework.security.core.
      */
     @Override
     public String getUsername() {
-        return id.toString();
+        return this.id.toString();
     }
 }
