@@ -53,7 +53,7 @@ public class UserOccupationService {
      * @return a DTO containing the got user occupation information
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto getOccupation(UUID id) {
+    public UserOccupationDto get(UUID id) {
         return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
                 userOccupationRepository.findByUserId(id)
         );
@@ -69,7 +69,7 @@ public class UserOccupationService {
      * @throws PermissionDeniedException if the user does not have permission to update this occupation
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto createOccupation(UUID id, CreateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
+    public UserOccupationDto create(UUID id, CreateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
         if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only create your own occupation.");
         }
@@ -94,7 +94,7 @@ public class UserOccupationService {
      * @throws PermissionDeniedException if the user does not have permission to save this occupation
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto updateOccupation(UUID id, UpdateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
+    public UserOccupationDto update(UUID id, UpdateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
         if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only update your own occupation.");
         }
@@ -117,7 +117,7 @@ public class UserOccupationService {
      * @throws PermissionDeniedException if the user does not have permission to delete this occupation
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void deleteOccupation(UUID id, UUID principalId) throws PermissionDeniedException {
+    public void delete(UUID id, UUID principalId) throws PermissionDeniedException {
         if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only delete your own occupation.");
         }

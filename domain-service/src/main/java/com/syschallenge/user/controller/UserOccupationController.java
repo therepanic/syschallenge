@@ -47,8 +47,8 @@ public class UserOccupationController {
      * @return user occupation DTO containing employment details
      */
     @GetMapping("/{id}/occupation")
-    public UserOccupationDto getOccupation(@PathVariable("id") UUID id) {
-        return userOccupationService.getOccupation(id);
+    public UserOccupationDto get(@PathVariable("id") UUID id) {
+        return userOccupationService.get(id);
     }
 
     /**
@@ -60,10 +60,10 @@ public class UserOccupationController {
      * @return created user occupation DTO with persisted data
      */
     @PostMapping("/{id}/occupation")
-    public UserOccupationDto createOccupation(@PathVariable("id") UUID id,
-                                              @RequestBody @Validated CreateOccupationRequest request,
-                                              UsernamePasswordAuthenticationToken auth) {
-        return userOccupationService.createOccupation(id, request, UUID.fromString(auth.getName()));
+    public UserOccupationDto create(@PathVariable("id") UUID id,
+                                    @RequestBody @Validated CreateOccupationRequest request,
+                                    UsernamePasswordAuthenticationToken auth) {
+        return userOccupationService.create(id, request, UUID.fromString(auth.getName()));
     }
 
     /**
@@ -75,10 +75,10 @@ public class UserOccupationController {
      * @return updated user occupation DTO with modified data
      */
     @PutMapping("/{id}/occupation")
-    public UserOccupationDto updateOccupation(@PathVariable("id") UUID id,
-                                              @RequestBody @Validated UpdateOccupationRequest request,
-                                              UsernamePasswordAuthenticationToken auth) {
-        return userOccupationService.updateOccupation(id, request, UUID.fromString(auth.getName()));
+    public UserOccupationDto update(@PathVariable("id") UUID id,
+                                    @RequestBody @Validated UpdateOccupationRequest request,
+                                    UsernamePasswordAuthenticationToken auth) {
+        return userOccupationService.update(id, request, UUID.fromString(auth.getName()));
     }
 
     /**
@@ -88,9 +88,9 @@ public class UserOccupationController {
      * @param auth authentication token containing requester's identity
      */
     @DeleteMapping("/{id}/occupation")
-    public void deleteOccupation(@PathVariable("id") UUID id,
-                                 UsernamePasswordAuthenticationToken auth) {
-        userOccupationService.deleteOccupation(id, UUID.fromString(auth.getName()));
+    public void delete(@PathVariable("id") UUID id,
+                       UsernamePasswordAuthenticationToken auth) {
+        userOccupationService.delete(id, UUID.fromString(auth.getName()));
     }
 
 }
