@@ -51,7 +51,7 @@ class UserOccupationServiceTest {
     private UserOccupationService userOccupationService;
 
     @Test
-    void updateOccupation_throwsPermissionDeniedException_whenIdEqualsPrincipalId() {
+    void update_throwsPermissionDeniedException_whenIdEqualsPrincipalId() {
         UUID id = UUID.randomUUID();
         UUID principalId = id;
         UpdateOccupationRequest request = new UpdateOccupationRequest(
@@ -62,12 +62,12 @@ class UserOccupationServiceTest {
         );
 
         PermissionDeniedException exception = assertThrows(PermissionDeniedException.class,
-                () -> userOccupationService.updateOccupation(id, request, principalId));
+                () -> userOccupationService.update(id, request, principalId));
         assertEquals("You can only update your own occupation.", exception.getMessage());
     }
 
     @Test
-    void updateOccupation_updatesAndReturnsUserOccupationDto_whenIdNotEqualToPrincipalId() {
+    void update_updatesAndReturnsUserOccupationDto_whenIdNotEqualToPrincipalId() {
         UUID id = UUID.randomUUID();
         UUID principalId = UUID.randomUUID();
         UpdateOccupationRequest request = new UpdateOccupationRequest(
@@ -99,7 +99,7 @@ class UserOccupationServiceTest {
         when(userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(updatedOccupation))
                 .thenReturn(expectedDto);
 
-        UserOccupationDto actualDto = userOccupationService.updateOccupation(id, request, principalId);
+        UserOccupationDto actualDto = userOccupationService.update(id, request, principalId);
 
         assertNotNull(actualDto);
         assertEquals(expectedDto, actualDto);
