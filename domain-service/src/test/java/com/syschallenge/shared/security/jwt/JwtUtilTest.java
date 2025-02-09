@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.syschallenge.jwt;
+package com.syschallenge.shared.security.jwt;
 
 import com.syschallenge.shared.security.UserDetails;
-import com.syschallenge.shared.security.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

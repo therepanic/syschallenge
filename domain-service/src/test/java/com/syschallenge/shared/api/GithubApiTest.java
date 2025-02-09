@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.syschallenge.api;
+package com.syschallenge.shared.api;
 
-import com.syschallenge.shared.api.GithubApi;
 import com.syschallenge.shared.api.payload.response.GithubUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
