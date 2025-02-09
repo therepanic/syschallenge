@@ -38,6 +38,10 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author panic08
+ * @since 1.0.0
+ */
 @ExtendWith(MockitoExtension.class)
 class UserOccupationServiceTest {
 

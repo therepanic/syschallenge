@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package com.syschallenge.shared.handler;
+package com.syschallenge.company.payload.request;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
- * Represents an error response that provides a standardized error message
+ * Represents a request payload for creating a company
  *
  * @author panic08
  * @since 1.0.0
  */
-public record ErrorResponse(String message) {
+public record CreateCompanyRequest(
+        @NotBlank(message = "Company slug is required")
+        @Size(max = 60, message = "Company slug must be less than 60 characters")
+        String slug,
+        @NotBlank(message = "Company name is required")
+        @Size(max = 60, message = "Company name must be less than 60 characters")
+        String name
+) {
 }

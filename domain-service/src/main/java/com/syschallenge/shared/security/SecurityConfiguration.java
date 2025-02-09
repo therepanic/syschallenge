@@ -70,6 +70,9 @@ public class SecurityConfiguration {
                     auth
                             .requestMatchers("/api/v1/auth/social").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/occupation").permitAll()
+                            .requestMatchers("/api/v1/company/all").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/company").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/v1/company/{id}").permitAll()
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

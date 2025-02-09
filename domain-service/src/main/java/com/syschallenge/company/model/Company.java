@@ -14,22 +14,34 @@
  * limitations under the License.
  */
 
-package com.syschallenge.company;
+package com.syschallenge.company.model;
 
-import lombok.RequiredArgsConstructor;
-import org.jooq.DSLContext;
-import org.springframework.stereotype.Repository;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
- * Repository for handling company data persistence operations
+ * Entity class representing a company in the system
  *
  * @author panic08
  * @since 1.0.0
  */
-@Repository
-@RequiredArgsConstructor
-public class CompanyRepository {
+@Data
+@Builder
+@Table(name = "companies_table")
+public class Company {
+    @Id
+    private UUID id;
 
-    private final DSLContext ctx;
+    private String slug;
 
+    private String name;
+
+    @Column("updated_at")
+    private LocalDateTime updatedAt;
 }

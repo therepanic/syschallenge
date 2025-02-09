@@ -17,11 +17,14 @@
 package com.syschallenge.shared.handler;
 
 import com.syschallenge.shared.exception.PermissionDeniedException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Map;
 
 /**
  * Global exception handler for handling application-wide exceptions
@@ -40,8 +43,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(PermissionDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handlePermissionDeniedException(PermissionDeniedException exception) {
-        return new ErrorResponse(exception.getMessage());
+    public Map<String, Object> handlePermissionDeniedException(HttpServletRequest request, PermissionDeniedException exception) {
+        return Map.ofEntries(
+                Map.entry("error", "Forbidden"),
+                Map.entry("message", exception.getMessage()),
+                Map.entry("path", request.getServletPath())
+        );
     }
 
     /**
@@ -56,15 +63,18 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(MethodArgumentNotValidException exception) {
+    public Map<String, Object> handleValidationException(HttpServletRequest request, MethodArgumentNotValidException exception) {
         String errorMessage = exception.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .findFirst()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .orElse("Validation error");
-
-        return new ErrorResponse(errorMessage);
+        return Map.ofEntries(
+                Map.entry("error", "Forbidden"),
+                Map.entry("message", errorMessage),
+                Map.entry("path", request.getServletPath())
+        );
     }
 
 }

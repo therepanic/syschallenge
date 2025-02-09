@@ -14,34 +14,23 @@
  * limitations under the License.
  */
 
-package com.syschallenge.company;
+package com.syschallenge.company.payload.request;
 
-import lombok.Builder;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
- * Entity class representing a company in the system
+ * Represents a request payload for updating a company
  *
  * @author panic08
  * @since 1.0.0
  */
-@Data
-@Builder
-@Table(name = "companies_table")
-public class Company {
-    @Id
-    private UUID id;
-
-    private String slug;
-
-    private String name;
-
-    @Column("updated_at")
-    private LocalDateTime updatedAt;
+public record UpdateCompanyRequest(
+        @NotBlank(message = "Company slug is required")
+        @Size(max = 60, message = "Company slug must be less than 60 characters")
+        String slug,
+        @NotBlank(message = "Company name is required")
+        @Size(max = 60, message = "Company name must be less than 60 characters")
+        String name
+) {
 }
