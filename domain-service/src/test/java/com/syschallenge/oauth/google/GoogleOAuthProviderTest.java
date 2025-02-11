@@ -70,7 +70,7 @@ class GoogleOAuthProviderTest {
                 "given_name", "Test"
         );
 
-        when(properties.getClientId()).thenReturn("client_id");
+        when(properties.clientId()).thenReturn("client_id");
         when(googleOAuthApi.requestToken(any())).thenReturn(tokenResponse);
         when(mapper.readValue(anyString(), eq(Map.class))).thenReturn(testClaims);
 

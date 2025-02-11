@@ -47,10 +47,10 @@ public class GithubOAuthProvider implements OAuthProvider {
     public OAuthUserInfo extractUser(String code) {
         String accessToken = githubOAuthApi.requestToken(
                 new GithubOAuthTokenRequest(
-                        properties.getClientId(),
-                        properties.getClientSecret(),
+                        properties.clientId(),
+                        properties.clientSecret(),
                         code,
-                        properties.getRedirectUri()
+                        properties.redirectUri()
                 )
         );
         String extractedAccessToken = extractAccessToken(accessToken);

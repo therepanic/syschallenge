@@ -92,10 +92,9 @@ class GithubOAuthProviderTest {
                 ZonedDateTime.now()     // updatedAt
         );
 
-        // Мокаем вызовы
-        when(properties.getClientId()).thenReturn("client_id");
-        when(properties.getClientSecret()).thenReturn("client_secret");
-        when(properties.getRedirectUri()).thenReturn("redirect_uri");
+        when(properties.clientId()).thenReturn("client_id");
+        when(properties.clientSecret()).thenReturn("client_secret");
+        when(properties.redirectUri()).thenReturn("redirect_uri");
         when(githubOAuthApi.requestToken(any())).thenReturn(testAccessTokenResponse);
         when(githubApi.getUser(testAccessToken)).thenReturn(testGithubUser);
 

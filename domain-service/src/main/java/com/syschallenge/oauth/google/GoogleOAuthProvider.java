@@ -47,11 +47,11 @@ public class GoogleOAuthProvider implements OAuthProvider {
     public OAuthUserInfo extractUser(String code) {
         GoogleOAuthV4TokenResponse response = googleOAuthApi.requestToken(
                 new GoogleOAuthV4TokenRequest(
-                        properties.getClientId(),
-                        properties.getClientSecret(),
-                        properties.getRedirectUri(),
+                        properties.clientId(),
+                        properties.clientSecret(),
+                        properties.redirectUri(),
                         code,
-                        properties.getGrantType()
+                        properties.grantType()
                 )
         );
         return parseIdToken(response.idToken());
