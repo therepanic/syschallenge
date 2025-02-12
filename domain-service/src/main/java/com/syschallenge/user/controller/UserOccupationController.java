@@ -41,10 +41,10 @@ public class UserOccupationController {
     private final UserOccupationService userOccupationService;
 
     /**
-     * Retrieves the occupation information for a specific user
+     * Endpoint for retrieving the occupation information for a specific user
      *
-     * @param id UUID of the user to fetch occupation for
-     * @return user occupation DTO containing employment details
+     * @param id the UUID of the user to fetch occupation for
+     * @return the user occupation DTO containing employment details
      */
     @GetMapping("/{id}/occupation")
     public UserOccupationDto get(@PathVariable("id") UUID id) {
@@ -52,12 +52,12 @@ public class UserOccupationController {
     }
 
     /**
-     * Creates a new occupation record for the specified user
+     * Endpoint for creating a new occupation record for the specified user
      *
-     * @param id UUID of the user to create occupation for
-     * @param request validated create occupation request payload
-     * @param auth authentication token containing requester's identity
-     * @return created user occupation DTO with persisted data
+     * @param id the UUID of the user to create occupation for
+     * @param request the validated create occupation request payload
+     * @param auth the authentication token containing the requester's identity
+     * @return the created user occupation DTO with persisted data
      */
     @PostMapping("/{id}/occupation")
     public UserOccupationDto create(@PathVariable("id") UUID id,
@@ -67,12 +67,12 @@ public class UserOccupationController {
     }
 
     /**
-     * Updates existing occupation information for the specified user
+     * Endpoint for updating existing occupation information for the specified user
      *
-     * @param id UUID of the user to update occupation for
-     * @param request validated update occupation request payload
-     * @param auth authentication token containing requester's identity
-     * @return updated user occupation DTO with modified data
+     * @param id the UUID of the user to update occupation for
+     * @param request the validated update occupation request payload
+     * @param auth the authentication token containing the requester's identity
+     * @return the updated user occupation DTO with modified data
      */
     @PutMapping("/{id}/occupation")
     public UserOccupationDto update(@PathVariable("id") UUID id,
@@ -82,10 +82,10 @@ public class UserOccupationController {
     }
 
     /**
-     * Deletes occupation information for the specified user
+     * Endpoint for deleting occupation information for the specified user
      *
-     * @param id UUID of the user to delete occupation for
-     * @param auth authentication token containing requester's identity
+     * @param id the UUID of the user to delete occupation for
+     * @param auth the authentication token containing the requester's identity
      */
     @DeleteMapping("/{id}/occupation")
     public void delete(@PathVariable("id") UUID id,

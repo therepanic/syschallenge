@@ -42,11 +42,11 @@ public class CompanyController {
     private final CompanyService companyService;
 
     /**
-     * Retrieves a paginated list of companies
+     * Endpoint for retrieving a paginated list of companies
      *
      * @param page the page number (default is 0)
-     * @param size the number of items per page (default is 10)
-     * @param sort the type of sort (default is desc)
+     * @param size the number of items per page (default is 20)
+     * @param sort the sorting order (default is descending)
      * @return a paginated list of companies
      */
     @GetMapping("/all")
@@ -57,10 +57,10 @@ public class CompanyController {
     }
 
     /**
-     * Retrieves the company information by id
+     * Endpoint for retrieving company information by ID
      *
-     * @param id id of the company to fetch occupation for
-     * @return retrieved company DTO with persisted data
+     * @param id the UUID of the company
+     * @return the retrieved company DTO with persisted data
      */
     @GetMapping("/{id}")
     public CompanyDto get(@PathVariable("id") UUID id) {
@@ -68,10 +68,10 @@ public class CompanyController {
     }
 
     /**
-     * Retrieves the company information by slug
+     * Endpoint for retrieving company information by slug
      *
-     * @param slug slug of the company to fetch occupation for
-     * @return retrieved company DTO with persisted data
+     * @param slug the slug of the company
+     * @return the retrieved company DTO with persisted data
      */
     @GetMapping
     public CompanyDto getBySlug(@RequestParam("slug") String slug) {
@@ -79,10 +79,10 @@ public class CompanyController {
     }
 
     /**
-     * Creates a new company
+     * Endpoint for creating a new company
      *
-     * @param request validated create company request payload
-     * @return created company DTO with persisted data
+     * @param request the validated create company request payload
+     * @return the created company DTO with persisted data
      */
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -91,11 +91,11 @@ public class CompanyController {
     }
 
     /**
-     * Updates company information
+     * Endpoint for updating company information
      *
-     * @param id UUID of the company to update
-     * @param request validated update company request payload
-     * @return updated company DTO with persisted data
+     * @param id the UUID of the company to update
+     * @param request the validated update company request payload
+     * @return the updated company DTO with persisted data
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -104,9 +104,9 @@ public class CompanyController {
     }
 
     /**
-     * Deletes company information
+     * Endpoint for deleting a company
      *
-     * @param id UUID of the company to delete
+     * @param id the UUID of the company to delete
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
