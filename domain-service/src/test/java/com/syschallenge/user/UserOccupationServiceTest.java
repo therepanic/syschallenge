@@ -18,10 +18,12 @@ package com.syschallenge.user;
 
 import com.syschallenge.shared.exception.PermissionDeniedException;
 import com.syschallenge.user.dto.UserOccupationDto;
-import com.syschallenge.user.mapper.UserOccupationToUserOccupationDtoMapperImpl;
+import com.syschallenge.user.mapper.UserOccupationToUserOccupationDtoMapper;
 import com.syschallenge.user.model.UserOccupation;
+import com.syschallenge.user.model.UserRole;
 import com.syschallenge.user.repository.UserOccupationRepository;
 import com.syschallenge.user.payload.request.UpdateOccupationRequest;
+import com.syschallenge.user.repository.UserRepository;
 import com.syschallenge.user.service.UserOccupationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,21 +51,26 @@ class UserOccupationServiceTest {
     private UserOccupationRepository userOccupationRepository;
 
     @Mock
-    private UserOccupationToUserOccupationDtoMapperImpl userOccupationToUserOccupationDtoMapper;
+    private UserOccupationToUserOccupationDtoMapper userOccupationToUserOccupationDtoMapper;
+
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private UserOccupationService userOccupationService;
 
     @Test
-    void update_throwsPermissionDeniedException_whenIdEqualsPrincipalId() {
+    void update_throwsPermissionDeniedException_whenIdNotEqualsPrincipalId() {
         UUID id = UUID.randomUUID();
-        UUID principalId = id;
+        UUID principalId = UUID.randomUUID();
         UpdateOccupationRequest request = new UpdateOccupationRequest(
                 "Acme Corp",
                 "Software Engineer",
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(30)
         );
+
+        when(userRepository.findRoleById(principalId)).thenReturn(UserRole.DEFAULT);
 
         PermissionDeniedException exception = assertThrows(PermissionDeniedException.class,
                 () -> userOccupationService.update(id, request, principalId));
@@ -80,6 +87,8 @@ class UserOccupationServiceTest {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(30)
         );
+
+        when(userRepository.findRoleById(principalId)).thenReturn(UserRole.ADMIN);
 
         UserOccupation occupationToUpdate = UserOccupation.builder()
                 .userId(id)
