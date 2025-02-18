@@ -18,7 +18,7 @@ package com.syschallenge.company;
 
 import com.syschallenge.company.dto.CompanyDto;
 import com.syschallenge.company.exception.CompanyAlreadyExistsException;
-import com.syschallenge.company.mapper.CompanyToCompanyDtoMapperImpl;
+import com.syschallenge.company.mapper.CompanyToCompanyDtoMapper;
 import com.syschallenge.company.model.Company;
 import com.syschallenge.company.payload.request.CreateCompanyRequest;
 import com.syschallenge.company.payload.request.UpdateCompanyRequest;
@@ -53,7 +53,7 @@ class CompanyServiceTest {
     private CompanyRepository companyRepository;
 
     @Mock
-    private CompanyToCompanyDtoMapperImpl companyToCompanyDtoMapper;
+    private CompanyToCompanyDtoMapper companyToCompanyDtoMapper;
 
     @InjectMocks
     private CompanyService companyService;

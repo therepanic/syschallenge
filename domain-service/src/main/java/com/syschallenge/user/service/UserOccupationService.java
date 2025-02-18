@@ -18,7 +18,7 @@ package com.syschallenge.user.service;
 
 import com.syschallenge.shared.exception.PermissionDeniedException;
 import com.syschallenge.user.dto.UserOccupationDto;
-import com.syschallenge.user.mapper.UserOccupationToUserOccupationDtoMapperImpl;
+import com.syschallenge.user.mapper.UserOccupationToUserOccupationDtoMapper;
 import com.syschallenge.user.model.UserOccupation;
 import com.syschallenge.user.model.UserRole;
 import com.syschallenge.user.repository.UserOccupationRepository;
@@ -44,7 +44,7 @@ public class UserOccupationService {
 
     private final UserRepository userRepository;
     private final UserOccupationRepository userOccupationRepository;
-    private final UserOccupationToUserOccupationDtoMapperImpl userOccupationToUserOccupationDtoMapper;
+    private final UserOccupationToUserOccupationDtoMapper userOccupationToUserOccupationDtoMapper;
 
     /**
      * Get a user's occupation details

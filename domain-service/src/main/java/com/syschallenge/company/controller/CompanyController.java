@@ -23,7 +23,6 @@ import com.syschallenge.company.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -86,7 +85,7 @@ public class CompanyController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CompanyDto create(@RequestBody CreateCompanyRequest request, UsernamePasswordAuthenticationToken auth) {
+    public CompanyDto create(@RequestBody CreateCompanyRequest request) {
         return companyService.create(request);
     }
 
