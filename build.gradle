@@ -1,4 +1,18 @@
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        configFile = file("$rootProject.projectDir/src/checkstyle/checkstyle.xml")
+        ignoreFailures = false
+    }
+    checkstyleMain {
+        source = 'src/main/java'
+    }
+    checkstyleTest {
+        source = 'src/test/java'
+    }
+
     group = 'com.syschallenge'
     version = '1.0.0'
 
@@ -9,4 +23,6 @@ allprojects {
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
+
+
 }

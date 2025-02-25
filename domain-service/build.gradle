@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'checkstyle'
     id 'org.springframework.boot' version '3.3.4'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'org.flywaydb.flyway' version '9.22.3'
@@ -16,6 +17,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+}
+
+checkstyle {
+    configFile = file("$rootProject.projectDir/src/checkstyle/checkstyle.xml")
+    ignoreFailures = false
 }
 
 repositories {
@@ -97,3 +103,5 @@ jooq {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+

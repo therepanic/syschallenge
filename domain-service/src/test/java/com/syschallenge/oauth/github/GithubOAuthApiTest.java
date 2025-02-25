@@ -25,7 +25,9 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 /**
@@ -35,6 +37,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 class GithubOAuthApiTest {
 
     private GithubOAuthApi githubOAuthApi;
+
     private MockRestServiceServer mockRestServiceServer;
 
     @BeforeEach

@@ -26,7 +26,9 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 /**
@@ -50,7 +52,7 @@ class GithubApiTest {
         // Given
         String accessToken = "test-access-token";
         String expectedResponseBody = """
-            {
+                {
                 "login": "panic08",
                 "id": 120543954,
                 "node_id": "U_kgDOBy9a0g",
@@ -86,7 +88,7 @@ class GithubApiTest {
                 "created_at": "2022-12-14T04:30:37Z",
                 "updated_at": "2025-01-13T07:56:09Z"
             }
-            """;
+                """;
 
         // Expect a GET request to be sent from the Bearer Token
         mockRestServiceServer.expect(requestTo("https://api.github.com/user"))

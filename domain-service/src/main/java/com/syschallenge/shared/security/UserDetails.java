@@ -19,7 +19,6 @@ package com.syschallenge.shared.security;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
 /**
