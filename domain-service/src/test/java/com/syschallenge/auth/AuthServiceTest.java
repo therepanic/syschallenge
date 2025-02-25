@@ -71,13 +71,19 @@ class AuthServiceTest {
     private AuthService authService;
 
     private final String code = "authCode";
+
     private final OAuthType type = OAuthType.GOOGLE;
+
     private final String providerUserId = "providerUserId123";
+
     private final String email = "user@example.com";
+
     private final String username = "username123";
+
     private final String jwtToken = "jwt-token";
 
     private OAuthProvider oAuthProvider;
+
     private OAuthUserInfo oAuthUserInfo;
 
     @BeforeEach
