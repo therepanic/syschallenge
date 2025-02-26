@@ -19,11 +19,6 @@ configurations {
     }
 }
 
-checkstyle {
-    configFile = file("$rootProject.projectDir/src/checkstyle/checkstyle.xml")
-    ignoreFailures = false
-}
-
 repositories {
     mavenCentral()
 }
