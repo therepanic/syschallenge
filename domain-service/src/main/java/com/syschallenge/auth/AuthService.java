@@ -24,19 +24,14 @@ import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.security.UserDetails;
 import com.syschallenge.shared.security.jwt.JwtUtil;
 import com.syschallenge.user.model.User;
-import com.syschallenge.user.model.UserRole;
-import com.syschallenge.user.model.UserBasicInfo;
-import com.syschallenge.user.model.UserLinkedSocial;
-import com.syschallenge.user.model.UserLinkedSocialType;
-import com.syschallenge.user.repository.UserBasicInfoRepository;
-import com.syschallenge.user.repository.UserLinkedSocialRepository;
-import com.syschallenge.user.repository.UserRepository;
+import com.syschallenge.user.service.UserBasicInfoService;
+import com.syschallenge.user.service.UserLinkedSocialService;
+import com.syschallenge.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -50,9 +45,9 @@ import java.util.UUID;
 public class AuthService {
 
     private final OAuthProviderFactory providerFactory;
-    private final UserRepository userRepository;
-    private final UserBasicInfoRepository userBasicInfoRepository;
-    private final UserLinkedSocialRepository userLinkedSocialRepository;
+    private final UserService userService;
+    private final UserLinkedSocialService userLinkedSocialService;
+    private final UserBasicInfoService userBasicInfoService;
     private final JwtUtil jwtUtil;
 
     /**
@@ -65,41 +60,21 @@ public class AuthService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public AuthResponse authBySocial(OAuthType type, String code) {
         OAuthUserInfo userInfo = providerFactory.getProvider(type).extractUser(code);
-
-        if (userLinkedSocialRepository.existsByVerification(userInfo.providerUserId())) {
-            User currentUser = userRepository.findById(
-                    userLinkedSocialRepository.findUserIdByVerification(userInfo.providerUserId())
-            );
+        if (userLinkedSocialService.existsByVerification(userInfo.providerUserId())) {
+            UUID userId = userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
+            User currentUser = userService.getById(userId);
             String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
             return new AuthResponse(jwtToken);
         } else {
-            User newUser = userRepository.save(
-                    User.builder()
-                            .email(userInfo.email())
-                            .username(userInfo.username())
-                            .role(UserRole.DEFAULT)
-                            .registeredAt(LocalDateTime.now())
-                            .build()
-            );
-            userBasicInfoRepository.save(
-                    UserBasicInfo.builder()
-                            .userId(newUser.getId())
-                            .name(newUser.getUsername())
-                            .build()
-            );
-            userLinkedSocialRepository.save(
-                    UserLinkedSocial.builder()
-                            .userId(newUser.getId())
-                            .type(UserLinkedSocialType.valueOf(type.name()))
-                            .verification(userInfo.providerUserId())
-                            .build()
-            );
+            User newUser = userService.create(userInfo);
+            userLinkedSocialService.create(newUser.getId(), type, userInfo.providerUserId());
             String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
             return new AuthResponse(jwtToken);
         }
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Me me(UUID principalUserId) {
-        return new Me(principalUserId, userRepository.findUsernameById(principalUserId), userBasicInfoRepository.findNameByUserId(principalUserId));
+        return new Me(principalUserId, userService.getUsernameById(principalUserId), userBasicInfoService.getNameByUserId(principalUserId));
     }
 }
