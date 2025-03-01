@@ -23,6 +23,14 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    jjwtVersion = '0.12.6'
+    springDocVersion = '2.6.0'
+    mapstructVersion = '1.5.5.Final'
+    micrometerVersion = '1.13.6'
+    amazonAwsSdkVersion = '2.30.30'
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -31,21 +39,22 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation "org.springdoc:springdoc-openapi-starter-webmvc-api:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+    implementation "io.micrometer:micrometer-registry-prometheus:${micrometerVersion}"
+    implementation "software.amazon.awssdk:s3:${amazonAwsSdkVersion}"
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    testImplementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.6.0'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.13.6'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
     compileOnly 'org.projectlombok:lombok'
     jooqGenerator 'org.postgresql:postgresql'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
