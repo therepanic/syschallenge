@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 /**
- * Service for handling user-related operations
+ * Service for handling user occupation related operations
  *
  * @author panic08
  * @since 1.0.0

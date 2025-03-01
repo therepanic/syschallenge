@@ -25,13 +25,10 @@ import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.security.UserDetails;
 import com.syschallenge.shared.security.jwt.JwtUtil;
 import com.syschallenge.user.model.UserRole;
-import com.syschallenge.user.repository.UserBasicInfoRepository;
-import com.syschallenge.user.repository.UserLinkedSocialRepository;
-import com.syschallenge.user.repository.UserRepository;
 import com.syschallenge.user.model.User;
-import com.syschallenge.user.model.UserBasicInfo;
-import com.syschallenge.user.model.UserLinkedSocial;
-import org.junit.jupiter.api.BeforeEach;
+import com.syschallenge.user.service.UserBasicInfoService;
+import com.syschallenge.user.service.UserLinkedSocialService;
+import com.syschallenge.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,130 +38,122 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author panic08
+ * @since 1.0.0
+ */
 @ExtendWith(MockitoExtension.class)
-class AuthServiceTest {
+public class AuthServiceTest {
+
     @Mock
     private OAuthProviderFactory providerFactory;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
-    private UserBasicInfoRepository userBasicInfoRepository;
+    private UserLinkedSocialService userLinkedSocialService;
 
     @Mock
-    private UserLinkedSocialRepository userLinkedSocialRepository;
+    private UserBasicInfoService userBasicInfoService;
 
     @Mock
     private JwtUtil jwtUtil;
 
+    @Mock
+    private OAuthProvider oAuthProvider;
+
     @InjectMocks
     private AuthService authService;
 
-    private final String code = "authCode";
-
-    private final OAuthType type = OAuthType.GOOGLE;
-
-    private final String providerUserId = "providerUserId123";
-
-    private final String email = "user@example.com";
-
-    private final String username = "username123";
-
-    private final String jwtToken = "jwt-token";
-
-    private OAuthProvider oAuthProvider;
-
-    private OAuthUserInfo oAuthUserInfo;
-
-    @BeforeEach
-    void setUp() {
-        oAuthUserInfo = new OAuthUserInfo(providerUserId, email, username);
-        oAuthProvider = mock(OAuthProvider.class);
-        lenient().when(oAuthProvider.extractUser(code)).thenReturn(oAuthUserInfo);
-        lenient().when(providerFactory.getProvider(type)).thenReturn(oAuthProvider);
-        lenient().when(jwtUtil.generateToken(any(UserDetails.class))).thenReturn(jwtToken);
-    }
-
     @Test
-    void testAuthBySocial_UserExists() {
-        // arrange
+    public void testAuthBySocial_existingUser() {
+        // Arrange
+        OAuthType type = OAuthType.GOOGLE;
+        String code = "authCode";
+        OAuthUserInfo userInfo = mock(OAuthUserInfo.class);
+        when(userInfo.providerUserId()).thenReturn("providerUserId123");
+        when(providerFactory.getProvider(type)).thenReturn(oAuthProvider);
+        when(oAuthProvider.extractUser(code)).thenReturn(userInfo);
+        when(userLinkedSocialService.existsByVerification("providerUserId123")).thenReturn(true);
         UUID existingUserId = UUID.randomUUID();
+        when(userLinkedSocialService.getUserIdByVerification("providerUserId123")).thenReturn(existingUserId);
         User existingUser = User.builder()
                 .id(existingUserId)
-                .email(email)
-                .username(username)
+                .username("existingUser")
+                .email("existing@example.com")
+                .password("password")
                 .role(UserRole.DEFAULT)
                 .registeredAt(LocalDateTime.now())
                 .build();
+        when(userService.getById(existingUserId)).thenReturn(existingUser);
+        String jwtToken = "jwt-token-existing";
+        when(jwtUtil.generateToken(any(UserDetails.class))).thenReturn(jwtToken);
 
-        when(userLinkedSocialRepository.existsByVerification(providerUserId)).thenReturn(true);
-        when(userLinkedSocialRepository.findUserIdByVerification(providerUserId)).thenReturn(existingUserId);
-        when(userRepository.findById(existingUserId)).thenReturn(existingUser);
-
-        // act
+        // Act
         AuthResponse response = authService.authBySocial(type, code);
 
-        // assert
-        assertThat(response).isNotNull();
-        assertThat(response.jwtToken()).isEqualTo(jwtToken);
-        verify(userRepository, never()).save(any(User.class));
-        verify(userBasicInfoRepository, never()).save(any(UserBasicInfo.class));
-        verify(userLinkedSocialRepository, times(1)).existsByVerification(providerUserId);
-        verify(userLinkedSocialRepository, times(1)).findUserIdByVerification(providerUserId);
+        // Assert
+        assertEquals(jwtToken, response.jwtToken());
+        verify(userService, never()).create(any());
+        verify(userLinkedSocialService, never()).create(any(), any(), any());
     }
 
     @Test
-    void testAuthBySocial_NewUser() {
-        // arrange
-        when(userLinkedSocialRepository.existsByVerification(providerUserId)).thenReturn(false);
-
+    public void testAuthBySocial_newUser() {
+        // Arrange
+        OAuthType type = OAuthType.GOOGLE;
+        String code = "authCodeNew";
+        OAuthUserInfo userInfo = mock(OAuthUserInfo.class);
+        when(userInfo.providerUserId()).thenReturn("newProviderUserId456");
+        when(providerFactory.getProvider(type)).thenReturn(oAuthProvider);
+        when(oAuthProvider.extractUser(code)).thenReturn(userInfo);
+        when(userLinkedSocialService.existsByVerification("newProviderUserId456")).thenReturn(false);
         UUID newUserId = UUID.randomUUID();
-        User savedUser = User.builder()
+        User newUser = User.builder()
                 .id(newUserId)
-                .email(email)
-                .username(username)
+                .username("newUser")
+                .email("new@example.com")
+                .password("password")
                 .role(UserRole.DEFAULT)
                 .registeredAt(LocalDateTime.now())
                 .build();
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        when(userService.create(userInfo)).thenReturn(newUser);
+        String jwtToken = "jwt-token-new";
+        when(jwtUtil.generateToken(any(UserDetails.class))).thenReturn(jwtToken);
 
-        // act
+        // Act
         AuthResponse response = authService.authBySocial(type, code);
 
-        // assert
-        assertThat(response).isNotNull();
-        assertThat(response.jwtToken()).isEqualTo(jwtToken);
-        verify(userRepository, times(1)).save(any(User.class));
-        verify(userBasicInfoRepository, times(1)).save(any(UserBasicInfo.class));
-        verify(userLinkedSocialRepository, times(1)).save(any(UserLinkedSocial.class));
+        // Assert
+        assertEquals(jwtToken, response.jwtToken());
+        verify(userService, times(1)).create(userInfo);
+        verify(userLinkedSocialService, times(1)).create(newUserId, type, "newProviderUserId456");
     }
 
     @Test
-    void testMe() {
-        // arrange
+    public void testMe() {
+        // Arrange
         UUID userId = UUID.randomUUID();
-        String foundUsername = "foundUsername";
-        String foundName = "foundName";
-        when(userRepository.findUsernameById(userId)).thenReturn(foundUsername);
-        when(userBasicInfoRepository.findNameByUserId(userId)).thenReturn(foundName);
+        String username = "testUser";
+        String name = "Test User";
+        when(userService.getUsernameById(userId)).thenReturn(username);
+        when(userBasicInfoService.getNameByUserId(userId)).thenReturn(name);
 
-        // act
-        Me me = authService.me(userId);
+        // Act
+        Me meResponse = authService.me(userId);
 
-        // assert
-        assertThat(me).isNotNull();
-        assertThat(me.id()).isEqualTo(userId);
-        assertThat(me.username()).isEqualTo(foundUsername);
-        assertThat(me.name()).isEqualTo(foundName);
+        // Assert
+        assertEquals(userId, meResponse.id());
+        assertEquals(username, meResponse.username());
+        assertEquals(name, meResponse.name());
     }
 }
