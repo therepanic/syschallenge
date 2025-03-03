@@ -16,16 +16,18 @@
 
 package com.syschallenge.shared.configuration;
 
-import com.syschallenge.shared.property.AwsS3Property;
-import lombok.RequiredArgsConstructor;
+import java.net.URI;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.syschallenge.shared.property.AwsS3Property;
+
+import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-
-import java.net.URI;
 
 /**
  * Configuration class for AWS S3 client setup
@@ -48,17 +50,15 @@ public class AwsS3Configuration {
     public S3Client s3Client() {
         return S3Client.builder()
                 .region(Region.of(awsS3Property.region()))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(
-                                awsS3Property.accessKey(),
-                                awsS3Property.secretKey()
-                        )
-                ))
+                .credentialsProvider(
+                        StaticCredentialsProvider.create(
+                                AwsBasicCredentials.create(
+                                        awsS3Property.accessKey(), awsS3Property.secretKey())))
                 .endpointOverride(URI.create(awsS3Property.endpoint()))
-                .serviceConfiguration(software.amazon.awssdk.services.s3.S3Configuration.builder()
-                        .pathStyleAccessEnabled(true)
-                        .build())
+                .serviceConfiguration(
+                        software.amazon.awssdk.services.s3.S3Configuration.builder()
+                                .pathStyleAccessEnabled(true)
+                                .build())
                 .build();
     }
-
 }

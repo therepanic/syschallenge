@@ -16,11 +16,12 @@
 
 package com.syschallenge.user.mapper;
 
-import com.syschallenge.user.dto.UserOccupationDto;
-import com.syschallenge.user.model.UserOccupation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+
+import com.syschallenge.user.dto.UserOccupationDto;
+import com.syschallenge.user.model.UserOccupation;
 
 /**
  * Mapper for converting UserOccupation entity to UserOccupationDto
@@ -38,12 +39,11 @@ public interface UserOccupationToUserOccupationDtoMapper {
      * @return the corresponding UserOccupationDto
      */
     @Mappings({
-            @Mapping(target = "userId", source = "userId"),
-            @Mapping(target = "company", source = "company"),
-            @Mapping(target = "title", source = "title"),
-            @Mapping(target = "startDate", source = "startDate"),
-            @Mapping(target = "endDate", source = "endDate"),
+        @Mapping(target = "userId", source = "userId"),
+        @Mapping(target = "company", source = "company"),
+        @Mapping(target = "title", source = "title"),
+        @Mapping(target = "startDate", source = "startDate"),
+        @Mapping(target = "endDate", source = "endDate"),
     })
     UserOccupationDto userOccupationToUserOccupationDto(UserOccupation userOccupation);
-
 }

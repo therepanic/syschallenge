@@ -16,14 +16,16 @@
 
 package com.syschallenge.company;
 
-import com.syschallenge.company.exception.CompanyAlreadyExistsException;
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
+import com.syschallenge.company.exception.CompanyAlreadyExistsException;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Company exception handler for handling company-kind exceptions
@@ -42,11 +44,11 @@ public class CompanyExceptionHandler {
      */
     @ExceptionHandler(CompanyAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, Object> handleCompanyAlreadyExistsException(HttpServletRequest request, CompanyAlreadyExistsException exception) {
+    public Map<String, Object> handleCompanyAlreadyExistsException(
+            HttpServletRequest request, CompanyAlreadyExistsException exception) {
         return Map.ofEntries(
                 Map.entry("error", "Conflict"),
                 Map.entry("message", exception.getMessage()),
-                Map.entry("path", request.getServletPath())
-        );
+                Map.entry("path", request.getServletPath()));
     }
 }

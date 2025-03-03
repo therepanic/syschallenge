@@ -16,7 +16,12 @@
 
 package com.syschallenge.oauth.github;
 
-import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -24,11 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
 
 /**
  * @author panic08
@@ -50,27 +51,32 @@ class GithubOAuthApiTest {
     @Test
     void testRequestToken() {
         // Given
-        GithubOAuthTokenRequest request = new GithubOAuthTokenRequest(
-                "test-client-id",
-                "test-client-secret",
-                "test-code",
-                "http://test-redirect-uri"
-        );
+        GithubOAuthTokenRequest request =
+                new GithubOAuthTokenRequest(
+                        "test-client-id",
+                        "test-client-secret",
+                        "test-code",
+                        "http://test-redirect-uri");
 
         String expectedResponseBody = "access_token=gho_testToken&scope=repo&token_type=bearer";
 
-        mockRestServiceServer.expect(requestTo("https://github.com/login/oauth/access_token"))
+        mockRestServiceServer
+                .expect(requestTo("https://github.com/login/oauth/access_token"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("""
-                {
-                    "client_id": "test-client-id",
-                    "client_secret": "test-client-secret",
-                    "code": "test-code",
-                    "redirect_uri": "http://test-redirect-uri"
-                }
-                """))
-                .andRespond(withSuccess(expectedResponseBody, MediaType.APPLICATION_FORM_URLENCODED));
+                .andExpect(
+                        content()
+                                .json(
+                                        """
+						{
+						    "client_id": "test-client-id",
+						    "client_secret": "test-client-secret",
+						    "code": "test-code",
+						    "redirect_uri": "http://test-redirect-uri"
+						}
+						"""))
+                .andRespond(
+                        withSuccess(expectedResponseBody, MediaType.APPLICATION_FORM_URLENCODED));
 
         // When
         String response = githubOAuthApi.requestToken(request);

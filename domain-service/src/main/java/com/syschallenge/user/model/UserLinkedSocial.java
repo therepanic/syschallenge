@@ -16,13 +16,14 @@
 
 package com.syschallenge.user.model;
 
-import lombok.Builder;
-import lombok.Data;
+import java.util.UUID;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.UUID;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * Entity class representing a user linked social in the system
@@ -34,8 +35,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "users_linked_social_table")
 public class UserLinkedSocial {
-    @Id
-    private UUID id;
+    @Id private UUID id;
 
     @Column("user_id")
     private UUID userId;

@@ -24,5 +24,4 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author panic08
  * @since 1.0.0
  */
-public record AuthResponse(@JsonProperty("jwt_token") String jwtToken) {
-}
+public record AuthResponse(@JsonProperty("jwt_token") String jwtToken) {}

@@ -16,14 +16,15 @@
 
 package com.syschallenge.user.model;
 
-import lombok.Builder;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * Entity class representing a user occupation in the system
@@ -35,8 +36,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "users_occupation_table")
 public class UserOccupation {
-    @Id
-    private UUID id;
+    @Id private UUID id;
 
     @Column("user_id")
     private UUID userId;

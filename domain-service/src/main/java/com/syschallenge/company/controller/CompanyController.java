@@ -16,24 +16,26 @@
 
 package com.syschallenge.company.controller;
 
+import java.util.UUID;
+
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.syschallenge.company.dto.CompanyDto;
 import com.syschallenge.company.payload.request.CreateCompanyRequest;
 import com.syschallenge.company.payload.request.UpdateCompanyRequest;
 import com.syschallenge.company.service.CompanyService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 /**
  * REST controller for handling company-related operations
@@ -57,9 +59,10 @@ public class CompanyController {
      * @return a paginated list of companies
      */
     @GetMapping("/all")
-    public Page<CompanyDto> getAll(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "20") int size,
-                                   @RequestParam(defaultValue = "desc") String sort) {
+    public Page<CompanyDto> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "desc") String sort) {
         return companyService.getAll(page, size, sort);
     }
 
@@ -106,7 +109,8 @@ public class CompanyController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CompanyDto update(@PathVariable("id") UUID id, @RequestBody UpdateCompanyRequest request) {
+    public CompanyDto update(
+            @PathVariable("id") UUID id, @RequestBody UpdateCompanyRequest request) {
         return companyService.update(id, request);
     }
 
@@ -120,5 +124,4 @@ public class CompanyController {
     public void delete(@PathVariable("id") UUID id) {
         companyService.delete(id);
     }
-
 }

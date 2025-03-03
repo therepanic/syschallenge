@@ -27,5 +27,4 @@ public class DomainServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(DomainServiceApplication.class, args);
     }
-
 }

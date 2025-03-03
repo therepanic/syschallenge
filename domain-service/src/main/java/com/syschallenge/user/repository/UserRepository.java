@@ -16,14 +16,16 @@
 
 package com.syschallenge.user.repository;
 
-import com.syschallenge.public_.tables.UsersTable;
-import com.syschallenge.user.model.User;
-import com.syschallenge.user.model.UserRole;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
+import com.syschallenge.public_.tables.UsersTable;
+import com.syschallenge.user.model.User;
+import com.syschallenge.user.model.UserRole;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Repository for handling user data persistence operations
@@ -91,5 +93,4 @@ public class UserRepository {
                 .where(UsersTable.USERS_TABLE.ID.eq(id))
                 .fetchOneInto(UserRole.class);
     }
-
 }

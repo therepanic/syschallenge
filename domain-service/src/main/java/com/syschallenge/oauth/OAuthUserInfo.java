@@ -22,5 +22,4 @@ package com.syschallenge.oauth;
  * @author panic08
  * @since 1.0.0
  */
-public record OAuthUserInfo(String providerUserId, String username, String email) {
-}
+public record OAuthUserInfo(String providerUserId, String username, String email) {}

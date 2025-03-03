@@ -16,13 +16,15 @@
 
 package com.syschallenge.user.repository;
 
-import com.syschallenge.public_.tables.UsersLinkedSocialTable;
-import com.syschallenge.user.model.UserLinkedSocial;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
+import com.syschallenge.public_.tables.UsersLinkedSocialTable;
+import com.syschallenge.user.model.UserLinkedSocial;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Repository for handling persistence operations related to user linked social accounts
@@ -44,9 +46,15 @@ public class UserLinkedSocialRepository {
      */
     public UserLinkedSocial save(UserLinkedSocial userLinkedSocial) {
         return ctx.insertInto(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
-                .set(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.USER_ID, userLinkedSocial.getUserId())
-                .set(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.TYPE, userLinkedSocial.getType().toString())
-                .set(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION, userLinkedSocial.getVerification())
+                .set(
+                        UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.USER_ID,
+                        userLinkedSocial.getUserId())
+                .set(
+                        UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.TYPE,
+                        userLinkedSocial.getType().toString())
+                .set(
+                        UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION,
+                        userLinkedSocial.getVerification())
                 .returningResult(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
                 .fetchOneInto(UserLinkedSocial.class);
     }
@@ -55,13 +63,15 @@ public class UserLinkedSocialRepository {
      * Checks if a user linked social account exists by its verification token
      *
      * @param verification verification token to check
-     * @return {@code true} if an account with the given verification token exists, {@code false} otherwise
+     * @return {@code true} if an account with the given verification token exists, {@code false}
+     *     otherwise
      */
     public boolean existsByVerification(String verification) {
         return ctx.fetchExists(
                 ctx.selectFrom(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
-                        .where(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION.eq(verification))
-        );
+                        .where(
+                                UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION.eq(
+                                        verification)));
     }
 
     /**
@@ -73,7 +83,9 @@ public class UserLinkedSocialRepository {
     public UUID findUserIdByVerification(String verification) {
         return ctx.select(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.USER_ID)
                 .from(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
-                .where(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION.eq(verification))
+                .where(
+                        UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION.eq(
+                                verification))
                 .fetchOneInto(UUID.class);
     }
 }

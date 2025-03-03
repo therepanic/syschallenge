@@ -16,13 +16,15 @@
 
 package com.syschallenge.user.repository;
 
-import com.syschallenge.public_.tables.UsersOccupationTable;
-import com.syschallenge.user.model.UserOccupation;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
+import com.syschallenge.public_.tables.UsersOccupationTable;
+import com.syschallenge.user.model.UserOccupation;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Repository for handling persistence operations related to users occupations
@@ -44,11 +46,19 @@ public class UserOccupationRepository {
      */
     public UserOccupation save(UserOccupation userOccupation) {
         return ctx.insertInto(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID, userOccupation.getUserId())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY, userOccupation.getCompany())
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID,
+                        userOccupation.getUserId())
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY,
+                        userOccupation.getCompany())
                 .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.TITLE, userOccupation.getTitle())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE, userOccupation.getStartDate())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE, userOccupation.getEndDate())
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE,
+                        userOccupation.getStartDate())
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE,
+                        userOccupation.getEndDate())
                 .returningResult(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                 .fetchOneInto(UserOccupation.class);
     }
@@ -73,11 +83,19 @@ public class UserOccupationRepository {
      */
     public UserOccupation updateByUserId(UserOccupation userOccupation) {
         return ctx.update(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY, userOccupation.getCompany())
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY,
+                        userOccupation.getCompany())
                 .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.TITLE, userOccupation.getTitle())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE, userOccupation.getStartDate())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE, userOccupation.getEndDate())
-                .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userOccupation.getUserId()))
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE,
+                        userOccupation.getStartDate())
+                .set(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE,
+                        userOccupation.getEndDate())
+                .where(
+                        UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(
+                                userOccupation.getUserId()))
                 .returningResult(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                 .fetchOneInto(UserOccupation.class);
     }
@@ -103,7 +121,6 @@ public class UserOccupationRepository {
         return ctx.fetchExists(
                 ctx.selectOne()
                         .from(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                        .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
-        );
+                        .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId)));
     }
 }

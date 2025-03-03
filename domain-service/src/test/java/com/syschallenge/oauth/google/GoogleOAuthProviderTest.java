@@ -16,22 +16,23 @@
 
 package com.syschallenge.oauth.google;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Map;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.syschallenge.oauth.OAuthUserInfo;
+import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 
 /**
  * @author panic08
@@ -39,38 +40,37 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class GoogleOAuthProviderTest {
-    @Mock
-    private GoogleOAuthV4Api googleOAuthApi;
-    @Mock
-    private ObjectMapper mapper;
-    @Mock
-    private GoogleOAuthProperty properties;
+    @Mock private GoogleOAuthV4Api googleOAuthApi;
+    @Mock private ObjectMapper mapper;
+    @Mock private GoogleOAuthProperty properties;
 
-    @InjectMocks
-    private GoogleOAuthProvider googleOAuthProvider;
+    @InjectMocks private GoogleOAuthProvider googleOAuthProvider;
 
     private final String testCode = "test_code";
-    private final String testIdToken = "header.eyJzdWIiOiJnb29nbGVfdXNlcl8xMjMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ==.signature";
+    private final String testIdToken =
+            "header.eyJzdWIiOiJnb29nbGVfdXNlcl8xMjMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ==.signature";
 
     @Test
     void extractUser_ValidCode_ReturnsUserInfo() throws Exception {
         // Arrange
-        GoogleOAuthV4TokenResponse tokenResponse = new GoogleOAuthV4TokenResponse(
-                "access_token_123",
-                3600,
-                "openid profile email",
-                "Bearer",
-                testIdToken
-        );
+        GoogleOAuthV4TokenResponse tokenResponse =
+                new GoogleOAuthV4TokenResponse(
+                        "access_token_123", 3600, "openid profile email", "Bearer", testIdToken);
 
-        Map<String, Object> testClaims = Map.of(
-                "sub", "google_user_123",
-                "email", "test@example.com",
-                "email_verified", true,
-                "name", "Test User",
-                "picture", "http://picture.url",
-                "given_name", "Test"
-        );
+        Map<String, Object> testClaims =
+                Map.of(
+                        "sub",
+                        "google_user_123",
+                        "email",
+                        "test@example.com",
+                        "email_verified",
+                        true,
+                        "name",
+                        "Test User",
+                        "picture",
+                        "http://picture.url",
+                        "given_name",
+                        "Test");
 
         when(properties.clientId()).thenReturn("client_id");
         when(googleOAuthApi.requestToken(any())).thenReturn(tokenResponse);

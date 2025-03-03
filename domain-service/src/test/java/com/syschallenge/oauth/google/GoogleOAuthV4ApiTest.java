@@ -16,8 +16,8 @@
 
 package com.syschallenge.oauth.google;
 
-import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -27,7 +27,8 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 
 /**
  * @author panic08
@@ -48,19 +49,26 @@ class GoogleOAuthV4ApiTest {
 
     @Test
     void testRequestToken() {
-        GoogleOAuthV4TokenRequest request = new GoogleOAuthV4TokenRequest(null, null, null, null, null);
+        GoogleOAuthV4TokenRequest request =
+                new GoogleOAuthV4TokenRequest(null, null, null, null, null);
 
-        String expectedResponse = "{ " +
-                "\"access_token\": \"test-access_token\", " +
-                "\"expires_in\": 1, " +
-                "\"scope\": \"test-scope\", " +
-                "\"token_type\": \"test-token_type\", " +
-                "\"id_token\": \"test-id_token\" " +
-                "}";
+        String expectedResponse =
+                "{ "
+                        + "\"access_token\": \"test-access_token\", "
+                        + "\"expires_in\": 1, "
+                        + "\"scope\": \"test-scope\", "
+                        + "\"token_type\": \"test-token_type\", "
+                        + "\"id_token\": \"test-id_token\" "
+                        + "}";
 
-        mockRestServiceServer.expect(MockRestRequestMatchers.method(HttpMethod.POST))
-                .andExpect(MockRestRequestMatchers.requestTo("https://www.googleapis.com/oauth2/v4/token"))
-                .andRespond(MockRestResponseCreators.withSuccess(expectedResponse, MediaType.APPLICATION_JSON));
+        mockRestServiceServer
+                .expect(MockRestRequestMatchers.method(HttpMethod.POST))
+                .andExpect(
+                        MockRestRequestMatchers.requestTo(
+                                "https://www.googleapis.com/oauth2/v4/token"))
+                .andRespond(
+                        MockRestResponseCreators.withSuccess(
+                                expectedResponse, MediaType.APPLICATION_JSON));
 
         GoogleOAuthV4TokenResponse response = googleOAuthApi.requestToken(request);
 

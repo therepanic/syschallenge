@@ -16,14 +16,16 @@
 
 package com.syschallenge.user.repository;
 
-import com.syschallenge.public_.tables.UsersBasicInfoTable;
-import com.syschallenge.user.model.UserBasicInfo;
-import lombok.RequiredArgsConstructor;
+import java.util.Objects;
+import java.util.UUID;
+
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.util.Objects;
-import java.util.UUID;
+import com.syschallenge.public_.tables.UsersBasicInfoTable;
+import com.syschallenge.user.model.UserBasicInfo;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Repository for handling persistence operations related to users basic information
@@ -48,8 +50,12 @@ public class UserBasicInfoRepository {
                 .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID, userBasicInfo.getUserId())
                 .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME, userBasicInfo.getName())
                 .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.SUMMARY, userBasicInfo.getSummary())
-                .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.BIRTHDAY, userBasicInfo.getBirthday())
-                .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.GENDER, Objects.toString(userBasicInfo.getGender(), null))
+                .set(
+                        UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.BIRTHDAY,
+                        userBasicInfo.getBirthday())
+                .set(
+                        UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.GENDER,
+                        Objects.toString(userBasicInfo.getGender(), null))
                 .returningResult(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
                 .fetchOneInto(UserBasicInfo.class);
     }

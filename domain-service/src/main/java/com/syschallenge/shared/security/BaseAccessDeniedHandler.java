@@ -16,17 +16,19 @@
 
 package com.syschallenge.shared.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Entry point for handling access denial errors
@@ -49,15 +51,18 @@ public class BaseAccessDeniedHandler implements AccessDeniedHandler {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+    public void handle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AccessDeniedException accessDeniedException)
+            throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry("error", "Forbidden"),
-                Map.entry("message", "You don't have the rights"),
-                Map.entry("path", request.getServletPath())
-        );
+        Map<String, Object> body =
+                Map.ofEntries(
+                        Map.entry("error", "Forbidden"),
+                        Map.entry("message", "You don't have the rights"),
+                        Map.entry("path", request.getServletPath()));
         mapper.writeValue(response.getOutputStream(), body);
     }
-
 }

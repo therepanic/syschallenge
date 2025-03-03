@@ -16,16 +16,17 @@
 
 package com.syschallenge.oauth;
 
-import com.syschallenge.oauth.google.GoogleOAuthProvider;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import com.syschallenge.oauth.google.GoogleOAuthProvider;
 
 /**
  * @author panic08
@@ -33,11 +34,9 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  */
 @ExtendWith(MockitoExtension.class)
 class OAuthProviderFactoryTest {
-    @Mock
-    private GoogleOAuthProvider googleProvider;
+    @Mock private GoogleOAuthProvider googleProvider;
 
-    @InjectMocks
-    private OAuthProviderFactory factory;
+    @InjectMocks private OAuthProviderFactory factory;
 
     @Test
     void getProvider_GoogleType_ReturnsGoogleProvider() {

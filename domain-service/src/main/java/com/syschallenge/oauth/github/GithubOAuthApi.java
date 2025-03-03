@@ -16,10 +16,12 @@
 
 package com.syschallenge.oauth.github;
 
-import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * A component class for interacting with the Github OAuth API
@@ -42,6 +44,7 @@ public class GithubOAuthApi {
      * @return containing access token
      */
     public String requestToken(GithubOAuthTokenRequest request) {
-        return restTemplate.postForObject(GITHUB_OAUTH_API_URI + "/access_token", request, String.class);
+        return restTemplate.postForObject(
+                GITHUB_OAUTH_API_URI + "/access_token", request, String.class);
     }
 }

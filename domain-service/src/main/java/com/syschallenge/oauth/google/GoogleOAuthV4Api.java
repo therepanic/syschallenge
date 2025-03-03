@@ -15,11 +15,14 @@
  */
 
 package com.syschallenge.oauth.google;
-import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
-import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
+import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * A component class for interacting with the Google OAuth V4 API
@@ -41,6 +44,7 @@ public class GoogleOAuthV4Api {
      * @return {@link GoogleOAuthV4TokenResponse} containing response details
      */
     public GoogleOAuthV4TokenResponse requestToken(GoogleOAuthV4TokenRequest request) {
-        return restTemplate.postForObject(GOOGLE_OAUTH_V4_API_URI + "/token", request, GoogleOAuthV4TokenResponse.class);
+        return restTemplate.postForObject(
+                GOOGLE_OAUTH_V4_API_URI + "/token", request, GoogleOAuthV4TokenResponse.class);
     }
 }

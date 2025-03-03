@@ -16,11 +16,12 @@
 
 package com.syschallenge.company.mapper;
 
-import com.syschallenge.company.model.Company;
-import com.syschallenge.company.dto.CompanyDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+
+import com.syschallenge.company.dto.CompanyDto;
+import com.syschallenge.company.model.Company;
 
 /**
  * Mapper for converting Company entity to CompanyDto
@@ -38,11 +39,10 @@ public interface CompanyToCompanyDtoMapper {
      * @return the corresponding CompanyDto
      */
     @Mappings({
-            @Mapping(target = "id", source = "id"),
-            @Mapping(target = "slug", source = "slug"),
-            @Mapping(target = "name", source = "name"),
-            @Mapping(target = "updatedAt", source = "updatedAt")
+        @Mapping(target = "id", source = "id"),
+        @Mapping(target = "slug", source = "slug"),
+        @Mapping(target = "name", source = "name"),
+        @Mapping(target = "updatedAt", source = "updatedAt")
     })
     CompanyDto companyToCompanyDto(Company company);
-
 }

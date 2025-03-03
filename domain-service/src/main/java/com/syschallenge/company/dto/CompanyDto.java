@@ -16,11 +16,11 @@
 
 package com.syschallenge.company.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Represents the company data transferred as a response
@@ -29,10 +29,4 @@ import java.util.UUID;
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record CompanyDto(
-        UUID id,
-        String slug,
-        String name,
-        LocalDateTime updatedAt
-) {
-}
+public record CompanyDto(UUID id, String slug, String name, LocalDateTime updatedAt) {}

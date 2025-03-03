@@ -16,17 +16,19 @@
 
 package com.syschallenge.shared.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Entry point for handling unauthorized access
@@ -49,15 +51,18 @@ public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException)
+            throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        Map<String, Object> body = Map.ofEntries(
-                Map.entry("error", "Unauthorized"),
-                Map.entry("message", authException.getMessage()),
-                Map.entry("path", request.getServletPath())
-        );
+        Map<String, Object> body =
+                Map.ofEntries(
+                        Map.entry("error", "Unauthorized"),
+                        Map.entry("message", authException.getMessage()),
+                        Map.entry("path", request.getServletPath()));
         mapper.writeValue(response.getOutputStream(), body);
     }
-
 }

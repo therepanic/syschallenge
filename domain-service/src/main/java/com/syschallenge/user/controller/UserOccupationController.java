@@ -16,23 +16,25 @@
 
 package com.syschallenge.user.controller;
 
+import java.util.UUID;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.syschallenge.user.dto.UserOccupationDto;
 import com.syschallenge.user.payload.request.CreateOccupationRequest;
 import com.syschallenge.user.payload.request.UpdateOccupationRequest;
 import com.syschallenge.user.service.UserOccupationService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 /**
  * REST controller for handling user occupation-related operations
@@ -67,9 +69,10 @@ public class UserOccupationController {
      * @return the created user occupation DTO with persisted data
      */
     @PostMapping("/{id}/occupation")
-    public UserOccupationDto create(@PathVariable("id") UUID id,
-                                    @RequestBody @Validated CreateOccupationRequest request,
-                                    UsernamePasswordAuthenticationToken auth) {
+    public UserOccupationDto create(
+            @PathVariable("id") UUID id,
+            @RequestBody @Validated CreateOccupationRequest request,
+            UsernamePasswordAuthenticationToken auth) {
         return userOccupationService.create(id, request, UUID.fromString(auth.getName()));
     }
 
@@ -82,9 +85,10 @@ public class UserOccupationController {
      * @return the updated user occupation DTO with modified data
      */
     @PutMapping("/{id}/occupation")
-    public UserOccupationDto update(@PathVariable("id") UUID id,
-                                    @RequestBody @Validated UpdateOccupationRequest request,
-                                    UsernamePasswordAuthenticationToken auth) {
+    public UserOccupationDto update(
+            @PathVariable("id") UUID id,
+            @RequestBody @Validated UpdateOccupationRequest request,
+            UsernamePasswordAuthenticationToken auth) {
         return userOccupationService.update(id, request, UUID.fromString(auth.getName()));
     }
 
@@ -95,9 +99,7 @@ public class UserOccupationController {
      * @param auth the authentication token containing the requester's identity
      */
     @DeleteMapping("/{id}/occupation")
-    public void delete(@PathVariable("id") UUID id,
-                       UsernamePasswordAuthenticationToken auth) {
+    public void delete(@PathVariable("id") UUID id, UsernamePasswordAuthenticationToken auth) {
         userOccupationService.delete(id, UUID.fromString(auth.getName()));
     }
-
 }

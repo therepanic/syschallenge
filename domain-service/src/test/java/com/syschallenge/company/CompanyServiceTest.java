@@ -16,14 +16,17 @@
 
 package com.syschallenge.company;
 
-import com.syschallenge.company.dto.CompanyDto;
-import com.syschallenge.company.exception.CompanyAlreadyExistsException;
-import com.syschallenge.company.mapper.CompanyToCompanyDtoMapper;
-import com.syschallenge.company.model.Company;
-import com.syschallenge.company.payload.request.CreateCompanyRequest;
-import com.syschallenge.company.payload.request.UpdateCompanyRequest;
-import com.syschallenge.company.repository.CompanyRepository;
-import com.syschallenge.company.service.CompanyService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,16 +37,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.syschallenge.company.dto.CompanyDto;
+import com.syschallenge.company.exception.CompanyAlreadyExistsException;
+import com.syschallenge.company.mapper.CompanyToCompanyDtoMapper;
+import com.syschallenge.company.model.Company;
+import com.syschallenge.company.payload.request.CreateCompanyRequest;
+import com.syschallenge.company.payload.request.UpdateCompanyRequest;
+import com.syschallenge.company.repository.CompanyRepository;
+import com.syschallenge.company.service.CompanyService;
 
 /**
  * @author panic08
@@ -51,14 +52,11 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceTest {
-    @Mock
-    private CompanyRepository companyRepository;
+    @Mock private CompanyRepository companyRepository;
 
-    @Mock
-    private CompanyToCompanyDtoMapper companyToCompanyDtoMapper;
+    @Mock private CompanyToCompanyDtoMapper companyToCompanyDtoMapper;
 
-    @InjectMocks
-    private CompanyService companyService;
+    @InjectMocks private CompanyService companyService;
 
     @Test
     void getAll_returnsPageOfCompanyDtos() {
@@ -66,19 +64,22 @@ class CompanyServiceTest {
         int page = 0;
         int size = 5;
         String sort = "ASC";
-        List<Company> companies = List.of(
-                Company.builder()
-                        .id(UUID.randomUUID())
-                        .name("Test Co")
-                        .slug("test-co")
-                        .updatedAt(LocalDateTime.now())
-                        .build()
-        );
+        List<Company> companies =
+                List.of(
+                        Company.builder()
+                                .id(UUID.randomUUID())
+                                .name("Test Co")
+                                .slug("test-co")
+                                .updatedAt(LocalDateTime.now())
+                                .build());
         Page<Company> companyPage = new PageImpl<>(companies);
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt"));
+        PageRequest pageRequest =
+                PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt"));
         when(companyRepository.findAll(pageRequest)).thenReturn(companyPage);
         when(companyToCompanyDtoMapper.companyToCompanyDto(any(Company.class)))
-                .thenReturn(new CompanyDto(UUID.randomUUID(), "test-co", "Test Co", LocalDateTime.now()));
+                .thenReturn(
+                        new CompanyDto(
+                                UUID.randomUUID(), "test-co", "Test Co", LocalDateTime.now()));
 
         // when
         Page<CompanyDto> result = companyService.getAll(page, size, sort);
@@ -93,12 +94,13 @@ class CompanyServiceTest {
     void get_returnsCompanyDto() {
         // given
         UUID id = UUID.randomUUID();
-        Company company = Company.builder()
-                .id(id)
-                .name("Test Co")
-                .slug("test-co")
-                .updatedAt(LocalDateTime.now())
-                .build();
+        Company company =
+                Company.builder()
+                        .id(id)
+                        .name("Test Co")
+                        .slug("test-co")
+                        .updatedAt(LocalDateTime.now())
+                        .build();
         CompanyDto dto = new CompanyDto(id, "test-co", "Test Co", company.getUpdatedAt());
         when(companyRepository.findById(id)).thenReturn(company);
         when(companyToCompanyDtoMapper.companyToCompanyDto(company)).thenReturn(dto);
@@ -116,12 +118,13 @@ class CompanyServiceTest {
     void getBySlug_returnsCompanyDto() {
         // given
         String slug = "test-co";
-        Company company = Company.builder()
-                .id(UUID.randomUUID())
-                .name("Test Co")
-                .slug(slug)
-                .updatedAt(LocalDateTime.now())
-                .build();
+        Company company =
+                Company.builder()
+                        .id(UUID.randomUUID())
+                        .name("Test Co")
+                        .slug(slug)
+                        .updatedAt(LocalDateTime.now())
+                        .build();
         CompanyDto dto = new CompanyDto(company.getId(), slug, "Test Co", company.getUpdatedAt());
         when(companyRepository.findBySlug(slug)).thenReturn(company);
         when(companyToCompanyDtoMapper.companyToCompanyDto(company)).thenReturn(dto);
@@ -142,28 +145,32 @@ class CompanyServiceTest {
         when(companyRepository.existsBySlug(request.slug())).thenReturn(true);
 
         // when & then
-        CompanyAlreadyExistsException exception = assertThrows(
-                CompanyAlreadyExistsException.class,
-                () -> companyService.create(request)
-        );
-        assertEquals("Company with slug '" + request.slug() + "' already exists", exception.getMessage());
+        CompanyAlreadyExistsException exception =
+                assertThrows(
+                        CompanyAlreadyExistsException.class, () -> companyService.create(request));
+        assertEquals(
+                "Company with slug '" + request.slug() + "' already exists",
+                exception.getMessage());
     }
 
     @Test
     void create_returnsCompanyDto_whenCompanyDoesNotExist() {
         // given
         CreateCompanyRequest request = new CreateCompanyRequest("new-co", "New Co");
-        Company companyToSave = Company.builder()
-                .slug(request.slug())
-                .name(request.name())
-                .build();
-        Company savedCompany = Company.builder()
-                .id(UUID.randomUUID())
-                .slug(request.slug())
-                .name(request.name())
-                .updatedAt(LocalDateTime.now())
-                .build();
-        CompanyDto dto = new CompanyDto(savedCompany.getId(), request.slug(), request.name(), savedCompany.getUpdatedAt());
+        Company companyToSave = Company.builder().slug(request.slug()).name(request.name()).build();
+        Company savedCompany =
+                Company.builder()
+                        .id(UUID.randomUUID())
+                        .slug(request.slug())
+                        .name(request.name())
+                        .updatedAt(LocalDateTime.now())
+                        .build();
+        CompanyDto dto =
+                new CompanyDto(
+                        savedCompany.getId(),
+                        request.slug(),
+                        request.name(),
+                        savedCompany.getUpdatedAt());
         when(companyRepository.existsBySlug(request.slug())).thenReturn(false);
         when(companyRepository.save(any(Company.class))).thenReturn(savedCompany);
         when(companyToCompanyDtoMapper.companyToCompanyDto(savedCompany)).thenReturn(dto);
@@ -182,13 +189,15 @@ class CompanyServiceTest {
         // given
         UUID id = UUID.randomUUID();
         UpdateCompanyRequest request = new UpdateCompanyRequest("updated-co", "Updated Co");
-        Company updatedCompany = Company.builder()
-                .id(id)
-                .slug(request.slug())
-                .name(request.name())
-                .updatedAt(LocalDateTime.now())
-                .build();
-        CompanyDto dto = new CompanyDto(id, request.slug(), request.name(), updatedCompany.getUpdatedAt());
+        Company updatedCompany =
+                Company.builder()
+                        .id(id)
+                        .slug(request.slug())
+                        .name(request.name())
+                        .updatedAt(LocalDateTime.now())
+                        .build();
+        CompanyDto dto =
+                new CompanyDto(id, request.slug(), request.name(), updatedCompany.getUpdatedAt());
         when(companyRepository.update(any(Company.class))).thenReturn(updatedCompany);
         when(companyToCompanyDtoMapper.companyToCompanyDto(updatedCompany)).thenReturn(dto);
 

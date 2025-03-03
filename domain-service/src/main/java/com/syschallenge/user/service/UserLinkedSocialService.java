@@ -16,16 +16,18 @@
 
 package com.syschallenge.user.service;
 
-import com.syschallenge.oauth.OAuthType;
-import com.syschallenge.user.model.UserLinkedSocial;
-import com.syschallenge.user.model.UserLinkedSocialType;
-import com.syschallenge.user.repository.UserLinkedSocialRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import com.syschallenge.oauth.OAuthType;
+import com.syschallenge.user.model.UserLinkedSocial;
+import com.syschallenge.user.model.UserLinkedSocialType;
+import com.syschallenge.user.repository.UserLinkedSocialRepository;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling user linked social related operations
@@ -46,8 +48,7 @@ public class UserLinkedSocialService {
                         .userId(userId)
                         .type(UserLinkedSocialType.valueOf(type.name()))
                         .verification(verification)
-                        .build()
-        );
+                        .build());
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -59,5 +60,4 @@ public class UserLinkedSocialService {
     public boolean existsByVerification(String verification) {
         return userLinkedSocialRepository.existsByVerification(verification);
     }
-
 }

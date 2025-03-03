@@ -16,14 +16,15 @@
 
 package com.syschallenge.user.payload.request;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.Size;
 
 /**
  * Represents a request payload for updating a user's occupation
@@ -34,15 +35,13 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record UpdateOccupationRequest(
         @NotBlank(message = "Company name is required")
-        @Size(max = 60, message = "Company name must be less than 60 characters")
-        String company,
+                @Size(max = 60, message = "Company name must be less than 60 characters")
+                String company,
         @NotBlank(message = "Title is required")
-        @Size(max = 60, message = "Title must be less than 60 characters")
-        String title,
+                @Size(max = 60, message = "Title must be less than 60 characters")
+                String title,
         @NotNull(message = "Start date is required")
-        @PastOrPresent(message = "Start date must be in the present or past")
-        LocalDateTime startDate,
+                @PastOrPresent(message = "Start date must be in the present or past")
+                LocalDateTime startDate,
         @PastOrPresent(message = "End date must be in the present or future")
-        LocalDateTime endDate
-) {
-}
+                LocalDateTime endDate) {}

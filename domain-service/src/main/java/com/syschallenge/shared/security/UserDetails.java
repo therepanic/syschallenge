@@ -16,10 +16,10 @@
 
 package com.syschallenge.shared.security;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import java.util.Collection;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * A record representing user details for authentication
@@ -27,7 +27,8 @@ import java.util.UUID;
  * @author panic08
  * @since 1.0.0
  */
-public record UserDetails(UUID id, Collection<? extends GrantedAuthority> authorities) implements org.springframework.security.core.userdetails.UserDetails {
+public record UserDetails(UUID id, Collection<? extends GrantedAuthority> authorities)
+        implements org.springframework.security.core.userdetails.UserDetails {
 
     /**
      * Returns the authorities granted to the user

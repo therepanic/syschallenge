@@ -16,20 +16,21 @@
 
 package com.syschallenge.shared.security.jwt;
 
-import com.syschallenge.shared.security.UserDetails;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.util.Date;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.when;
+import com.syschallenge.shared.security.UserDetails;
 
 /**
  * @author panic08
@@ -38,8 +39,7 @@ import static org.mockito.Mockito.when;
 class JwtUtilTest {
 
     private JwtUtil jwtUtil;
-    @Mock
-    private UserDetails userDetails;
+    @Mock private UserDetails userDetails;
 
     @BeforeEach
     void setUp() {
@@ -48,7 +48,8 @@ class JwtUtilTest {
         MockitoAnnotations.openMocks(this);
         when(userDetails.getUsername()).thenReturn("test-UUID");
 
-        ReflectionTestUtils.setField(jwtUtil, "SECRET", "Z3dlZ2VHR0dHRVdnd2Vhc2Rhc2RzYWRhc2Rhc2RzYWQ=");
+        ReflectionTestUtils.setField(
+                jwtUtil, "SECRET", "Z3dlZ2VHR0dHRVdnd2Vhc2Rhc2RzYWRhc2Rhc2RzYWQ=");
     }
 
     @Test

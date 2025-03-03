@@ -16,20 +16,21 @@
 
 package com.syschallenge.oauth.github;
 
-import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.shared.api.GithubApi;
-import com.syschallenge.shared.api.payload.response.GithubUser;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.time.ZonedDateTime;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.ZonedDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import com.syschallenge.oauth.OAuthUserInfo;
+import com.syschallenge.shared.api.GithubApi;
+import com.syschallenge.shared.api.payload.response.GithubUser;
 
 /**
  * @author panic08
@@ -37,60 +38,58 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class GithubOAuthProviderTest {
-    @Mock
-    private GithubOAuthApi githubOAuthApi;
+    @Mock private GithubOAuthApi githubOAuthApi;
 
-    @Mock
-    private GithubApi githubApi;
+    @Mock private GithubApi githubApi;
 
-    @Mock
-    private GithubOAuthProperty properties;
+    @Mock private GithubOAuthProperty properties;
 
-    @InjectMocks
-    private GithubOAuthProvider githubOAuthProvider;
+    @InjectMocks private GithubOAuthProvider githubOAuthProvider;
 
     private final String testCode = "test_code";
-    private final String testAccessTokenResponse = "access_token=test_access_token&other_param=value";
+    private final String testAccessTokenResponse =
+            "access_token=test_access_token&other_param=value";
     private final String testAccessToken = "test_access_token";
 
     @Test
     void extractUser_ValidCode_ReturnsUserInfo() {
-        GithubUser testGithubUser = new GithubUser(
-                "testuser",             // login
-                123,                    // id
-                "node_id_example",      // nodeId
-                "http://avatar.url",    // avatarUrl
-                "",                     // gravatarId
-                "",                     // url
-                "",                     // htmlUrl
-                "",                     // followersUrl
-                "",                     // followingUrl
-                "",                     // gistsUrl
-                "",                     // starredUrl
-                "",                     // subscriptionsUrl
-                "",                     // organizationsUrl
-                "",                     // reposUrl
-                "",                     // eventsUrl
-                "",                     // receivedEventsUrl
-                "User",                 // type
-                "",                     // userViewType
-                false,                  // siteAdmin
-                "Test User",            // name
-                "",                     // company
-                "",                     // blog
-                "",                     // location
-                "test@example.com",     // email
-                false,                  // hireable
-                "Developer",            // bio
-                "",                     // twitterUsername
-                "",                     // notificationEmail
-                10,                     // publicRepos
-                5,                      // publicGists
-                100,                    // followers
-                50,                     // following
-                ZonedDateTime.now(),    // createdAt
-                ZonedDateTime.now()     // updatedAt
-        );
+        GithubUser testGithubUser =
+                new GithubUser(
+                        "testuser", // login
+                        123, // id
+                        "node_id_example", // nodeId
+                        "http://avatar.url", // avatarUrl
+                        "", // gravatarId
+                        "", // url
+                        "", // htmlUrl
+                        "", // followersUrl
+                        "", // followingUrl
+                        "", // gistsUrl
+                        "", // starredUrl
+                        "", // subscriptionsUrl
+                        "", // organizationsUrl
+                        "", // reposUrl
+                        "", // eventsUrl
+                        "", // receivedEventsUrl
+                        "User", // type
+                        "", // userViewType
+                        false, // siteAdmin
+                        "Test User", // name
+                        "", // company
+                        "", // blog
+                        "", // location
+                        "test@example.com", // email
+                        false, // hireable
+                        "Developer", // bio
+                        "", // twitterUsername
+                        "", // notificationEmail
+                        10, // publicRepos
+                        5, // publicGists
+                        100, // followers
+                        50, // following
+                        ZonedDateTime.now(), // createdAt
+                        ZonedDateTime.now() // updatedAt
+                        );
 
         when(properties.clientId()).thenReturn("client_id");
         when(properties.clientSecret()).thenReturn("client_secret");

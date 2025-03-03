@@ -17,8 +17,9 @@
 package com.syschallenge.shared.exception;
 
 /**
- * Exception thrown when a user attempts an action without sufficient permissions
- * This exception is typically used to indicate that the user does not have the necessary rights to perform a specific operation
+ * Exception thrown when a user attempts an action without sufficient permissions This exception is
+ * typically used to indicate that the user does not have the necessary rights to perform a specific
+ * operation
  *
  * @author panic08
  * @since 1.0.0

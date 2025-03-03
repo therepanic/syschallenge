@@ -16,11 +16,14 @@
 
 package com.syschallenge.user;
 
-import com.syschallenge.oauth.OAuthType;
-import com.syschallenge.user.model.UserLinkedSocial;
-import com.syschallenge.user.model.UserLinkedSocialType;
-import com.syschallenge.user.repository.UserLinkedSocialRepository;
-import com.syschallenge.user.service.UserLinkedSocialService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,13 +31,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.syschallenge.oauth.OAuthType;
+import com.syschallenge.user.model.UserLinkedSocial;
+import com.syschallenge.user.model.UserLinkedSocialType;
+import com.syschallenge.user.repository.UserLinkedSocialRepository;
+import com.syschallenge.user.service.UserLinkedSocialService;
 
 /**
  * @author panic08
@@ -42,11 +43,9 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class UserLinkedSocialServiceTest {
-    @Mock
-    private UserLinkedSocialRepository userLinkedSocialRepository;
+    @Mock private UserLinkedSocialRepository userLinkedSocialRepository;
 
-    @InjectMocks
-    private UserLinkedSocialService userLinkedSocialService;
+    @InjectMocks private UserLinkedSocialService userLinkedSocialService;
 
     @Test
     public void testCreateUserLinkedSocial() {
@@ -54,12 +53,13 @@ class UserLinkedSocialServiceTest {
         UUID userId = UUID.randomUUID();
         OAuthType type = OAuthType.GOOGLE;
         String verification = "verificationCode";
-        UserLinkedSocial savedEntity = UserLinkedSocial.builder()
-                .id(UUID.randomUUID())
-                .userId(userId)
-                .type(UserLinkedSocialType.valueOf(type.name()))
-                .verification(verification)
-                .build();
+        UserLinkedSocial savedEntity =
+                UserLinkedSocial.builder()
+                        .id(UUID.randomUUID())
+                        .userId(userId)
+                        .type(UserLinkedSocialType.valueOf(type.name()))
+                        .verification(verification)
+                        .build();
         when(userLinkedSocialRepository.save(any(UserLinkedSocial.class))).thenReturn(savedEntity);
 
         // act
@@ -80,7 +80,8 @@ class UserLinkedSocialServiceTest {
         // arrange
         String verification = "testVerification";
         UUID expectedUserId = UUID.randomUUID();
-        when(userLinkedSocialRepository.findUserIdByVerification(verification)).thenReturn(expectedUserId);
+        when(userLinkedSocialRepository.findUserIdByVerification(verification))
+                .thenReturn(expectedUserId);
 
         // act
         UUID userId = userLinkedSocialService.getUserIdByVerification(verification);

@@ -16,13 +16,15 @@
 
 package com.syschallenge.user.service;
 
-import com.syschallenge.user.repository.UserBasicInfoRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import com.syschallenge.user.repository.UserBasicInfoRepository;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling user basic info related operations
@@ -40,5 +42,4 @@ public class UserBasicInfoService {
     public String getNameByUserId(UUID userId) {
         return userBasicInfoRepository.findNameByUserId(userId);
     }
-
 }

@@ -16,14 +16,9 @@
 
 package com.syschallenge.company.service;
 
-import com.syschallenge.company.dto.CompanyDto;
-import com.syschallenge.company.exception.CompanyAlreadyExistsException;
-import com.syschallenge.company.mapper.CompanyToCompanyDtoMapper;
-import com.syschallenge.company.model.Company;
-import com.syschallenge.company.payload.request.CreateCompanyRequest;
-import com.syschallenge.company.payload.request.UpdateCompanyRequest;
-import com.syschallenge.company.repository.CompanyRepository;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,8 +26,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import com.syschallenge.company.dto.CompanyDto;
+import com.syschallenge.company.exception.CompanyAlreadyExistsException;
+import com.syschallenge.company.mapper.CompanyToCompanyDtoMapper;
+import com.syschallenge.company.model.Company;
+import com.syschallenge.company.payload.request.CreateCompanyRequest;
+import com.syschallenge.company.payload.request.UpdateCompanyRequest;
+import com.syschallenge.company.repository.CompanyRepository;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling company-related operations
@@ -56,7 +58,10 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Page<CompanyDto> getAll(int page, int size, String sort) {
-        return companyRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt")))
+        return companyRepository
+                .findAll(
+                        PageRequest.of(
+                                page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt")))
                 .map(companyToCompanyDtoMapper::companyToCompanyDto);
     }
 
@@ -68,9 +73,7 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto get(UUID id) {
-        return companyToCompanyDtoMapper.companyToCompanyDto(
-                companyRepository.findById(id)
-        );
+        return companyToCompanyDtoMapper.companyToCompanyDto(companyRepository.findById(id));
     }
 
     /**
@@ -81,9 +84,7 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto getBySlug(String slug) {
-        return companyToCompanyDtoMapper.companyToCompanyDto(
-                companyRepository.findBySlug(slug)
-        );
+        return companyToCompanyDtoMapper.companyToCompanyDto(companyRepository.findBySlug(slug));
     }
 
     /**
@@ -95,7 +96,8 @@ public class CompanyService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto create(CreateCompanyRequest request) {
         if (companyRepository.existsBySlug(request.slug())) {
-            throw new CompanyAlreadyExistsException("Company with slug '" + request.slug() + "' already exists");
+            throw new CompanyAlreadyExistsException(
+                    "Company with slug '" + request.slug() + "' already exists");
         }
         return companyToCompanyDtoMapper.companyToCompanyDto(
                 companyRepository.save(
@@ -103,8 +105,7 @@ public class CompanyService {
                                 .slug(request.slug())
                                 .name(request.name())
                                 .updatedAt(LocalDateTime.now())
-                                .build())
-        );
+                                .build()));
     }
 
     /**
@@ -123,9 +124,7 @@ public class CompanyService {
                                 .name(request.name())
                                 .slug(request.slug())
                                 .updatedAt(LocalDateTime.now())
-                                .build()
-                )
-        );
+                                .build()));
     }
 
     /**
@@ -137,5 +136,4 @@ public class CompanyService {
     public void delete(UUID id) {
         companyRepository.deleteById(id);
     }
-
 }

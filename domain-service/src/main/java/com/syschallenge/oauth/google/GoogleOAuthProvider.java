@@ -16,18 +16,20 @@
 
 package com.syschallenge.oauth.google;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syschallenge.oauth.OAuthProvider;
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
 import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Google OAuth provider implementation
@@ -45,22 +47,22 @@ public class GoogleOAuthProvider implements OAuthProvider {
 
     @Override
     public OAuthUserInfo extractUser(String code) {
-        GoogleOAuthV4TokenResponse response = googleOAuthApi.requestToken(
-                new GoogleOAuthV4TokenRequest(
-                        properties.clientId(),
-                        properties.clientSecret(),
-                        properties.redirectUri(),
-                        code,
-                        properties.grantType()
-                )
-        );
+        GoogleOAuthV4TokenResponse response =
+                googleOAuthApi.requestToken(
+                        new GoogleOAuthV4TokenRequest(
+                                properties.clientId(),
+                                properties.clientSecret(),
+                                properties.redirectUri(),
+                                code,
+                                properties.grantType()));
         return parseIdToken(response.idToken());
     }
 
     private OAuthUserInfo parseIdToken(String idToken) {
         // highlight the center of the token
         String idTokenBody = idToken.replaceFirst("^[^.]+\\.([^.]+)\\.[^.]+$", "$1");
-        String decodedIdTokenBody = new String(Base64.getDecoder().decode(idTokenBody), StandardCharsets.UTF_8);
+        String decodedIdTokenBody =
+                new String(Base64.getDecoder().decode(idTokenBody), StandardCharsets.UTF_8);
         Map<String, Object> decodedIdTokenBodyMap;
         try {
             decodedIdTokenBodyMap = mapper.readValue(decodedIdTokenBody, Map.class);
@@ -69,9 +71,6 @@ public class GoogleOAuthProvider implements OAuthProvider {
         }
         String email = (String) decodedIdTokenBodyMap.get("email");
         return new OAuthUserInfo(
-                (String) decodedIdTokenBodyMap.get("sub"),
-                email.split("@")[0],
-                email
-        );
+                (String) decodedIdTokenBodyMap.get("sub"), email.split("@")[0], email);
     }
 }

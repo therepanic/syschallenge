@@ -16,19 +16,21 @@
 
 package com.syschallenge.auth;
 
+import java.util.UUID;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.syschallenge.auth.model.Me;
 import com.syschallenge.auth.payload.response.AuthResponse;
 import com.syschallenge.oauth.OAuthType;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 /**
  * REST controller for handling authentication requests
@@ -51,7 +53,8 @@ public class AuthController {
      * @return response entity containing the response with the JWT token
      */
     @PostMapping("/social")
-    public ResponseEntity<AuthResponse> authBySocial(@RequestParam("type") OAuthType type, @RequestParam("code") String code) {
+    public ResponseEntity<AuthResponse> authBySocial(
+            @RequestParam("type") OAuthType type, @RequestParam("code") String code) {
         return ResponseEntity.ok(authService.authBySocial(type, code));
     }
 

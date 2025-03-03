@@ -16,9 +16,10 @@
 
 package com.syschallenge.company.repository;
 
-import com.syschallenge.company.model.Company;
-import com.syschallenge.public_.tables.CompaniesTable;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 import org.jooq.DSLContext;
 import org.jooq.SortField;
 import org.springframework.data.domain.Page;
@@ -26,9 +27,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import com.syschallenge.company.model.Company;
+import com.syschallenge.public_.tables.CompaniesTable;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Repository for handling company data persistence operations
@@ -80,16 +82,28 @@ public class CompanyRepository {
      * @return paginated list of companies
      */
     public Page<Company> findAll(Pageable pageable) {
-        List<SortField<LocalDateTime>> orderBy = pageable.getSort().stream()
-                .map(order -> order.isAscending()
-                        ? CompaniesTable.COMPANIES_TABLE.field(CompaniesTable.COMPANIES_TABLE.UPDATED_AT).asc()
-                        : CompaniesTable.COMPANIES_TABLE.field(CompaniesTable.COMPANIES_TABLE.UPDATED_AT).desc())
-                .toList();
-        List<Company> companies = ctx.selectFrom(CompaniesTable.COMPANIES_TABLE)
-                .orderBy(orderBy)
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetchInto(Company.class);
+        List<SortField<LocalDateTime>> orderBy =
+                pageable.getSort().stream()
+                        .map(
+                                order ->
+                                        order.isAscending()
+                                                ? CompaniesTable.COMPANIES_TABLE
+                                                        .field(
+                                                                CompaniesTable.COMPANIES_TABLE
+                                                                        .UPDATED_AT)
+                                                        .asc()
+                                                : CompaniesTable.COMPANIES_TABLE
+                                                        .field(
+                                                                CompaniesTable.COMPANIES_TABLE
+                                                                        .UPDATED_AT)
+                                                        .desc())
+                        .toList();
+        List<Company> companies =
+                ctx.selectFrom(CompaniesTable.COMPANIES_TABLE)
+                        .orderBy(orderBy)
+                        .limit(pageable.getPageSize())
+                        .offset(pageable.getOffset())
+                        .fetchInto(Company.class);
         long total = ctx.fetchCount(ctx.selectFrom(CompaniesTable.COMPANIES_TABLE));
         return new PageImpl<>(companies, pageable, total);
     }
@@ -139,8 +153,6 @@ public class CompanyRepository {
         return ctx.fetchExists(
                 ctx.selectOne()
                         .from(CompaniesTable.COMPANIES_TABLE)
-                        .where(CompaniesTable.COMPANIES_TABLE.SLUG.eq(slug))
-        );
+                        .where(CompaniesTable.COMPANIES_TABLE.SLUG.eq(slug)));
     }
-
 }

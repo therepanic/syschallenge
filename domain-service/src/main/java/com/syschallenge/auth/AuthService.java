@@ -16,6 +16,12 @@
 
 package com.syschallenge.auth;
 
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.syschallenge.auth.model.Me;
 import com.syschallenge.auth.payload.response.AuthResponse;
 import com.syschallenge.oauth.OAuthProviderFactory;
@@ -27,12 +33,8 @@ import com.syschallenge.user.model.User;
 import com.syschallenge.user.service.UserBasicInfoService;
 import com.syschallenge.user.service.UserLinkedSocialService;
 import com.syschallenge.user.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling authentication-related operations
@@ -61,7 +63,8 @@ public class AuthService {
     public AuthResponse authBySocial(OAuthType type, String code) {
         OAuthUserInfo userInfo = providerFactory.getProvider(type).extractUser(code);
         if (userLinkedSocialService.existsByVerification(userInfo.providerUserId())) {
-            UUID userId = userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
+            UUID userId =
+                    userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
             User currentUser = userService.getById(userId);
             String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
             return new AuthResponse(jwtToken);
@@ -75,6 +78,9 @@ public class AuthService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Me me(UUID principalUserId) {
-        return new Me(principalUserId, userService.getUsernameById(principalUserId), userBasicInfoService.getNameByUserId(principalUserId));
+        return new Me(
+                principalUserId,
+                userService.getUsernameById(principalUserId),
+                userBasicInfoService.getNameByUserId(principalUserId));
     }
 }

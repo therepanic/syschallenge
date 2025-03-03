@@ -24,5 +24,4 @@ import java.util.UUID;
  * @author panic08
  * @since 1.0.0
  */
-public record Me(UUID id, String username, String name) {
-}
+public record Me(UUID id, String username, String name) {}

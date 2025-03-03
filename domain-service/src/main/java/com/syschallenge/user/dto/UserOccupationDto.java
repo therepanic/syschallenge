@@ -16,11 +16,11 @@
 
 package com.syschallenge.user.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * Represents the user occupation data transferred as a response
@@ -34,6 +34,4 @@ public record UserOccupationDto(
         String company,
         String title,
         LocalDateTime startDate,
-        LocalDateTime endDate
-) {
-}
+        LocalDateTime endDate) {}

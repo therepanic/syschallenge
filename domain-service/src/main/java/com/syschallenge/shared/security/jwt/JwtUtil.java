@@ -16,18 +16,21 @@
 
 package com.syschallenge.shared.security.jwt;
 
-import com.syschallenge.shared.security.UserDetails;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.syschallenge.shared.security.UserDetails;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 
 /**
  * Utility class for generating and validating JWT tokens
@@ -46,7 +49,7 @@ public class JwtUtil {
      * @param userDetails user details for whom the token is created
      * @return signed JWT token as a string
      */
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails) {
         Date dateNow = new Date();
         Date expirationDate = new Date(dateNow.getTime() + 1000L * 60 * 60 * 24 * 31);
 
@@ -64,7 +67,7 @@ public class JwtUtil {
      * @param token JWT token
      * @return expiration date of the token
      */
-    public Date extractExpiration(String token){
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -76,11 +79,7 @@ public class JwtUtil {
      */
     public boolean isTokenValid(String token) {
         try {
-            Jwts.parser()
-                    .verifyWith(getSignInKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+            Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
             return true;
         } catch (Exception ignored) {
             return false;
@@ -93,7 +92,7 @@ public class JwtUtil {
      * @param token JWT token
      * @return {@code true} if the token is expired; {@code false} otherwise
      */
-    public boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -103,7 +102,7 @@ public class JwtUtil {
      * @param token JWT token
      * @return subject of the token as a string
      */
-    public String extractIdFromToken(String token){
+    public String extractIdFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -121,8 +120,7 @@ public class JwtUtil {
     }
 
     private SecretKey getSignInKey() {
-        byte[] bytes = Base64.getDecoder()
-                .decode(SECRET.getBytes(StandardCharsets.UTF_8));
+        byte[] bytes = Base64.getDecoder().decode(SECRET.getBytes(StandardCharsets.UTF_8));
 
         return new SecretKeySpec(bytes, "HmacSHA256");
     }

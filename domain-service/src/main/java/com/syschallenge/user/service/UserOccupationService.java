@@ -16,21 +16,23 @@
 
 package com.syschallenge.user.service;
 
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.syschallenge.shared.exception.PermissionDeniedException;
 import com.syschallenge.user.dto.UserOccupationDto;
 import com.syschallenge.user.mapper.UserOccupationToUserOccupationDtoMapper;
 import com.syschallenge.user.model.UserOccupation;
 import com.syschallenge.user.model.UserRole;
-import com.syschallenge.user.repository.UserOccupationRepository;
 import com.syschallenge.user.payload.request.CreateOccupationRequest;
 import com.syschallenge.user.payload.request.UpdateOccupationRequest;
+import com.syschallenge.user.repository.UserOccupationRepository;
 import com.syschallenge.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling user occupation related operations
@@ -55,8 +57,7 @@ public class UserOccupationService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public UserOccupationDto get(UUID id) {
         return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                userOccupationRepository.findByUserId(id)
-        );
+                userOccupationRepository.findByUserId(id));
     }
 
     /**
@@ -66,22 +67,25 @@ public class UserOccupationService {
      * @param request the occupation create details
      * @param principalId the authenticated user ID performing the operation
      * @return a DTO containing the created user occupation information
-     * @throws PermissionDeniedException if the user does not have permission to update this occupation
+     * @throws PermissionDeniedException if the user does not have permission to update this
+     *     occupation
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto create(UUID id, CreateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
-        if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+    public UserOccupationDto create(UUID id, CreateOccupationRequest request, UUID principalId)
+            throws PermissionDeniedException {
+        if (!id.equals(principalId)
+                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only create your own occupation.");
         }
         return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                userOccupationRepository.save(UserOccupation.builder()
-                        .userId(id)
-                        .title(request.title())
-                        .company(request.company())
-                        .startDate(request.startDate())
-                        .endDate(request.endDate())
-                        .build())
-        );
+                userOccupationRepository.save(
+                        UserOccupation.builder()
+                                .userId(id)
+                                .title(request.title())
+                                .company(request.company())
+                                .startDate(request.startDate())
+                                .endDate(request.endDate())
+                                .build()));
     }
 
     /**
@@ -91,22 +95,25 @@ public class UserOccupationService {
      * @param request the occupation update details
      * @param principalId the authenticated user ID performing the operation
      * @return a DTO containing the updated user occupation information
-     * @throws PermissionDeniedException if the user does not have permission to save this occupation
+     * @throws PermissionDeniedException if the user does not have permission to save this
+     *     occupation
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto update(UUID id, UpdateOccupationRequest request, UUID principalId) throws PermissionDeniedException {
-        if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+    public UserOccupationDto update(UUID id, UpdateOccupationRequest request, UUID principalId)
+            throws PermissionDeniedException {
+        if (!id.equals(principalId)
+                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only update your own occupation.");
         }
         return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                userOccupationRepository.updateByUserId(UserOccupation.builder()
-                        .userId(id)
-                        .title(request.title())
-                        .company(request.company())
-                        .startDate(request.startDate())
-                        .endDate(request.endDate())
-                        .build())
-        );
+                userOccupationRepository.updateByUserId(
+                        UserOccupation.builder()
+                                .userId(id)
+                                .title(request.title())
+                                .company(request.company())
+                                .startDate(request.startDate())
+                                .endDate(request.endDate())
+                                .build()));
     }
 
     /**
@@ -114,14 +121,15 @@ public class UserOccupationService {
      *
      * @param id the user ID whose occupation is being deleted
      * @param principalId the authenticated user ID performing the operation
-     * @throws PermissionDeniedException if the user does not have permission to delete this occupation
+     * @throws PermissionDeniedException if the user does not have permission to delete this
+     *     occupation
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void delete(UUID id, UUID principalId) throws PermissionDeniedException {
-        if (!id.equals(principalId) && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+        if (!id.equals(principalId)
+                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only delete your own occupation.");
         }
         userOccupationRepository.deleteByUserId(id);
     }
-
 }

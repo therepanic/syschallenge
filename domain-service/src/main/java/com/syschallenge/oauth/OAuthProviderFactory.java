@@ -16,10 +16,12 @@
 
 package com.syschallenge.oauth;
 
+import org.springframework.stereotype.Service;
+
 import com.syschallenge.oauth.github.GithubOAuthProvider;
 import com.syschallenge.oauth.google.GoogleOAuthProvider;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 /**
  * Factory class for obtaining OAuth provider implementations
@@ -48,5 +50,4 @@ public class OAuthProviderFactory {
             default -> throw new IllegalArgumentException("Unsupported OAuth provider");
         };
     }
-
 }

@@ -16,13 +16,14 @@
 
 package com.syschallenge.user.model;
 
-import lombok.Builder;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * Entity class representing a user in the system
@@ -34,8 +35,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "users_table")
 public class User {
-    @Id
-    private UUID id;
+    @Id private UUID id;
 
     private String username;
 

@@ -16,7 +16,12 @@
 
 package com.syschallenge.shared.api;
 
-import com.syschallenge.shared.api.payload.response.GithubUser;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -25,11 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import com.syschallenge.shared.api.payload.response.GithubUser;
 
 /**
  * @author panic08
@@ -51,47 +52,49 @@ class GithubApiTest {
     void testGetUser() {
         // Given
         String accessToken = "test-access-token";
-        String expectedResponseBody = """
-                {
-                "login": "panic08",
-                "id": 120543954,
-                "node_id": "U_kgDOBy9a0g",
-                "avatar_url": "https://avatars.githubusercontent.com/u/120543954?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/panic08",
-                "html_url": "https://github.com/panic08",
-                "followers_url": "https://api.github.com/users/panic08/followers",
-                "following_url": "https://api.github.com/users/panic08/following{/other_user}",
-                "gists_url": "https://api.github.com/users/panic08/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/panic08/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/panic08/subscriptions",
-                "organizations_url": "https://api.github.com/users/panic08/orgs",
-                "repos_url": "https://api.github.com/users/panic08/repos",
-                "events_url": "https://api.github.com/users/panic08/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/panic08/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false,
-                "name": "Andrey Litvitski",
-                "company": null,
-                "blog": "panic08.ru",
-                "location": "Minsk, Belarus",
-                "email": "andrey1010102008@gmail.com",
-                "hireable": true,
-                "bio": "🦄 java dev 16 y.o from BY",
-                "twitter_username": "litvitski",
-                "notification_email": "andrey1010102008@gmail.com",
-                "public_repos": 84,
-                "public_gists": 0,
-                "followers": 4,
-                "following": 3,
-                "created_at": "2022-12-14T04:30:37Z",
-                "updated_at": "2025-01-13T07:56:09Z"
-            }
-                """;
+        String expectedResponseBody =
+                """
+				    {
+				    "login": "panic08",
+				    "id": 120543954,
+				    "node_id": "U_kgDOBy9a0g",
+				    "avatar_url": "https://avatars.githubusercontent.com/u/120543954?v=4",
+				    "gravatar_id": "",
+				    "url": "https://api.github.com/users/panic08",
+				    "html_url": "https://github.com/panic08",
+				    "followers_url": "https://api.github.com/users/panic08/followers",
+				    "following_url": "https://api.github.com/users/panic08/following{/other_user}",
+				    "gists_url": "https://api.github.com/users/panic08/gists{/gist_id}",
+				    "starred_url": "https://api.github.com/users/panic08/starred{/owner}{/repo}",
+				    "subscriptions_url": "https://api.github.com/users/panic08/subscriptions",
+				    "organizations_url": "https://api.github.com/users/panic08/orgs",
+				    "repos_url": "https://api.github.com/users/panic08/repos",
+				    "events_url": "https://api.github.com/users/panic08/events{/privacy}",
+				    "received_events_url": "https://api.github.com/users/panic08/received_events",
+				    "type": "User",
+				    "user_view_type": "public",
+				    "site_admin": false,
+				    "name": "Andrey Litvitski",
+				    "company": null,
+				    "blog": "panic08.ru",
+				    "location": "Minsk, Belarus",
+				    "email": "andrey1010102008@gmail.com",
+				    "hireable": true,
+				    "bio": "🦄 java dev 16 y.o from BY",
+				    "twitter_username": "litvitski",
+				    "notification_email": "andrey1010102008@gmail.com",
+				    "public_repos": 84,
+				    "public_gists": 0,
+				    "followers": 4,
+				    "following": 3,
+				    "created_at": "2022-12-14T04:30:37Z",
+				    "updated_at": "2025-01-13T07:56:09Z"
+				}
+				    """;
 
         // Expect a GET request to be sent from the Bearer Token
-        mockRestServiceServer.expect(requestTo("https://api.github.com/user"))
+        mockRestServiceServer
+                .expect(requestTo("https://api.github.com/user"))
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
                 .andRespond(withSuccess(expectedResponseBody, MediaType.APPLICATION_JSON));

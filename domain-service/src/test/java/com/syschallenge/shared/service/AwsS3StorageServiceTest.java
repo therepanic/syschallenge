@@ -16,37 +16,39 @@
 
 package com.syschallenge.shared.service;
 
-import com.syschallenge.shared.service.impl.AwsS3StorageService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.ResponseBytes;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
-import software.amazon.awssdk.core.sync.RequestBody;
-
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
+
+import java.io.IOException;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.syschallenge.shared.service.impl.AwsS3StorageService;
+
+import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 /**
  * @author panic08
@@ -54,11 +56,9 @@ import static org.mockito.Mockito.mock;
  */
 @ExtendWith(MockitoExtension.class)
 class AwsS3StorageServiceTest {
-    @Mock
-    private S3Client s3Client;
+    @Mock private S3Client s3Client;
 
-    @InjectMocks
-    private AwsS3StorageService awsS3StorageService;
+    @InjectMocks private AwsS3StorageService awsS3StorageService;
 
     private static final String BUCKET_NAME = "test-bucket";
     private static final String FILE_NAME = "test-file.txt";
@@ -86,8 +86,10 @@ class AwsS3StorageServiceTest {
         when(s3Client.getObjectAsBytes(any(GetObjectRequest.class))).thenThrow(s3Exception);
 
         // Act & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                awsS3StorageService.downloadFile(BUCKET_NAME, FILE_NAME));
+        RuntimeException exception =
+                assertThrows(
+                        RuntimeException.class,
+                        () -> awsS3StorageService.downloadFile(BUCKET_NAME, FILE_NAME));
         assertEquals("File download error from S3", exception.getMessage());
         verify(s3Client, times(1)).getObjectAsBytes(any(GetObjectRequest.class));
     }
@@ -98,7 +100,8 @@ class AwsS3StorageServiceTest {
         MultipartFile mockFile = mock(MultipartFile.class);
         when(mockFile.getOriginalFilename()).thenReturn("test.txt");
         when(mockFile.getBytes()).thenReturn("test content".getBytes());
-        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenReturn(PutObjectResponse.builder().build());
+        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
+                .thenReturn(PutObjectResponse.builder().build());
 
         // Act
         String resultFileName = awsS3StorageService.uploadFile(BUCKET_NAME, mockFile);
@@ -118,8 +121,10 @@ class AwsS3StorageServiceTest {
         when(mockFile.getBytes()).thenThrow(new IOException("File processing error"));
 
         // Act & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                awsS3StorageService.uploadFile(BUCKET_NAME, mockFile));
+        RuntimeException exception =
+                assertThrows(
+                        RuntimeException.class,
+                        () -> awsS3StorageService.uploadFile(BUCKET_NAME, mockFile));
         assertEquals("File upload error in S3", exception.getMessage());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class), any(RequestBody.class));
     }
@@ -127,7 +132,8 @@ class AwsS3StorageServiceTest {
     @Test
     void testDeleteFile_success() {
         // Arrange
-        when(s3Client.deleteObject(any(DeleteObjectRequest.class))).thenReturn(DeleteObjectResponse.builder().build());
+        when(s3Client.deleteObject(any(DeleteObjectRequest.class)))
+                .thenReturn(DeleteObjectResponse.builder().build());
 
         // Act
         awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME);
@@ -143,8 +149,10 @@ class AwsS3StorageServiceTest {
         when(s3Client.deleteObject(any(DeleteObjectRequest.class))).thenThrow(s3Exception);
 
         // Act & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME));
+        RuntimeException exception =
+                assertThrows(
+                        RuntimeException.class,
+                        () -> awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME));
         assertEquals("File deletion error from S3", exception.getMessage());
         verify(s3Client, times(1)).deleteObject(any(DeleteObjectRequest.class));
     }

@@ -16,18 +16,19 @@
 
 package com.syschallenge.user;
 
-import com.syschallenge.user.repository.UserBasicInfoRepository;
-import com.syschallenge.user.service.UserBasicInfoService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import com.syschallenge.user.repository.UserBasicInfoRepository;
+import com.syschallenge.user.service.UserBasicInfoService;
 
 /**
  * @author panic08
@@ -35,11 +36,9 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class UserBasicInfoServiceTest {
-    @Mock
-    private UserBasicInfoRepository userBasicInfoRepository;
+    @Mock private UserBasicInfoRepository userBasicInfoRepository;
 
-    @InjectMocks
-    private UserBasicInfoService userBasicInfoService;
+    @InjectMocks private UserBasicInfoService userBasicInfoService;
 
     @Test
     public void testGetNameByUserId() {

@@ -16,8 +16,6 @@
 
 package com.syschallenge.shared.security;
 
-import com.syschallenge.shared.security.jwt.JwtAuthFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,6 +31,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.syschallenge.shared.security.jwt.JwtAuthFilter;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Security configuration class for setting up Spring Security
@@ -59,22 +61,29 @@ public class SecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler)
-                )
-                .authorizeHttpRequests(auth -> {
-                    auth
-                            .requestMatchers("/api/v1/auth/social").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/occupation").permitAll()
-                            .requestMatchers("/api/v1/company/all").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/company").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/v1/company/{id}").permitAll()
-                            .anyRequest().authenticated();
-                })
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+                .exceptionHandling(
+                        exception ->
+                                exception
+                                        .authenticationEntryPoint(authenticationEntryPoint)
+                                        .accessDeniedHandler(accessDeniedHandler))
+                .authorizeHttpRequests(
+                        auth -> {
+                            auth.requestMatchers("/api/v1/auth/social")
+                                    .permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/occupation")
+                                    .permitAll()
+                                    .requestMatchers("/api/v1/company/all")
+                                    .permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/v1/company")
+                                    .permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/v1/company/{id}")
+                                    .permitAll()
+                                    .anyRequest()
+                                    .authenticated();
+                        })
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -97,7 +106,8 @@ public class SecurityConfiguration {
      * @throws Exception if an error occurs during configuration
      */
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+            throws Exception {
         return authConfig.getAuthenticationManager();
     }
 }

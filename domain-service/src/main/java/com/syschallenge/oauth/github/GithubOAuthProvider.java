@@ -16,16 +16,18 @@
 
 package com.syschallenge.oauth.github;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.stereotype.Service;
+
 import com.syschallenge.oauth.OAuthProvider;
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
 import com.syschallenge.shared.api.GithubApi;
 import com.syschallenge.shared.api.payload.response.GithubUser;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Github OAuth provider implementation
@@ -45,21 +47,19 @@ public class GithubOAuthProvider implements OAuthProvider {
 
     @Override
     public OAuthUserInfo extractUser(String code) {
-        String accessToken = githubOAuthApi.requestToken(
-                new GithubOAuthTokenRequest(
-                        properties.clientId(),
-                        properties.clientSecret(),
-                        code,
-                        properties.redirectUri()
-                )
-        );
+        String accessToken =
+                githubOAuthApi.requestToken(
+                        new GithubOAuthTokenRequest(
+                                properties.clientId(),
+                                properties.clientSecret(),
+                                code,
+                                properties.redirectUri()));
         String extractedAccessToken = extractAccessToken(accessToken);
         GithubUser authorizedGithubUser = githubApi.getUser(extractedAccessToken);
         return new OAuthUserInfo(
                 String.valueOf(authorizedGithubUser.id()),
                 authorizedGithubUser.login(),
-                authorizedGithubUser.email()
-        );
+                authorizedGithubUser.email());
     }
 
     private String extractAccessToken(String input) {

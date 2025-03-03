@@ -27,9 +27,4 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GithubOAuthTokenRequest(
-        String clientId,
-        String clientSecret,
-        String code,
-        String redirectUri
-) {
-}
+        String clientId, String clientSecret, String code, String redirectUri) {}

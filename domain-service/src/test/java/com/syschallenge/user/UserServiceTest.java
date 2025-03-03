@@ -16,13 +16,14 @@
 
 package com.syschallenge.user;
 
-import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.user.model.User;
-import com.syschallenge.user.model.UserBasicInfo;
-import com.syschallenge.user.model.UserRole;
-import com.syschallenge.user.repository.UserBasicInfoRepository;
-import com.syschallenge.user.repository.UserRepository;
-import com.syschallenge.user.service.UserService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -30,13 +31,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.syschallenge.oauth.OAuthUserInfo;
+import com.syschallenge.user.model.User;
+import com.syschallenge.user.model.UserBasicInfo;
+import com.syschallenge.user.model.UserRole;
+import com.syschallenge.user.repository.UserBasicInfoRepository;
+import com.syschallenge.user.repository.UserRepository;
+import com.syschallenge.user.service.UserService;
 
 /**
  * @author panic08
@@ -44,20 +45,18 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    @Mock
-    private UserRepository userRepository;
+    @Mock private UserRepository userRepository;
 
-    @Mock
-    private UserBasicInfoRepository userBasicInfoRepository;
+    @Mock private UserBasicInfoRepository userBasicInfoRepository;
 
-    @InjectMocks
-    private UserService userService;
+    @InjectMocks private UserService userService;
 
     @Test
     public void testCreateUser() {
         // arrange
         OAuthUserInfo userInfo = new OAuthUserInfo("providerId", "username", "user@example.com");
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.save(any(User.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
         when(userBasicInfoRepository.save(any(UserBasicInfo.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -101,10 +100,7 @@ class UserServiceTest {
     public void testGetById() {
         // arrange
         UUID id = UUID.randomUUID();
-        User user = User.builder()
-                .id(id)
-                .username("username")
-                .build();
+        User user = User.builder().id(id).username("username").build();
         when(userRepository.findById(id)).thenReturn(user);
 
         // act

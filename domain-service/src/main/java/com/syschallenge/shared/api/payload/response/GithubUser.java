@@ -16,10 +16,10 @@
 
 package com.syschallenge.shared.api.payload.response;
 
+import java.time.ZonedDateTime;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
-import java.time.ZonedDateTime;
 
 /**
  * Represents a response for Github user request
@@ -62,6 +62,4 @@ public record GithubUser(
         int followers,
         int following,
         ZonedDateTime createdAt,
-        ZonedDateTime updatedAt
-) {
-}
+        ZonedDateTime updatedAt) {}

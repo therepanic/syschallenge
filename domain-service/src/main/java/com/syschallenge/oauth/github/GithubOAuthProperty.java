@@ -19,5 +19,4 @@ package com.syschallenge.oauth.github;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("github.oauth")
-public record GithubOAuthProperty(String clientId, String clientSecret, String redirectUri) {
-}
+public record GithubOAuthProperty(String clientId, String clientSecret, String redirectUri) {}

@@ -16,19 +16,21 @@
 
 package com.syschallenge.user.service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.user.model.User;
 import com.syschallenge.user.model.UserBasicInfo;
 import com.syschallenge.user.model.UserRole;
 import com.syschallenge.user.repository.UserBasicInfoRepository;
 import com.syschallenge.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling user related operations
@@ -45,19 +47,19 @@ public class UserService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public User create(OAuthUserInfo userInfo) {
-        User newUser = User.builder()
-                .email(userInfo.email())
-                .username(userInfo.username())
-                .role(UserRole.DEFAULT)
-                .registeredAt(LocalDateTime.now())
-                .build();
+        User newUser =
+                User.builder()
+                        .email(userInfo.email())
+                        .username(userInfo.username())
+                        .role(UserRole.DEFAULT)
+                        .registeredAt(LocalDateTime.now())
+                        .build();
         userRepository.save(newUser);
         userBasicInfoRepository.save(
                 UserBasicInfo.builder()
                         .userId(newUser.getId())
                         .name(newUser.getUsername())
-                        .build()
-        );
+                        .build());
         return newUser;
     }
 
