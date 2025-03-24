@@ -1,11 +1,7 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.0.2'
-    }
+plugins {
+    alias(libs.plugins.spotless)
 }
+
 allprojects {
     group = 'com.syschallenge'
     version = '1.0.0'

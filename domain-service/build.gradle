@@ -1,9 +1,8 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.3.4'
-    id 'io.spring.dependency-management' version '1.1.6'
-    id 'org.flywaydb.flyway' version '9.22.3'
-    id 'nu.studer.jooq' version '9.0'
+    alias(libs.plugins.springBoot)
+    alias(libs.plugins.dependencyManagement)
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
 }
 
 java {
@@ -22,15 +21,6 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    jjwtVersion = '0.12.6'
-    springDocVersion = '2.6.0'
-    mapstructVersion = '1.5.5.Final'
-    micrometerVersion = '1.13.6'
-    amazonAwsSdkVersion = '2.30.30'
-    thumbnailator = '0.4.20'
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -39,28 +29,27 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation "org.springdoc:springdoc-openapi-starter-webmvc-api:${springDocVersion}"
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
-    implementation "io.micrometer:micrometer-registry-prometheus:${micrometerVersion}"
-    implementation "software.amazon.awssdk:s3:${amazonAwsSdkVersion}"
-    implementation "net.coobird:thumbnailator:${thumbnailator}"
+    testImplementation libs.springdocUi
+    implementation libs.springdocApi
+    implementation libs.micrometer
+    implementation libs.awsSdk
+    implementation libs.thumbnailator
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
-    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
-    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
-    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+    implementation libs.jjwtApi
+    runtimeOnly libs.jjwImpl
+    runtimeOnly libs.jjwJackson
     compileOnly 'org.projectlombok:lombok'
     jooqGenerator 'org.postgresql:postgresql'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstructProcessor
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
 
 def getConfigProperty(String key, String defaultValue) {
     def value = System.getenv(key)
@@ -81,6 +70,7 @@ flyway {
     password = getConfigProperty('SPRING_FLYWAY_PASSWORD', '')
     locations = getConfigProperty('SPRING_FLYWAY_LOCATIONS', '').split(',')
 }
+
 jooq {
     configurations {
         main {
@@ -108,5 +98,3 @@ jooq {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-

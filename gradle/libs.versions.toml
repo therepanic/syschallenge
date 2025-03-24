@@ -1,0 +1,31 @@
+[versions]
+springBoot = "3.3.4"
+springDependencyManagement = "1.1.6"
+flyway = "9.22.3"
+jooqPlugin = "9.0"
+springdoc = "2.6.0"
+micrometer = "1.13.6"
+awsSdk = "2.30.30"
+jjwt = "0.12.6"
+mapstruct = "1.5.5.Final"
+thumbnailator = "0.4.20"
+spotless = "7.0.2"
+
+[plugins]
+springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
+dependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+jooq = { id = "nu.studer.jooq", version.ref = "jooqPlugin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+
+[libraries]
+springdocApi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
+springdocUi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
+micrometer = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
+awsSdk = { module = "software.amazon.awssdk:s3", version.ref = "awsSdk" }
+jjwtApi = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwImpl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwJackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+thumbnailator = { module = "net.coobird:thumbnailator", version.ref = "thumbnailator" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstructProcessor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
