@@ -16,8 +16,7 @@
 
 package com.syschallenge.user;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,10 +31,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.syschallenge.oauth.OAuthUserInfo;
+import com.syschallenge.shared.service.StorageService;
 import com.syschallenge.user.model.User;
 import com.syschallenge.user.model.UserBasicInfo;
 import com.syschallenge.user.model.UserRole;
+import com.syschallenge.user.payload.response.PhotoResponse;
 import com.syschallenge.user.repository.UserBasicInfoRepository;
+import com.syschallenge.user.repository.UserPhotoRepository;
 import com.syschallenge.user.repository.UserRepository;
 import com.syschallenge.user.service.UserService;
 
@@ -47,7 +49,11 @@ import com.syschallenge.user.service.UserService;
 class UserServiceTest {
     @Mock private UserRepository userRepository;
 
+    @Mock private UserPhotoRepository userPhotoRepository;
+
     @Mock private UserBasicInfoRepository userBasicInfoRepository;
+
+    @Mock private StorageService storageService;
 
     @InjectMocks private UserService userService;
 
@@ -108,5 +114,37 @@ class UserServiceTest {
 
         // assert
         assertEquals(user, result);
+    }
+
+    @Test
+    public void testGetPhoto_WhenPhotoExists() {
+        // arrange
+        UUID userId = UUID.randomUUID();
+        String objectKey = "photo-key";
+        byte[] photoData = new byte[] {1, 2, 3};
+
+        when(userPhotoRepository.findObjectKeyByUserId(userId)).thenReturn(objectKey);
+        when(storageService.downloadFile("users-photo", objectKey)).thenReturn(photoData);
+
+        // act
+        PhotoResponse response = userService.getPhoto(userId);
+
+        // assert
+        assertNotNull(response);
+        assertArrayEquals(photoData, response.photo());
+        assertEquals(objectKey, response.photoFileName());
+    }
+
+    @Test
+    public void testGetPhoto_WhenPhotoDoesNotExist() {
+        // arrange
+        UUID userId = UUID.randomUUID();
+        when(userPhotoRepository.findObjectKeyByUserId(userId)).thenReturn(null);
+
+        // act
+        PhotoResponse response = userService.getPhoto(userId);
+
+        // assert
+        assertNull(response);
     }
 }

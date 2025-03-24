@@ -7,6 +7,14 @@ CREATE TABLE IF NOT EXISTS users_table(
     registered_at TIMESTAMP NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS users_photo_table(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL UNIQUE,
+    object_key VARCHAR(40) NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES users_table(id)
+);
+
 CREATE TABLE IF NOT EXISTS users_linked_social_table(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,

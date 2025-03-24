@@ -16,8 +16,6 @@
 
 package com.syschallenge.shared.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * Service interface for handling file storage operations
  *
@@ -40,9 +38,10 @@ public interface StorageService {
      *
      * @param bucketName the name of the bucket where the file will be uploaded
      * @param file the file to upload
+     * @param extension the file extension
      * @return the file key or URL of the uploaded file
      */
-    String uploadFile(String bucketName, MultipartFile file);
+    String uploadFile(String bucketName, byte[] file, String extension);
 
     /**
      * Deletes a file from the specified bucket

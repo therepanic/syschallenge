@@ -28,6 +28,7 @@ ext {
     mapstructVersion = '1.5.5.Final'
     micrometerVersion = '1.13.6'
     amazonAwsSdkVersion = '2.30.30'
+    thumbnailator = '0.4.20'
 }
 
 dependencies {
@@ -42,6 +43,7 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
     implementation "io.micrometer:micrometer-registry-prometheus:${micrometerVersion}"
     implementation "software.amazon.awssdk:s3:${amazonAwsSdkVersion}"
+    implementation "net.coobird:thumbnailator:${thumbnailator}"
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'

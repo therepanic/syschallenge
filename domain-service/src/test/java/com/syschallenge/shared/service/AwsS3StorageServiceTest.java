@@ -22,20 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.syschallenge.shared.service.impl.AwsS3StorageService;
 
@@ -95,38 +88,21 @@ class AwsS3StorageServiceTest {
     }
 
     @Test
-    void testUploadFile_success() throws IOException {
+    void testUploadFile_success() {
         // Arrange
-        MultipartFile mockFile = mock(MultipartFile.class);
-        when(mockFile.getOriginalFilename()).thenReturn("test.txt");
-        when(mockFile.getBytes()).thenReturn("test content".getBytes());
+        byte[] fileContent = "test content".getBytes();
+        String extension = ".txt";
         when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
                 .thenReturn(PutObjectResponse.builder().build());
 
         // Act
-        String resultFileName = awsS3StorageService.uploadFile(BUCKET_NAME, mockFile);
+        String resultFileName = awsS3StorageService.uploadFile(BUCKET_NAME, fileContent, extension);
 
         // Assert
         assertNotNull(resultFileName);
-        assertTrue(resultFileName.endsWith(".txt"));
+        assertTrue(resultFileName.endsWith(extension));
         assertTrue(resultFileName.contains("-"));
         verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
-    }
-
-    @Test
-    void testUploadFile_failure() throws IOException {
-        // Arrange
-        MultipartFile mockFile = mock(MultipartFile.class);
-        when(mockFile.getOriginalFilename()).thenReturn("test.txt");
-        when(mockFile.getBytes()).thenThrow(new IOException("File processing error"));
-
-        // Act & Assert
-        RuntimeException exception =
-                assertThrows(
-                        RuntimeException.class,
-                        () -> awsS3StorageService.uploadFile(BUCKET_NAME, mockFile));
-        assertEquals("File upload error in S3", exception.getMessage());
-        verify(s3Client, never()).putObject(any(PutObjectRequest.class), any(RequestBody.class));
     }
 
     @Test
