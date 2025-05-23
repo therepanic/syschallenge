@@ -45,7 +45,8 @@ public class UserPhotoRepository {
      * @return objectKey of the user photo associated with the given userId
      */
     public String findObjectKeyByUserId(UUID userId) {
-        return ctx.select(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY)
+        return this.ctx
+                .select(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY)
                 .from(UsersPhotoTable.USERS_PHOTO_TABLE)
                 .where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId))
                 .fetchOneInto(String.class);
@@ -58,7 +59,8 @@ public class UserPhotoRepository {
      * @return updated user photo id objectKey
      */
     public String updateObjectKeyByUserId(String objectKey, UUID userId) {
-        return ctx.update(UsersPhotoTable.USERS_PHOTO_TABLE)
+        return this.ctx
+                .update(UsersPhotoTable.USERS_PHOTO_TABLE)
                 .set(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY, objectKey)
                 .where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId))
                 .returningResult(UsersPhotoTable.USERS_PHOTO_TABLE)
@@ -72,7 +74,8 @@ public class UserPhotoRepository {
      * @return user photo entity with updated information
      */
     public UserPhoto save(UserPhoto userPhoto) {
-        return ctx.insertInto(UsersPhotoTable.USERS_PHOTO_TABLE)
+        return this.ctx
+                .insertInto(UsersPhotoTable.USERS_PHOTO_TABLE)
                 .set(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID, userPhoto.getUserId())
                 .set(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY, userPhoto.getObjectKey())
                 .returningResult(UsersPhotoTable.USERS_PHOTO_TABLE)
@@ -86,8 +89,9 @@ public class UserPhotoRepository {
      * @return true if a record exists, false otherwise
      */
     public boolean existsByUserId(UUID userId) {
-        return ctx.fetchExists(
-                ctx.selectOne()
+        return this.ctx.fetchExists(
+                this.ctx
+                        .selectOne()
                         .from(UsersPhotoTable.USERS_PHOTO_TABLE)
                         .where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId)));
     }

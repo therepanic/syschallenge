@@ -38,13 +38,13 @@ public class GithubOAuthApi {
     private final RestTemplate restTemplate;
 
     /**
-     * Requests an OAuth token from Github using the provided request data
+     * Requests an OAuth token from GitHub using the provided request data
      *
      * @param request {@link GithubOAuthTokenRequest} containing request details
      * @return containing access token
      */
     public String requestToken(GithubOAuthTokenRequest request) {
-        return restTemplate.postForObject(
+        return this.restTemplate.postForObject(
                 GITHUB_OAUTH_API_URI + "/access_token", request, String.class);
     }
 }

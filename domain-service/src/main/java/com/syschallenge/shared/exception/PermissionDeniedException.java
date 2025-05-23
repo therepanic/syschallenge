@@ -25,6 +25,7 @@ package com.syschallenge.shared.exception;
  * @since 1.0.0
  */
 public class PermissionDeniedException extends RuntimeException {
+
     public PermissionDeniedException(String message) {
         super(message);
     }

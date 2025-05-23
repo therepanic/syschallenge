@@ -48,14 +48,14 @@ public class GithubOAuthProvider implements OAuthProvider {
     @Override
     public OAuthUserInfo extractUser(String code) {
         String accessToken =
-                githubOAuthApi.requestToken(
+                this.githubOAuthApi.requestToken(
                         new GithubOAuthTokenRequest(
-                                properties.clientId(),
-                                properties.clientSecret(),
+                                this.properties.clientId(),
+                                this.properties.clientSecret(),
                                 code,
-                                properties.redirectUri()));
+                                this.properties.redirectUri()));
         String extractedAccessToken = extractAccessToken(accessToken);
-        GithubUser authorizedGithubUser = githubApi.getUser(extractedAccessToken);
+        GithubUser authorizedGithubUser = this.githubApi.getUser(extractedAccessToken);
         return new OAuthUserInfo(
                 String.valueOf(authorizedGithubUser.id()),
                 authorizedGithubUser.login(),

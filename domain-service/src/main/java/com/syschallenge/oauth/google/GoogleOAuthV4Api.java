@@ -44,7 +44,7 @@ public class GoogleOAuthV4Api {
      * @return {@link GoogleOAuthV4TokenResponse} containing response details
      */
     public GoogleOAuthV4TokenResponse requestToken(GoogleOAuthV4TokenRequest request) {
-        return restTemplate.postForObject(
+        return this.restTemplate.postForObject(
                 GOOGLE_OAUTH_V4_API_URI + "/token", request, GoogleOAuthV4TokenResponse.class);
     }
 }

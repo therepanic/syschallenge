@@ -67,8 +67,8 @@ public class SecurityConfiguration {
                 .exceptionHandling(
                         exception ->
                                 exception
-                                        .authenticationEntryPoint(authenticationEntryPoint)
-                                        .accessDeniedHandler(accessDeniedHandler))
+                                        .authenticationEntryPoint(this.authenticationEntryPoint)
+                                        .accessDeniedHandler(this.accessDeniedHandler))
                 .authorizeHttpRequests(
                         auth -> {
                             auth.requestMatchers("/api/v1/auth/social")
@@ -86,7 +86,7 @@ public class SecurityConfiguration {
                                     .anyRequest()
                                     .authenticated();
                         })
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(this.jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

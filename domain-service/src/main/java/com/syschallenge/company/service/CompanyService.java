@@ -58,11 +58,11 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Page<CompanyDto> getAll(int page, int size, String sort) {
-        return companyRepository
+        return this.companyRepository
                 .findAll(
                         PageRequest.of(
                                 page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt")))
-                .map(companyToCompanyDtoMapper::companyToCompanyDto);
+                .map(this.companyToCompanyDtoMapper::companyToCompanyDto);
     }
 
     /**
@@ -73,7 +73,8 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto get(UUID id) {
-        return companyToCompanyDtoMapper.companyToCompanyDto(companyRepository.findById(id));
+        return this.companyToCompanyDtoMapper.companyToCompanyDto(
+                this.companyRepository.findById(id));
     }
 
     /**
@@ -84,7 +85,8 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto getBySlug(String slug) {
-        return companyToCompanyDtoMapper.companyToCompanyDto(companyRepository.findBySlug(slug));
+        return this.companyToCompanyDtoMapper.companyToCompanyDto(
+                this.companyRepository.findBySlug(slug));
     }
 
     /**
@@ -95,12 +97,12 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto create(CreateCompanyRequest request) {
-        if (companyRepository.existsBySlug(request.slug())) {
+        if (this.companyRepository.existsBySlug(request.slug())) {
             throw new CompanyAlreadyExistsException(
                     "Company with slug '" + request.slug() + "' already exists");
         }
-        return companyToCompanyDtoMapper.companyToCompanyDto(
-                companyRepository.save(
+        return this.companyToCompanyDtoMapper.companyToCompanyDto(
+                this.companyRepository.save(
                         Company.builder()
                                 .slug(request.slug())
                                 .name(request.name())
@@ -117,8 +119,8 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto update(UUID id, UpdateCompanyRequest request) {
-        return companyToCompanyDtoMapper.companyToCompanyDto(
-                companyRepository.update(
+        return this.companyToCompanyDtoMapper.companyToCompanyDto(
+                this.companyRepository.update(
                         Company.builder()
                                 .id(id)
                                 .name(request.name())
@@ -134,6 +136,6 @@ public class CompanyService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void delete(UUID id) {
-        companyRepository.deleteById(id);
+        this.companyRepository.deleteById(id);
     }
 }

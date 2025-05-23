@@ -45,8 +45,8 @@ public class OAuthProviderFactory {
      */
     public OAuthProvider getProvider(OAuthType type) {
         return switch (type) {
-            case GOOGLE -> googleProvider;
-            case GITHUB -> githubProvider;
+            case GOOGLE -> this.googleProvider;
+            case GITHUB -> this.githubProvider;
             default -> throw new IllegalArgumentException("Unsupported OAuth provider");
         };
     }

@@ -46,7 +46,8 @@ public class UserBasicInfoRepository {
      * @return user basic info entity with updated information
      */
     public UserBasicInfo save(UserBasicInfo userBasicInfo) {
-        return ctx.insertInto(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
+        return this.ctx
+                .insertInto(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
                 .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID, userBasicInfo.getUserId())
                 .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME, userBasicInfo.getName())
                 .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.SUMMARY, userBasicInfo.getSummary())
@@ -67,7 +68,8 @@ public class UserBasicInfoRepository {
      * @return name associated with the given userId
      */
     public String findNameByUserId(UUID userId) {
-        return ctx.select(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME)
+        return this.ctx
+                .select(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME)
                 .from(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
                 .where(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID.eq(userId))
                 .fetchOneInto(String.class);

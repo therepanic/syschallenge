@@ -65,15 +65,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7).trim();
 
-            if (jwtUtil.isTokenValid(token) && !jwtUtil.isTokenExpired(token)) {
-                UUID id = UUID.fromString(jwtUtil.extractIdFromToken(token));
+            if (this.jwtUtil.isTokenValid(token) && !this.jwtUtil.isTokenExpired(token)) {
+                UUID id = UUID.fromString(this.jwtUtil.extractIdFromToken(token));
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 id,
                                 "",
                                 List.of(
                                         new SimpleGrantedAuthority(
-                                                userRepository.findRoleById(id).name())));
+                                                this.userRepository.findRoleById(id).name())));
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 securityContext.setAuthentication(authentication);
                 SecurityContextHolder.setContext(securityContext);

@@ -48,13 +48,13 @@ public class GoogleOAuthProvider implements OAuthProvider {
     @Override
     public OAuthUserInfo extractUser(String code) {
         GoogleOAuthV4TokenResponse response =
-                googleOAuthApi.requestToken(
+                this.googleOAuthApi.requestToken(
                         new GoogleOAuthV4TokenRequest(
-                                properties.clientId(),
-                                properties.clientSecret(),
-                                properties.redirectUri(),
+                                this.properties.clientId(),
+                                this.properties.clientSecret(),
+                                this.properties.redirectUri(),
                                 code,
-                                properties.grantType()));
+                                this.properties.grantType()));
         return parseIdToken(response.idToken());
     }
 
@@ -65,7 +65,7 @@ public class GoogleOAuthProvider implements OAuthProvider {
                 new String(Base64.getDecoder().decode(idTokenBody), StandardCharsets.UTF_8);
         Map<String, Object> decodedIdTokenBodyMap;
         try {
-            decodedIdTokenBodyMap = mapper.readValue(decodedIdTokenBody, Map.class);
+            decodedIdTokenBodyMap = this.mapper.readValue(decodedIdTokenBody, Map.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

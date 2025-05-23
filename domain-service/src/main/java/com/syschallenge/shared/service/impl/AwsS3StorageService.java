@@ -48,7 +48,7 @@ public class AwsS3StorageService implements StorageService {
     public byte[] downloadFile(String bucketName, String fileName) {
         try {
             ResponseBytes<GetObjectResponse> objectBytes =
-                    client.getObjectAsBytes(
+                    this.client.getObjectAsBytes(
                             GetObjectRequest.builder().bucket(bucketName).key(fileName).build());
             return objectBytes.asByteArray();
         } catch (S3Exception e) {
@@ -59,7 +59,7 @@ public class AwsS3StorageService implements StorageService {
     @Override
     public String uploadFile(String bucketName, byte[] file, String extension) {
         String fileName = UUID.randomUUID() + "-" + System.currentTimeMillis() + extension;
-        client.putObject(
+        this.client.putObject(
                 PutObjectRequest.builder().bucket(bucketName).key(fileName).build(),
                 RequestBody.fromBytes(file));
         return fileName;
@@ -68,7 +68,7 @@ public class AwsS3StorageService implements StorageService {
     @Override
     public void deleteFile(String bucketName, String fileName) {
         try {
-            client.deleteObject(
+            this.client.deleteObject(
                     DeleteObjectRequest.builder().bucket(bucketName).key(fileName).build());
         } catch (S3Exception e) {
             throw new RuntimeException("File deletion error from S3", e);

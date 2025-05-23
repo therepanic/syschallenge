@@ -55,7 +55,7 @@ public class AuthController {
     @PostMapping("/social")
     public ResponseEntity<AuthResponse> authBySocial(
             @RequestParam("type") OAuthType type, @RequestParam("code") String code) {
-        return ResponseEntity.ok(authService.authBySocial(type, code));
+        return ResponseEntity.ok(this.authService.authBySocial(type, code));
     }
 
     /**
@@ -66,6 +66,6 @@ public class AuthController {
      */
     @GetMapping("/me")
     public ResponseEntity<Me> me(UsernamePasswordAuthenticationToken auth) {
-        return ResponseEntity.ok(authService.me(UUID.fromString(auth.getName())));
+        return ResponseEntity.ok(this.authService.me(UUID.fromString(auth.getName())));
     }
 }

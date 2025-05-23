@@ -57,7 +57,7 @@ public class UserOccupationController {
      */
     @GetMapping("/{id}/occupation")
     public UserOccupationDto get(@PathVariable("id") UUID id) {
-        return userOccupationService.get(id);
+        return this.userOccupationService.get(id);
     }
 
     /**
@@ -73,7 +73,7 @@ public class UserOccupationController {
             @PathVariable("id") UUID id,
             @RequestBody @Validated CreateOccupationRequest request,
             UsernamePasswordAuthenticationToken auth) {
-        return userOccupationService.create(id, request, UUID.fromString(auth.getName()));
+        return this.userOccupationService.create(id, request, UUID.fromString(auth.getName()));
     }
 
     /**
@@ -89,7 +89,7 @@ public class UserOccupationController {
             @PathVariable("id") UUID id,
             @RequestBody @Validated UpdateOccupationRequest request,
             UsernamePasswordAuthenticationToken auth) {
-        return userOccupationService.update(id, request, UUID.fromString(auth.getName()));
+        return this.userOccupationService.update(id, request, UUID.fromString(auth.getName()));
     }
 
     /**
@@ -100,6 +100,6 @@ public class UserOccupationController {
      */
     @DeleteMapping("/{id}/occupation")
     public void delete(@PathVariable("id") UUID id, UsernamePasswordAuthenticationToken auth) {
-        userOccupationService.delete(id, UUID.fromString(auth.getName()));
+        this.userOccupationService.delete(id, UUID.fromString(auth.getName()));
     }
 }

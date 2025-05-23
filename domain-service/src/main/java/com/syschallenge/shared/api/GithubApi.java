@@ -41,7 +41,7 @@ public class GithubApi {
     private final RestTemplate restTemplate;
 
     public GithubUser getUser(String accessToken) {
-        return restTemplate
+        return this.restTemplate
                 .exchange(
                         GITHUB_API_URI + "/user",
                         HttpMethod.GET,

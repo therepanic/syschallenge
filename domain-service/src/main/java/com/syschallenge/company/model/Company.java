@@ -36,6 +36,7 @@ import lombok.Data;
 @Builder
 @Table(name = "companies_table")
 public class Company {
+
     @Id private UUID id;
 
     private String slug;

@@ -49,12 +49,13 @@ public class AwsS3Configuration {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .region(Region.of(awsS3Property.region()))
+                .region(Region.of(this.awsS3Property.region()))
                 .credentialsProvider(
                         StaticCredentialsProvider.create(
                                 AwsBasicCredentials.create(
-                                        awsS3Property.accessKey(), awsS3Property.secretKey())))
-                .endpointOverride(URI.create(awsS3Property.endpoint()))
+                                        this.awsS3Property.accessKey(),
+                                        this.awsS3Property.secretKey())))
+                .endpointOverride(URI.create(this.awsS3Property.endpoint()))
                 .serviceConfiguration(
                         software.amazon.awssdk.services.s3.S3Configuration.builder()
                                 .pathStyleAccessEnabled(true)

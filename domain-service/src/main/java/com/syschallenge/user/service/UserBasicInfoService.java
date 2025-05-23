@@ -40,6 +40,6 @@ public class UserBasicInfoService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public String getNameByUserId(UUID userId) {
-        return userBasicInfoRepository.findNameByUserId(userId);
+        return this.userBasicInfoRepository.findNameByUserId(userId);
     }
 }

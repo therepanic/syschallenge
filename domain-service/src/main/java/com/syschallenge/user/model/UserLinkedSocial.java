@@ -35,6 +35,7 @@ import lombok.Data;
 @Builder
 @Table(name = "users_linked_social_table")
 public class UserLinkedSocial {
+
     @Id private UUID id;
 
     @Column("user_id")

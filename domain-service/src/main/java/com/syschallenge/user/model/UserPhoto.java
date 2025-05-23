@@ -35,6 +35,7 @@ import lombok.Data;
 @Builder
 @Table(name = "users_photo_table")
 public class UserPhoto {
+
     @Id private UUID id;
 
     @Column("user_id")

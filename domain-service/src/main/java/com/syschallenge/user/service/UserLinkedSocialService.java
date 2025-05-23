@@ -43,7 +43,7 @@ public class UserLinkedSocialService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public UserLinkedSocial create(UUID userId, OAuthType type, String verification) {
-        return userLinkedSocialRepository.save(
+        return this.userLinkedSocialRepository.save(
                 UserLinkedSocial.builder()
                         .userId(userId)
                         .type(UserLinkedSocialType.valueOf(type.name()))
@@ -53,11 +53,11 @@ public class UserLinkedSocialService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public UUID getUserIdByVerification(String verification) {
-        return userLinkedSocialRepository.findUserIdByVerification(verification);
+        return this.userLinkedSocialRepository.findUserIdByVerification(verification);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean existsByVerification(String verification) {
-        return userLinkedSocialRepository.existsByVerification(verification);
+        return this.userLinkedSocialRepository.existsByVerification(verification);
     }
 }

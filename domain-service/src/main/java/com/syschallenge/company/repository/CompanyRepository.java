@@ -51,7 +51,8 @@ public class CompanyRepository {
      * @return company entity with updated information
      */
     public Company save(Company company) {
-        return ctx.insertInto(CompaniesTable.COMPANIES_TABLE)
+        return this.ctx
+                .insertInto(CompaniesTable.COMPANIES_TABLE)
                 .set(CompaniesTable.COMPANIES_TABLE.NAME, company.getName())
                 .set(CompaniesTable.COMPANIES_TABLE.SLUG, company.getSlug())
                 .set(CompaniesTable.COMPANIES_TABLE.UPDATED_AT, company.getUpdatedAt())
@@ -66,7 +67,8 @@ public class CompanyRepository {
      * @return company entity with updated information
      */
     public Company update(Company company) {
-        return ctx.update(CompaniesTable.COMPANIES_TABLE)
+        return this.ctx
+                .update(CompaniesTable.COMPANIES_TABLE)
                 .set(CompaniesTable.COMPANIES_TABLE.NAME, company.getName())
                 .set(CompaniesTable.COMPANIES_TABLE.SLUG, company.getSlug())
                 .set(CompaniesTable.COMPANIES_TABLE.UPDATED_AT, company.getUpdatedAt())
@@ -99,12 +101,13 @@ public class CompanyRepository {
                                                         .desc())
                         .toList();
         List<Company> companies =
-                ctx.selectFrom(CompaniesTable.COMPANIES_TABLE)
+                this.ctx
+                        .selectFrom(CompaniesTable.COMPANIES_TABLE)
                         .orderBy(orderBy)
                         .limit(pageable.getPageSize())
                         .offset(pageable.getOffset())
                         .fetchInto(Company.class);
-        long total = ctx.fetchCount(ctx.selectFrom(CompaniesTable.COMPANIES_TABLE));
+        long total = this.ctx.fetchCount(this.ctx.selectFrom(CompaniesTable.COMPANIES_TABLE));
         return new PageImpl<>(companies, pageable, total);
     }
 
@@ -115,7 +118,8 @@ public class CompanyRepository {
      * @return company entity or null if not found
      */
     public Company findBySlug(String slug) {
-        return ctx.selectFrom(CompaniesTable.COMPANIES_TABLE)
+        return this.ctx
+                .selectFrom(CompaniesTable.COMPANIES_TABLE)
                 .where(CompaniesTable.COMPANIES_TABLE.SLUG.eq(slug))
                 .fetchOneInto(Company.class);
     }
@@ -127,7 +131,8 @@ public class CompanyRepository {
      * @return company entity or null if not found
      */
     public Company findById(UUID id) {
-        return ctx.selectFrom(CompaniesTable.COMPANIES_TABLE)
+        return this.ctx
+                .selectFrom(CompaniesTable.COMPANIES_TABLE)
                 .where(CompaniesTable.COMPANIES_TABLE.ID.eq(id))
                 .fetchOneInto(Company.class);
     }
@@ -138,7 +143,8 @@ public class CompanyRepository {
      * @param id company id to search for
      */
     public void deleteById(UUID id) {
-        ctx.deleteFrom(CompaniesTable.COMPANIES_TABLE)
+        this.ctx
+                .deleteFrom(CompaniesTable.COMPANIES_TABLE)
                 .where(CompaniesTable.COMPANIES_TABLE.ID.eq(id))
                 .execute();
     }
@@ -150,8 +156,9 @@ public class CompanyRepository {
      * @return true if a record exists, false otherwise
      */
     public boolean existsBySlug(String slug) {
-        return ctx.fetchExists(
-                ctx.selectOne()
+        return this.ctx.fetchExists(
+                this.ctx
+                        .selectOne()
                         .from(CompaniesTable.COMPANIES_TABLE)
                         .where(CompaniesTable.COMPANIES_TABLE.SLUG.eq(slug)));
     }

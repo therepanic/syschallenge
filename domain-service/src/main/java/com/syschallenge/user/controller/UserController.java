@@ -53,7 +53,7 @@ public class UserController {
      */
     @GetMapping("/{id}/photo")
     public ResponseEntity<byte[]> getPhoto(@PathVariable("id") UUID id) {
-        PhotoResponse photo = userService.getPhoto(id);
+        PhotoResponse photo = this.userService.getPhoto(id);
         if (photo.photo() == null) return ResponseEntity.notFound().build();
         String contentType;
         try {
@@ -80,7 +80,7 @@ public class UserController {
             @RequestPart("file") MultipartFile photoFile,
             UsernamePasswordAuthenticationToken auth) {
         PhotoResponse photo =
-                userService.uploadPhoto(id, photoFile, UUID.fromString(auth.getName()));
+                this.userService.uploadPhoto(id, photoFile, UUID.fromString(auth.getName()));
         if (photo.photo() == null) return ResponseEntity.notFound().build();
         String contentType;
         try {

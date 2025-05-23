@@ -45,7 +45,8 @@ public class UserLinkedSocialRepository {
      * @return user linked social entity with updated information
      */
     public UserLinkedSocial save(UserLinkedSocial userLinkedSocial) {
-        return ctx.insertInto(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
+        return this.ctx
+                .insertInto(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
                 .set(
                         UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.USER_ID,
                         userLinkedSocial.getUserId())
@@ -67,8 +68,9 @@ public class UserLinkedSocialRepository {
      *     otherwise
      */
     public boolean existsByVerification(String verification) {
-        return ctx.fetchExists(
-                ctx.selectFrom(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
+        return this.ctx.fetchExists(
+                this.ctx
+                        .selectFrom(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
                         .where(
                                 UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION.eq(
                                         verification)));
@@ -81,7 +83,8 @@ public class UserLinkedSocialRepository {
      * @return UUID of the user associated with the given verification token
      */
     public UUID findUserIdByVerification(String verification) {
-        return ctx.select(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.USER_ID)
+        return this.ctx
+                .select(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.USER_ID)
                 .from(UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE)
                 .where(
                         UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION.eq(

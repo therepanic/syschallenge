@@ -63,7 +63,7 @@ public class CompanyController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "desc") String sort) {
-        return companyService.getAll(page, size, sort);
+        return this.companyService.getAll(page, size, sort);
     }
 
     /**
@@ -74,7 +74,7 @@ public class CompanyController {
      */
     @GetMapping("/{id}")
     public CompanyDto get(@PathVariable("id") UUID id) {
-        return companyService.get(id);
+        return this.companyService.get(id);
     }
 
     /**
@@ -85,7 +85,7 @@ public class CompanyController {
      */
     @GetMapping
     public CompanyDto getBySlug(@RequestParam("slug") String slug) {
-        return companyService.getBySlug(slug);
+        return this.companyService.getBySlug(slug);
     }
 
     /**
@@ -97,7 +97,7 @@ public class CompanyController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public CompanyDto create(@RequestBody CreateCompanyRequest request) {
-        return companyService.create(request);
+        return this.companyService.create(request);
     }
 
     /**
@@ -111,7 +111,7 @@ public class CompanyController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public CompanyDto update(
             @PathVariable("id") UUID id, @RequestBody UpdateCompanyRequest request) {
-        return companyService.update(id, request);
+        return this.companyService.update(id, request);
     }
 
     /**
@@ -122,6 +122,6 @@ public class CompanyController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void delete(@PathVariable("id") UUID id) {
-        companyService.delete(id);
+        this.companyService.delete(id);
     }
 }

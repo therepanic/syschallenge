@@ -63,6 +63,6 @@ public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
                         Map.entry("error", "Unauthorized"),
                         Map.entry("message", authException.getMessage()),
                         Map.entry("path", request.getServletPath()));
-        mapper.writeValue(response.getOutputStream(), body);
+        this.mapper.writeValue(response.getOutputStream(), body);
     }
 }

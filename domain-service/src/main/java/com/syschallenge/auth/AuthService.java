@@ -61,17 +61,18 @@ public class AuthService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public AuthResponse authBySocial(OAuthType type, String code) {
-        OAuthUserInfo userInfo = providerFactory.getProvider(type).extractUser(code);
-        if (userLinkedSocialService.existsByVerification(userInfo.providerUserId())) {
+        OAuthUserInfo userInfo = this.providerFactory.getProvider(type).extractUser(code);
+        if (this.userLinkedSocialService.existsByVerification(userInfo.providerUserId())) {
             UUID userId =
-                    userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
-            User currentUser = userService.getById(userId);
-            String jwtToken = jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
+                    this.userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
+            User currentUser = this.userService.getById(userId);
+            String jwtToken =
+                    this.jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
             return new AuthResponse(jwtToken);
         } else {
-            User newUser = userService.create(userInfo);
-            userLinkedSocialService.create(newUser.getId(), type, userInfo.providerUserId());
-            String jwtToken = jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
+            User newUser = this.userService.create(userInfo);
+            this.userLinkedSocialService.create(newUser.getId(), type, userInfo.providerUserId());
+            String jwtToken = this.jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
             return new AuthResponse(jwtToken);
         }
     }
@@ -80,7 +81,7 @@ public class AuthService {
     public Me me(UUID principalUserId) {
         return new Me(
                 principalUserId,
-                userService.getUsernameById(principalUserId),
-                userBasicInfoService.getNameByUserId(principalUserId));
+                this.userService.getUsernameById(principalUserId),
+                this.userBasicInfoService.getNameByUserId(principalUserId));
     }
 }

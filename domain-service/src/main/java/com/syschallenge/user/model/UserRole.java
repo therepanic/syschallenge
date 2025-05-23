@@ -24,5 +24,6 @@ package com.syschallenge.user.model;
  */
 public enum UserRole {
     DEFAULT,
+
     ADMIN
 }

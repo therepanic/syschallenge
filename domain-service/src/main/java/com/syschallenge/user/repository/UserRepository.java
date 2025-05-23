@@ -46,7 +46,8 @@ public class UserRepository {
      * @return user entity with updated information
      */
     public User save(User user) {
-        return ctx.insertInto(UsersTable.USERS_TABLE)
+        return this.ctx
+                .insertInto(UsersTable.USERS_TABLE)
                 .set(UsersTable.USERS_TABLE.EMAIL, user.getEmail())
                 .set(UsersTable.USERS_TABLE.USERNAME, user.getUsername())
                 .set(UsersTable.USERS_TABLE.PASSWORD, user.getPassword())
@@ -63,7 +64,8 @@ public class UserRepository {
      * @return user entity associated with the given id
      */
     public User findById(UUID id) {
-        return ctx.selectFrom(UsersTable.USERS_TABLE)
+        return this.ctx
+                .selectFrom(UsersTable.USERS_TABLE)
                 .where(UsersTable.USERS_TABLE.ID.eq(id))
                 .fetchOneInto(User.class);
     }
@@ -75,7 +77,8 @@ public class UserRepository {
      * @return username associated with the given id
      */
     public String findUsernameById(UUID id) {
-        return ctx.select(UsersTable.USERS_TABLE.USERNAME)
+        return this.ctx
+                .select(UsersTable.USERS_TABLE.USERNAME)
                 .from(UsersTable.USERS_TABLE)
                 .where(UsersTable.USERS_TABLE.ID.eq(id))
                 .fetchOneInto(String.class);
@@ -88,7 +91,8 @@ public class UserRepository {
      * @return role associated with the given id
      */
     public UserRole findRoleById(UUID id) {
-        return ctx.select(UsersTable.USERS_TABLE.ROLE)
+        return this.ctx
+                .select(UsersTable.USERS_TABLE.ROLE)
                 .from(UsersTable.USERS_TABLE)
                 .where(UsersTable.USERS_TABLE.ID.eq(id))
                 .fetchOneInto(UserRole.class);

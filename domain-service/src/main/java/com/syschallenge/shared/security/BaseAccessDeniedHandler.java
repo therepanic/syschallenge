@@ -63,6 +63,6 @@ public class BaseAccessDeniedHandler implements AccessDeniedHandler {
                         Map.entry("error", "Forbidden"),
                         Map.entry("message", "You don't have the rights"),
                         Map.entry("path", request.getServletPath()));
-        mapper.writeValue(response.getOutputStream(), body);
+        this.mapper.writeValue(response.getOutputStream(), body);
     }
 }

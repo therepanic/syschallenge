@@ -45,7 +45,8 @@ public class UserOccupationRepository {
      * @return user occupation entity with updated information
      */
     public UserOccupation save(UserOccupation userOccupation) {
-        return ctx.insertInto(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+        return this.ctx
+                .insertInto(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                 .set(
                         UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID,
                         userOccupation.getUserId())
@@ -70,7 +71,8 @@ public class UserOccupationRepository {
      * @return user occupation entity or null if not found
      */
     public UserOccupation findByUserId(UUID userId) {
-        return ctx.selectFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+        return this.ctx
+                .selectFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                 .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
                 .fetchOneInto(UserOccupation.class);
     }
@@ -82,7 +84,8 @@ public class UserOccupationRepository {
      * @return user occupation entity with updated information
      */
     public UserOccupation updateByUserId(UserOccupation userOccupation) {
-        return ctx.update(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+        return this.ctx
+                .update(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                 .set(
                         UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY,
                         userOccupation.getCompany())
@@ -106,7 +109,8 @@ public class UserOccupationRepository {
      * @param userId the ID of the user
      */
     public void deleteByUserId(UUID userId) {
-        ctx.deleteFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+        this.ctx
+                .deleteFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                 .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
                 .execute();
     }
@@ -118,8 +122,9 @@ public class UserOccupationRepository {
      * @return true if a record exists, false otherwise
      */
     public boolean existsByUserId(UUID userId) {
-        return ctx.fetchExists(
-                ctx.selectOne()
+        return this.ctx.fetchExists(
+                this.ctx
+                        .selectOne()
                         .from(UsersOccupationTable.USERS_OCCUPATION_TABLE)
                         .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId)));
     }

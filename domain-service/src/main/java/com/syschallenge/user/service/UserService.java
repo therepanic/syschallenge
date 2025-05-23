@@ -73,8 +73,8 @@ public class UserService {
                         .role(UserRole.DEFAULT)
                         .registeredAt(LocalDateTime.now())
                         .build();
-        newUser = userRepository.save(newUser);
-        userBasicInfoRepository.save(
+        newUser = this.userRepository.save(newUser);
+        this.userBasicInfoRepository.save(
                 UserBasicInfo.builder()
                         .userId(newUser.getId())
                         .name(newUser.getUsername())
@@ -84,19 +84,19 @@ public class UserService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public String getUsernameById(UUID id) {
-        return userRepository.findUsernameById(id);
+        return this.userRepository.findUsernameById(id);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public User getById(UUID id) {
-        return userRepository.findById(id);
+        return this.userRepository.findById(id);
     }
 
     public PhotoResponse getPhoto(UUID id) {
-        String objectKey = userPhotoRepository.findObjectKeyByUserId(id);
+        String objectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
         if (objectKey == null) return null;
         return new PhotoResponse(
-                storageService.downloadFile(USERS_PHOTO_BUCKET, objectKey), objectKey);
+                this.storageService.downloadFile(USERS_PHOTO_BUCKET, objectKey), objectKey);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -106,7 +106,7 @@ public class UserService {
             throw new IllegalArgumentException("Unsupported extension type");
         }
         if (!id.equals(principalId)
-                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only update your own occupation.");
         }
         byte[] resizedPhotoFile;
@@ -124,19 +124,19 @@ public class UserService {
                 photoFile
                         .getOriginalFilename()
                         .substring(photoFile.getOriginalFilename().lastIndexOf("."));
-        if (userPhotoRepository.existsByUserId(id)) {
-            String userPhotoObjectKey = userPhotoRepository.findObjectKeyByUserId(id);
-            storageService.deleteFile(USERS_PHOTO_BUCKET, userPhotoObjectKey);
+        if (this.userPhotoRepository.existsByUserId(id)) {
+            String userPhotoObjectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
+            this.storageService.deleteFile(USERS_PHOTO_BUCKET, userPhotoObjectKey);
             String newUserPhotoObjectKey =
-                    storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile, extension);
-            userPhotoRepository.updateObjectKeyByUserId(newUserPhotoObjectKey, id);
+                    this.storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile, extension);
+            this.userPhotoRepository.updateObjectKeyByUserId(newUserPhotoObjectKey, id);
             return new PhotoResponse(resizedPhotoFile, newUserPhotoObjectKey);
         } else {
             String newUserPhotoObjectKey =
-                    storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile, extension);
+                    this.storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile, extension);
             UserPhoto newUserPhoto =
                     UserPhoto.builder().userId(id).objectKey(newUserPhotoObjectKey).build();
-            userPhotoRepository.save(newUserPhoto);
+            this.userPhotoRepository.save(newUserPhoto);
             return new PhotoResponse(resizedPhotoFile, newUserPhotoObjectKey);
         }
     }

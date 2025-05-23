@@ -56,8 +56,8 @@ public class UserOccupationService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public UserOccupationDto get(UUID id) {
-        return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                userOccupationRepository.findByUserId(id));
+        return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
+                this.userOccupationRepository.findByUserId(id));
     }
 
     /**
@@ -74,11 +74,11 @@ public class UserOccupationService {
     public UserOccupationDto create(UUID id, CreateOccupationRequest request, UUID principalId)
             throws PermissionDeniedException {
         if (!id.equals(principalId)
-                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only create your own occupation.");
         }
-        return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                userOccupationRepository.save(
+        return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
+                this.userOccupationRepository.save(
                         UserOccupation.builder()
                                 .userId(id)
                                 .title(request.title())
@@ -102,11 +102,11 @@ public class UserOccupationService {
     public UserOccupationDto update(UUID id, UpdateOccupationRequest request, UUID principalId)
             throws PermissionDeniedException {
         if (!id.equals(principalId)
-                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only update your own occupation.");
         }
-        return userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                userOccupationRepository.updateByUserId(
+        return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
+                this.userOccupationRepository.updateByUserId(
                         UserOccupation.builder()
                                 .userId(id)
                                 .title(request.title())
@@ -127,9 +127,9 @@ public class UserOccupationService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void delete(UUID id, UUID principalId) throws PermissionDeniedException {
         if (!id.equals(principalId)
-                && userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
             throw new PermissionDeniedException("You can only delete your own occupation.");
         }
-        userOccupationRepository.deleteByUserId(id);
+        this.userOccupationRepository.deleteByUserId(id);
     }
 }
