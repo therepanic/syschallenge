@@ -54,7 +54,6 @@ public class UserOccupationService {
      * @param id the user ID whose occupation is being got
      * @return a DTO containing the got user occupation information
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public UserOccupationDto get(UUID id) {
         return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
                 this.userOccupationRepository.findByUserId(id));

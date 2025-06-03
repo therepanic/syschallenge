@@ -82,12 +82,10 @@ public class UserService {
         return newUser;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public String getUsernameById(UUID id) {
         return this.userRepository.findUsernameById(id);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public User getById(UUID id) {
         return this.userRepository.findById(id);
     }

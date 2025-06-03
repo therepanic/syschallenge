@@ -21,12 +21,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.syschallenge.oauth.OAuthType;
 import com.syschallenge.user.model.UserLinkedSocial;
 import com.syschallenge.user.model.UserLinkedSocialType;
 import com.syschallenge.user.repository.UserLinkedSocialRepository;
-
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -51,12 +49,10 @@ public class UserLinkedSocialService {
                         .build());
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public UUID getUserIdByVerification(String verification) {
         return this.userLinkedSocialRepository.findUserIdByVerification(verification);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean existsByVerification(String verification) {
         return this.userLinkedSocialRepository.existsByVerification(verification);
     }

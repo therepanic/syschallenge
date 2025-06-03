@@ -77,7 +77,6 @@ public class AuthService {
         }
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Me me(UUID principalUserId) {
         return new Me(
                 principalUserId,

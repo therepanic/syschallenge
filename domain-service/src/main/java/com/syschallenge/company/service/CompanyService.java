@@ -56,7 +56,6 @@ public class CompanyService {
      * @param size the number of items per page
      * @return a paginated list of company DTOs
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Page<CompanyDto> getAll(int page, int size, String sort) {
         return this.companyRepository
                 .findAll(
@@ -71,7 +70,6 @@ public class CompanyService {
      * @param id the company id whose company is being got
      * @return a DTO containing the got company information
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto get(UUID id) {
         return this.companyToCompanyDtoMapper.companyToCompanyDto(
                 this.companyRepository.findById(id));
@@ -83,7 +81,6 @@ public class CompanyService {
      * @param slug the company slug whose company is being got
      * @return a DTO containing the got company information
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CompanyDto getBySlug(String slug) {
         return this.companyToCompanyDtoMapper.companyToCompanyDto(
                 this.companyRepository.findBySlug(slug));
