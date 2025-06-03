@@ -83,6 +83,8 @@ public class SecurityConfiguration {
                                     .permitAll()
                                     .requestMatchers(HttpMethod.GET, "/api/v1/company/{id}")
                                     .permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/v1/topic/all")
+                                    .permitAll()
                                     .anyRequest()
                                     .authenticated();
                         })
