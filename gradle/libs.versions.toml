@@ -1,5 +1,5 @@
 [versions]
-springBoot = "3.5.0"
+springBoot = "3.3.4"
 springDependencyManagement = "1.1.6"
 flyway = "9.22.3"
 jooqPlugin = "9.0"
