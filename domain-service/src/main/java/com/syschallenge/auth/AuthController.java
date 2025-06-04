@@ -18,7 +18,6 @@ package com.syschallenge.auth;
 
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,22 +49,22 @@ public class AuthController {
      *
      * @param type social type for OAuth
      * @param code authorization code received from OAuth
-     * @return response entity containing the response with the JWT token
+     * @return auth data
      */
     @PostMapping("/social")
-    public ResponseEntity<AuthResponse> authBySocial(
+    public AuthResponse authBySocial(
             @RequestParam("type") OAuthType type, @RequestParam("code") String code) {
-        return ResponseEntity.ok(this.authService.authBySocial(type, code));
+        return this.authService.authBySocial(type, code);
     }
 
     /**
      * Endpoint for retrieve the information about the authenticated user
      *
      * @param auth the authentication token, which contains the user ID as the principal name
-     * @return response entity containing user information (Me) for the authenticated user
+     * @return user information (Me) for the authenticated user
      */
     @GetMapping("/me")
-    public ResponseEntity<Me> me(UsernamePasswordAuthenticationToken auth) {
-        return ResponseEntity.ok(this.authService.me(UUID.fromString(auth.getName())));
+    public Me me(UsernamePasswordAuthenticationToken auth) {
+        return this.authService.me(UUID.fromString(auth.getName()));
     }
 }
