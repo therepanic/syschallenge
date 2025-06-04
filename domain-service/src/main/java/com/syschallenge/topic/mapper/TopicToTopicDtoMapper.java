@@ -28,7 +28,7 @@ import com.syschallenge.topic.model.Topic;
 /**
  * Mapper for converting Topic entity to TopicDto
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Mapper(componentModel = "spring")

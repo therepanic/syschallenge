@@ -35,7 +35,7 @@ import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

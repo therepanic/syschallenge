@@ -16,7 +16,7 @@
 
 package com.syschallenge.topic.service;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Service for handling topic-related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service
@@ -44,7 +44,7 @@ public class TopicService {
      *
      * @return list of topic DTOs
      */
-    public List<TopicDto> getAll() {
+    public Collection<TopicDto> getAll() {
         return this.topicToTopicDtoMapper.topicListToTopicDtoList(this.topicRepository.findAll());
     }
 }

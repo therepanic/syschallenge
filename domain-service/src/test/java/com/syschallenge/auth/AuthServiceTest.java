@@ -48,7 +48,7 @@ import com.syschallenge.user.service.UserLinkedSocialService;
 import com.syschallenge.user.service.UserService;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

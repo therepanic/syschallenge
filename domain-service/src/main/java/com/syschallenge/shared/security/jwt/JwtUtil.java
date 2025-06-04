@@ -35,7 +35,7 @@ import io.jsonwebtoken.Jwts;
 /**
  * Utility class for generating and validating JWT tokens
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Component

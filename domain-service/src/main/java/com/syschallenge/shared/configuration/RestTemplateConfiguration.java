@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Configuration class for setting up {@link RestTemplate} in the application
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Configuration

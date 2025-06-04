@@ -24,7 +24,7 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * A record representing user details for authentication
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record UserDetails(UUID id, Collection<? extends GrantedAuthority> authorities)

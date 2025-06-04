@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * Represents the topic data transferred as a response
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record TopicDto(UUID id, String title) {}

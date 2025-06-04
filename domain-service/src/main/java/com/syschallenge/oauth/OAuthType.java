@@ -19,7 +19,7 @@ package com.syschallenge.oauth;
 /**
  * Enumeration of supported OAuth providers
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public enum OAuthType {

@@ -31,7 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * Global exception handler for handling application-wide exceptions
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @RestControllerAdvice

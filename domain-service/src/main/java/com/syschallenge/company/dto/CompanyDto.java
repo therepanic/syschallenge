@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 /**
  * Represents the company data transferred as a response
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

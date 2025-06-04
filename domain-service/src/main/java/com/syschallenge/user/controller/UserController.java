@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * REST controller for handling user-related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @RestController

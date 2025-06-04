@@ -19,7 +19,7 @@ package com.syschallenge.oauth.google.payload.request;
 /**
  * Represents a request payload for Google OAuth V4 token request
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record GoogleOAuthV4TokenRequest(

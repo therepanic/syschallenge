@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * Record representing basic information about an authenticated user
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record Me(UUID id, String username, String name) {}

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 /**
  * Configuration class for setting up {@link ObjectMapper} in the application
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Configuration

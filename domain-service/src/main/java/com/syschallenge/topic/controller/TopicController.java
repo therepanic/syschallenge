@@ -16,6 +16,7 @@
 
 package com.syschallenge.topic.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * REST controller for handling topic-related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @RestController
@@ -41,12 +42,12 @@ public class TopicController {
     private final TopicService topicService;
 
     /**
-     * Endpoint for retrieving a list of topics
+     * Endpoint for retrieving a collection of topics
      *
-     * @return list of topics
+     * @return collection of topics
      */
     @GetMapping("/all")
-    public List<TopicDto> getAll() {
+    public Collection<TopicDto> getAll() {
         return this.topicService.getAll();
     }
 }

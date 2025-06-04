@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 /**
  * Represents a request payload for Github OAuth token request
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

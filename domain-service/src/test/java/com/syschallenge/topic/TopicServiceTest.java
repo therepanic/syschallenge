@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ import com.syschallenge.topic.repository.TopicRepository;
 import com.syschallenge.topic.service.TopicService;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
@@ -53,12 +54,12 @@ class TopicServiceTest {
         // given
         List<Topic> topics =
                 List.of(Topic.builder().id(UUID.randomUUID()).title("Load Balancing").build());
-        List<TopicDto> dtos = List.of(new TopicDto(topics.get(0).getId(), "System Design"));
+        List<TopicDto> dtos = List.of(new TopicDto(topics.get(0).getId(), "Load Balancing"));
         when(topicRepository.findAll()).thenReturn(topics);
         when(topicToTopicDtoMapper.topicListToTopicDtoList(topics)).thenReturn(dtos);
 
         // when
-        List<TopicDto> result = topicService.getAll();
+        Collection<TopicDto> result = topicService.getAll();
 
         // then
         assertNotNull(result);

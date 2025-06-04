@@ -19,7 +19,7 @@ package com.syschallenge.oauth;
 /**
  * Represents user information obtained from OAuth provider authentication
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record OAuthUserInfo(String providerUserId, String username, String email) {}

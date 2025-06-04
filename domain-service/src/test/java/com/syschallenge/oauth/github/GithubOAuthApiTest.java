@@ -32,7 +32,7 @@ import org.springframework.web.client.RestTemplate;
 import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 class GithubOAuthApiTest {

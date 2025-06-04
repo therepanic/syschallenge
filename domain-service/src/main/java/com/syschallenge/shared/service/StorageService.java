@@ -19,7 +19,7 @@ package com.syschallenge.shared.service;
 /**
  * Service interface for handling file storage operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public interface StorageService {

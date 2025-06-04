@@ -33,7 +33,7 @@ import com.syschallenge.shared.api.GithubApi;
 import com.syschallenge.shared.api.payload.response.GithubUser;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

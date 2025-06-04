@@ -38,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Filter for handling JWT authentication in HTTP requests
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Component

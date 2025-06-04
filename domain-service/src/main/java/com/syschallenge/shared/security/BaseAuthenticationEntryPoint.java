@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Entry point for handling unauthorized access
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Component

@@ -31,7 +31,7 @@ import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
 import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 class GoogleOAuthV4ApiTest {

@@ -33,7 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import com.syschallenge.shared.api.payload.response.GithubUser;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 class GithubApiTest {

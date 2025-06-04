@@ -29,7 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.syschallenge.oauth.google.GoogleOAuthProvider;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

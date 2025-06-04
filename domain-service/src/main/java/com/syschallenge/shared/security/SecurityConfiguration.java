@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Security configuration class for setting up Spring Security
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Configuration

@@ -22,7 +22,7 @@ import jakarta.validation.constraints.Size;
 /**
  * Represents a request payload for creating a company
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record CreateCompanyRequest(

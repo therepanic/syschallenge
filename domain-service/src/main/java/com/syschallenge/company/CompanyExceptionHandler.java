@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * Company exception handler for handling company-kind exceptions
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @RestControllerAdvice

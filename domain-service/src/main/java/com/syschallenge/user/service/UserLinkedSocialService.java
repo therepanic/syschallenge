@@ -21,16 +21,18 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.syschallenge.oauth.OAuthType;
 import com.syschallenge.user.model.UserLinkedSocial;
 import com.syschallenge.user.model.UserLinkedSocialType;
 import com.syschallenge.user.repository.UserLinkedSocialRepository;
+
 import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling user linked social related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service

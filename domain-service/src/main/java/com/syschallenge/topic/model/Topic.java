@@ -27,7 +27,7 @@ import lombok.Data;
 /**
  * Entity class representing a topic in the system
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Data

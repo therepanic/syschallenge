@@ -29,7 +29,7 @@ import jakarta.validation.constraints.Size;
 /**
  * Represents a request payload for creating a user's occupation
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

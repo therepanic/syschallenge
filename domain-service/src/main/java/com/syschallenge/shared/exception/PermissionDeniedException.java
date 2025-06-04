@@ -21,7 +21,7 @@ package com.syschallenge.shared.exception;
  * typically used to indicate that the user does not have the necessary rights to perform a specific
  * operation
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public class PermissionDeniedException extends RuntimeException {

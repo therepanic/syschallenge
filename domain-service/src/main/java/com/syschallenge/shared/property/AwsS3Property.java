@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Configuration properties for AWS S3
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ConfigurationProperties("aws.s3")

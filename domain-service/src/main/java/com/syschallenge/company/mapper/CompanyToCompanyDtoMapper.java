@@ -26,7 +26,7 @@ import com.syschallenge.company.model.Company;
 /**
  * Mapper for converting Company entity to CompanyDto
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Mapper(componentModel = "spring")

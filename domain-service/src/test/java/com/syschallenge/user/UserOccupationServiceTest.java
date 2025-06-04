@@ -44,7 +44,7 @@ import com.syschallenge.user.repository.UserRepository;
 import com.syschallenge.user.service.UserOccupationService;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

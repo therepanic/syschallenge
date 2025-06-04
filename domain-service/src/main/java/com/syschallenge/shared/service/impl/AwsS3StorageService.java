@@ -35,7 +35,7 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 /**
  * Service implementation for handling file storage operations using AWS S3
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service

@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Service for handling user occupation related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service

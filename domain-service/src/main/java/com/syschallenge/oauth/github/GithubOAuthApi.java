@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * A component class for interacting with the Github OAuth API
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Component

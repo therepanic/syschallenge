@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Repository for handling persistence operations related to users occupations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Repository

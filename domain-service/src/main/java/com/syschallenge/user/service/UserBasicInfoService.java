@@ -19,13 +19,15 @@ package com.syschallenge.user.service;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+
 import com.syschallenge.user.repository.UserBasicInfoRepository;
+
 import lombok.RequiredArgsConstructor;
 
 /**
  * Service for handling user basic info related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service

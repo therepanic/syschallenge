@@ -19,7 +19,7 @@ package com.syschallenge.oauth;
 /**
  * Interface for OAuth provider implementations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public interface OAuthProvider {

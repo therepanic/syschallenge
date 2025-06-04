@@ -32,7 +32,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 /**
  * Configuration class for AWS S3 client setup
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Configuration

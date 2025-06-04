@@ -33,7 +33,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.syschallenge.shared.security.UserDetails;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 class JwtUtilTest {

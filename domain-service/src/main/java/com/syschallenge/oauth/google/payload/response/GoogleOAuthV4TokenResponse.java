@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents a response payload from a Google OAuth V4 token response
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record GoogleOAuthV4TokenResponse(

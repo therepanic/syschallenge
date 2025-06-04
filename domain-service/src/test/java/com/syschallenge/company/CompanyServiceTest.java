@@ -47,7 +47,7 @@ import com.syschallenge.company.repository.CompanyRepository;
 import com.syschallenge.company.service.CompanyService;
 
 /**
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

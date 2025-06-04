@@ -26,7 +26,7 @@ import com.syschallenge.user.model.UserOccupation;
 /**
  * Mapper for converting UserOccupation entity to UserOccupationDto
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Mapper(componentModel = "spring")

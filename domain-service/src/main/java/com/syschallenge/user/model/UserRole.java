@@ -19,7 +19,7 @@ package com.syschallenge.user.model;
 /**
  * Enumeration of roles that can be linked to a user
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public enum UserRole {

@@ -49,7 +49,7 @@ import net.coobird.thumbnailator.Thumbnails;
 /**
  * Service for handling user related operations
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service

@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Google OAuth provider implementation
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 @Service

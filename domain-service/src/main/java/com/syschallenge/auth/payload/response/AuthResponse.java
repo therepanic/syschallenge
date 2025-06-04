@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Response record for authentication
  *
- * @author panic08
+ * @author therepanic
  * @since 1.0.0
  */
 public record AuthResponse(@JsonProperty("jwt_token") String jwtToken) {}
