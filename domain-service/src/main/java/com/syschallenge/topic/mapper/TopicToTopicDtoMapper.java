@@ -38,5 +38,11 @@ public interface TopicToTopicDtoMapper {
         @Mapping(target = "id", source = "id"),
         @Mapping(target = "title", source = "title")
     })
+    TopicDto topicToTopicDto(Topic topic);
+
+    @Mappings({
+        @Mapping(target = "id", source = "id"),
+        @Mapping(target = "title", source = "title")
+    })
     List<TopicDto> topicListToTopicDtoList(List<Topic> topicList);
 }

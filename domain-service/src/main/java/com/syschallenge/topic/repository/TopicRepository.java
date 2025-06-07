@@ -17,6 +17,7 @@
 package com.syschallenge.topic.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -45,5 +46,59 @@ public class TopicRepository {
      */
     public List<Topic> findAll() {
         return this.ctx.selectFrom(TopicsTable.TOPICS_TABLE).fetchInto(Topic.class);
+    }
+
+    /**
+     * Finds a topic by id
+     *
+     * @param id topic id to search for
+     * @return topic entity or null if not found
+     */
+    public Topic findById(UUID id) {
+        return this.ctx
+                .selectFrom(TopicsTable.TOPICS_TABLE)
+                .where(TopicsTable.TOPICS_TABLE.ID.eq(id))
+                .fetchOneInto(Topic.class);
+    }
+
+    /**
+     * Saves a new topic to the database
+     *
+     * @param topic entity to save
+     * @return topic entity with updated information
+     */
+    public Topic save(Topic topic) {
+        return this.ctx
+                .insertInto(TopicsTable.TOPICS_TABLE)
+                .set(TopicsTable.TOPICS_TABLE.TITLE, topic.getTitle())
+                .returningResult(TopicsTable.TOPICS_TABLE)
+                .fetchOneInto(Topic.class);
+    }
+
+    /**
+     * Updates a topic to the database
+     *
+     * @param topic entity to update
+     * @return topic entity with updated information
+     */
+    public Topic update(Topic topic) {
+        return this.ctx
+                .update(TopicsTable.TOPICS_TABLE)
+                .set(TopicsTable.TOPICS_TABLE.TITLE, topic.getTitle())
+                .where(TopicsTable.TOPICS_TABLE.ID.eq(topic.getId()))
+                .returningResult(TopicsTable.TOPICS_TABLE)
+                .fetchOneInto(Topic.class);
+    }
+
+    /**
+     * Deletes a topic based on the id to the database
+     *
+     * @param id topic id to search for
+     */
+    public void deleteById(UUID id) {
+        this.ctx
+                .deleteFrom(TopicsTable.TOPICS_TABLE)
+                .where(TopicsTable.TOPICS_TABLE.ID.eq(id))
+                .execute();
     }
 }

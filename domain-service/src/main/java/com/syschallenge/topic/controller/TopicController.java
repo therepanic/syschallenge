@@ -17,12 +17,14 @@
 package com.syschallenge.topic.controller;
 
 import java.util.Collection;
+import java.util.UUID;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.syschallenge.topic.dto.TopicDto;
+import com.syschallenge.topic.payload.CreateTopicRequest;
+import com.syschallenge.topic.payload.UpdateTopicRequest;
 import com.syschallenge.topic.service.TopicService;
 
 import lombok.RequiredArgsConstructor;
@@ -48,5 +50,52 @@ public class TopicController {
     @GetMapping("/all")
     public Collection<TopicDto> getAll() {
         return this.topicService.getAll();
+    }
+
+    /**
+     * Endpoint for retrieving topic information by ID
+     *
+     * @param id the UUID of the topic
+     * @return the retrieved topic DTO with persisted data
+     */
+    @GetMapping("/{id}")
+    public TopicDto get(@PathVariable("id") UUID id) {
+        return this.topicService.get(id);
+    }
+
+    /**
+     * Endpoint for creating a new topic
+     *
+     * @param request the validated create topic request payload
+     * @return the created topic DTO with persisted data
+     */
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public TopicDto create(@RequestBody CreateTopicRequest request) {
+        return this.topicService.create(request);
+    }
+
+    /**
+     * Endpoint for updating topic information
+     *
+     * @param id the UUID of the topic to update
+     * @param request the validated update topic request payload
+     * @return the updated topic DTO with persisted data
+     */
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public TopicDto update(@PathVariable("id") UUID id, @RequestBody UpdateTopicRequest request) {
+        return this.topicService.update(id, request);
+    }
+
+    /**
+     * Endpoint for deleting a topic
+     *
+     * @param id the UUID of the topic to delete
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void delete(@PathVariable("id") UUID id) {
+        this.topicService.delete(id);
     }
 }

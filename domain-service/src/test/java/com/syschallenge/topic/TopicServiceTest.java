@@ -18,6 +18,7 @@ package com.syschallenge.topic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +35,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.syschallenge.topic.dto.TopicDto;
 import com.syschallenge.topic.mapper.TopicToTopicDtoMapper;
 import com.syschallenge.topic.model.Topic;
+import com.syschallenge.topic.payload.CreateTopicRequest;
+import com.syschallenge.topic.payload.UpdateTopicRequest;
 import com.syschallenge.topic.repository.TopicRepository;
 import com.syschallenge.topic.service.TopicService;
 
@@ -67,5 +70,75 @@ class TopicServiceTest {
         assertEquals(dtos, result);
         verify(topicRepository).findAll();
         verify(topicToTopicDtoMapper).topicListToTopicDtoList(topics);
+    }
+
+    @Test
+    void get_returnsTopicDto() {
+        // given
+        UUID id = UUID.randomUUID();
+        Topic topic = Topic.builder().id(id).title("Scalability").build();
+        TopicDto dto = new TopicDto(id, "Scalability");
+        when(topicRepository.findById(id)).thenReturn(topic);
+        when(topicToTopicDtoMapper.topicToTopicDto(topic)).thenReturn(dto);
+
+        // when
+        TopicDto result = topicService.get(id);
+
+        // then
+        assertNotNull(result);
+        assertEquals(dto, result);
+        verify(topicRepository).findById(id);
+        verify(topicToTopicDtoMapper).topicToTopicDto(topic);
+    }
+
+    @Test
+    void create_returnsTopicDto() {
+        // given
+        CreateTopicRequest request = new CreateTopicRequest("Distributed Systems");
+        Topic savedTopic = Topic.builder().id(UUID.randomUUID()).title(request.title()).build();
+        TopicDto dto = new TopicDto(savedTopic.getId(), request.title());
+        when(topicRepository.save(any(Topic.class))).thenReturn(savedTopic);
+        when(topicToTopicDtoMapper.topicToTopicDto(savedTopic)).thenReturn(dto);
+
+        // when
+        TopicDto result = topicService.create(request);
+
+        // then
+        assertNotNull(result);
+        assertEquals(dto, result);
+        verify(topicRepository).save(any(Topic.class));
+        verify(topicToTopicDtoMapper).topicToTopicDto(savedTopic);
+    }
+
+    @Test
+    void update_returnsUpdatedTopicDto() {
+        // given
+        UUID id = UUID.randomUUID();
+        UpdateTopicRequest request = new UpdateTopicRequest("Advanced Networking");
+        Topic updatedTopic = Topic.builder().id(id).title(request.title()).build();
+        TopicDto dto = new TopicDto(id, request.title());
+        when(topicRepository.update(any(Topic.class))).thenReturn(updatedTopic);
+        when(topicToTopicDtoMapper.topicToTopicDto(updatedTopic)).thenReturn(dto);
+
+        // when
+        TopicDto result = topicService.update(id, request);
+
+        // then
+        assertNotNull(result);
+        assertEquals(dto, result);
+        verify(topicRepository).update(any(Topic.class));
+        verify(topicToTopicDtoMapper).topicToTopicDto(updatedTopic);
+    }
+
+    @Test
+    void delete_callsRepositoryDeleteById() {
+        // given
+        UUID id = UUID.randomUUID();
+
+        // when
+        topicService.delete(id);
+
+        // then
+        verify(topicRepository).deleteById(id);
     }
 }
