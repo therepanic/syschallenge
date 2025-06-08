@@ -20,7 +20,15 @@ import java.util.Collection;
 import java.util.UUID;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.syschallenge.topic.dto.TopicDto;
 import com.syschallenge.topic.payload.CreateTopicRequest;
@@ -71,7 +79,7 @@ public class TopicController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public TopicDto create(@RequestBody CreateTopicRequest request) {
+    public TopicDto create(@RequestBody @Validated CreateTopicRequest request) {
         return this.topicService.create(request);
     }
 
@@ -84,7 +92,8 @@ public class TopicController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public TopicDto update(@PathVariable("id") UUID id, @RequestBody UpdateTopicRequest request) {
+    public TopicDto update(
+            @PathVariable("id") UUID id, @RequestBody @Validated UpdateTopicRequest request) {
         return this.topicService.update(id, request);
     }
 

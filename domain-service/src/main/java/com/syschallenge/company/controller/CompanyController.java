@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -96,7 +97,7 @@ public class CompanyController {
      */
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CompanyDto create(@RequestBody CreateCompanyRequest request) {
+    public CompanyDto create(@RequestBody @Validated CreateCompanyRequest request) {
         return this.companyService.create(request);
     }
 
@@ -110,7 +111,7 @@ public class CompanyController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public CompanyDto update(
-            @PathVariable("id") UUID id, @RequestBody UpdateCompanyRequest request) {
+            @PathVariable("id") UUID id, @RequestBody @Validated UpdateCompanyRequest request) {
         return this.companyService.update(id, request);
     }
 
