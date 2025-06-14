@@ -30,7 +30,7 @@ import com.syschallenge.shared.api.payload.response.GithubUser;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Github OAuth provider implementation
+ * GitHub OAuth provider implementation
  *
  * @author therepanic
  * @since 1.0.0
@@ -59,7 +59,8 @@ public class GithubOAuthProvider implements OAuthProvider {
         return new OAuthUserInfo(
                 String.valueOf(authorizedGithubUser.id()),
                 authorizedGithubUser.login(),
-                authorizedGithubUser.email());
+                authorizedGithubUser.email(),
+                authorizedGithubUser.avatarUrl());
     }
 
     private String extractAccessToken(String input) {

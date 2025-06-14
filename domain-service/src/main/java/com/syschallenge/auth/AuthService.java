@@ -29,6 +29,7 @@ import com.syschallenge.oauth.OAuthType;
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.security.UserDetails;
 import com.syschallenge.shared.security.jwt.JwtUtil;
+import com.syschallenge.shared.util.ImageDownloaderUtil;
 import com.syschallenge.user.model.User;
 import com.syschallenge.user.service.UserBasicInfoService;
 import com.syschallenge.user.service.UserLinkedSocialService;
@@ -51,6 +52,7 @@ public class AuthService {
     private final UserLinkedSocialService userLinkedSocialService;
     private final UserBasicInfoService userBasicInfoService;
     private final JwtUtil jwtUtil;
+    private final ImageDownloaderUtil imageDownloaderUtil;
 
     /**
      * Authenticates a user through OAuth using an authorization code
@@ -71,6 +73,12 @@ public class AuthService {
             return new AuthResponse(jwtToken);
         } else {
             User newUser = this.userService.create(userInfo);
+            if (userInfo.photo() != null) {
+                this.userService.uploadPhoto(
+                        newUser.getId(),
+                        imageDownloaderUtil.download(userInfo.photo()),
+                        newUser.getId());
+            }
             this.userLinkedSocialService.create(newUser.getId(), type, userInfo.providerUserId());
             String jwtToken = this.jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
             return new AuthResponse(jwtToken);

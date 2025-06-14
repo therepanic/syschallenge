@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
- * Represents a request payload for Github OAuth token request
+ * Represents a request payload for GitHub OAuth token request
  *
  * @author therepanic
  * @since 1.0.0

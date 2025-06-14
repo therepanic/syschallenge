@@ -60,7 +60,8 @@ class UserServiceTest {
     @Test
     public void testCreateUser() {
         // arrange
-        OAuthUserInfo userInfo = new OAuthUserInfo("providerId", "username", "user@example.com");
+        OAuthUserInfo userInfo =
+                new OAuthUserInfo("providerId", "username", "user@example.com", null);
         when(userRepository.save(any(User.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
         when(userBasicInfoRepository.save(any(UserBasicInfo.class)))

@@ -71,6 +71,9 @@ public class GoogleOAuthProvider implements OAuthProvider {
         }
         String email = (String) decodedIdTokenBodyMap.get("email");
         return new OAuthUserInfo(
-                (String) decodedIdTokenBodyMap.get("sub"), email.split("@")[0], email);
+                (String) decodedIdTokenBodyMap.get("sub"),
+                email.split("@")[0],
+                email,
+                (String) decodedIdTokenBodyMap.get("picture"));
     }
 }

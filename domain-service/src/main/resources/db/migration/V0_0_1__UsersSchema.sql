@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users_table(
 CREATE TABLE IF NOT EXISTS users_photo_table(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL UNIQUE,
-    object_key VARCHAR(40) NOT NULL,
+    object_key VARCHAR(70) NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users_table(id)
 );

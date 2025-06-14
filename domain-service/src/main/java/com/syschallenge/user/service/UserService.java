@@ -105,23 +105,26 @@ public class UserService {
         }
         if (!id.equals(principalId)
                 && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
-            throw new PermissionDeniedException("You can only update your own occupation.");
+            throw new PermissionDeniedException("You can only update your own occupation");
         }
         byte[] resizedPhotoFile;
-        try (InputStream inputStream = photoFile.getInputStream()) {
-            BufferedImage resizedImage =
-                    Thumbnails.of(inputStream).size(200, 200).asBufferedImage();
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ImageIO.write(resizedImage, "jpg", outputStream);
-            resizedPhotoFile = outputStream.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         String extension =
                 photoFile
                         .getOriginalFilename()
                         .substring(photoFile.getOriginalFilename().lastIndexOf("."));
+        String extensionWithoutPoint = extension.substring(1);
+        try (InputStream inputStream = photoFile.getInputStream()) {
+            BufferedImage resizedImage =
+                    Thumbnails.of(inputStream)
+                            .size(200, 200)
+                            .outputFormat(extensionWithoutPoint)
+                            .asBufferedImage();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(resizedImage, extensionWithoutPoint, outputStream);
+            resizedPhotoFile = outputStream.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (this.userPhotoRepository.existsByUserId(id)) {
             String userPhotoObjectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
             this.storageService.deleteFile(USERS_PHOTO_BUCKET, userPhotoObjectKey);

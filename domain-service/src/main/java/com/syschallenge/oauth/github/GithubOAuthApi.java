@@ -24,7 +24,7 @@ import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
- * A component class for interacting with the Github OAuth API
+ * A component class for interacting with the GitHub OAuth API
  *
  * @author therepanic
  * @since 1.0.0

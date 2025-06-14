@@ -48,4 +48,7 @@ class OAuthProviderFactoryTest {
         assertInstanceOf(GoogleOAuthProvider.class, result);
         assertEquals(googleProvider, result);
     }
+
+    // TODO create getProvider_GitHubType_ReturnsGitHubProvider
+
 }
