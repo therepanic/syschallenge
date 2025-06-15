@@ -22,7 +22,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.syschallenge.shared.api.payload.response.GithubUser;
+import com.syschallenge.shared.api.payload.response.GitHubUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,13 +34,13 @@ import lombok.RequiredArgsConstructor;
  */
 @Component
 @RequiredArgsConstructor
-public class GithubApi {
+public class GitHubApi {
 
     private static final String GITHUB_API_URI = "https://api.github.com";
 
     private final RestTemplate restTemplate;
 
-    public GithubUser getUser(String accessToken) {
+    public GitHubUser getUser(String accessToken) {
         return this.restTemplate
                 .exchange(
                         GITHUB_API_URI + "/user",
@@ -51,7 +51,7 @@ public class GithubApi {
                                         setBearerAuth(accessToken);
                                     }
                                 }),
-                        GithubUser.class)
+                        GitHubUser.class)
                 .getBody();
     }
 }

@@ -26,7 +26,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.syschallenge.oauth.github.GithubOAuthProvider;
+import com.syschallenge.oauth.github.GitHubOAuthProvider;
 import com.syschallenge.oauth.google.GoogleOAuthProvider;
 
 /**
@@ -36,7 +36,7 @@ import com.syschallenge.oauth.google.GoogleOAuthProvider;
 @ExtendWith(MockitoExtension.class)
 class OAuthProviderFactoryTest {
     @Mock private GoogleOAuthProvider googleProvider;
-    @Mock private GithubOAuthProvider githubOAuthProvider;
+    @Mock private GitHubOAuthProvider githubOAuthProvider;
 
     @InjectMocks private OAuthProviderFactory factory;
 
@@ -58,7 +58,7 @@ class OAuthProviderFactoryTest {
 
         // Assert
         assertNotNull(result);
-        assertInstanceOf(GithubOAuthProvider.class, result);
+        assertInstanceOf(GitHubOAuthProvider.class, result);
         assertEquals(githubOAuthProvider, result);
     }
 }

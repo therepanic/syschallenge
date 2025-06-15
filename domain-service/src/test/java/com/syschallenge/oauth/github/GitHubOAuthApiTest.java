@@ -29,30 +29,30 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
+import com.syschallenge.oauth.github.payload.request.GitHubOAuthTokenRequest;
 
 /**
  * @author therepanic
  * @since 1.0.0
  */
-class GithubOAuthApiTest {
+class GitHubOAuthApiTest {
 
-    private GithubOAuthApi githubOAuthApi;
+    private GitHubOAuthApi githubOAuthApi;
 
     private MockRestServiceServer mockRestServiceServer;
 
     @BeforeEach
     void setUp() {
         RestTemplate restTemplate = new RestTemplate();
-        this.githubOAuthApi = new GithubOAuthApi(restTemplate);
+        this.githubOAuthApi = new GitHubOAuthApi(restTemplate);
         this.mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
 
     @Test
     void testRequestToken() {
         // Given
-        GithubOAuthTokenRequest request =
-                new GithubOAuthTokenRequest(
+        GitHubOAuthTokenRequest request =
+                new GitHubOAuthTokenRequest(
                         "test-client-id",
                         "test-client-secret",
                         "test-code",

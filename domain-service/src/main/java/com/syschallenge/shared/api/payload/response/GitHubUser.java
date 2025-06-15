@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record GithubUser(
+public record GitHubUser(
         String login,
         long id,
         String nodeId,

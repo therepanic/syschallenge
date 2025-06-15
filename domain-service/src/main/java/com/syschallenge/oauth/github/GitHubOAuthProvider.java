@@ -23,9 +23,9 @@ import org.springframework.stereotype.Service;
 
 import com.syschallenge.oauth.OAuthProvider;
 import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.oauth.github.payload.request.GithubOAuthTokenRequest;
-import com.syschallenge.shared.api.GithubApi;
-import com.syschallenge.shared.api.payload.response.GithubUser;
+import com.syschallenge.oauth.github.payload.request.GitHubOAuthTokenRequest;
+import com.syschallenge.shared.api.GitHubApi;
+import com.syschallenge.shared.api.payload.response.GitHubUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,11 +37,11 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
-public class GithubOAuthProvider implements OAuthProvider {
+public class GitHubOAuthProvider implements OAuthProvider {
 
-    private final GithubOAuthApi githubOAuthApi;
-    private final GithubApi githubApi;
-    private final GithubOAuthProperty properties;
+    private final GitHubOAuthApi githubOAuthApi;
+    private final GitHubApi githubApi;
+    private final GitHubOAuthProperty properties;
 
     private static final Pattern TOKEN_PATTERN = Pattern.compile("access_token=([^&]+)");
 
@@ -49,13 +49,13 @@ public class GithubOAuthProvider implements OAuthProvider {
     public OAuthUserInfo extractUser(String code) {
         String accessToken =
                 this.githubOAuthApi.requestToken(
-                        new GithubOAuthTokenRequest(
+                        new GitHubOAuthTokenRequest(
                                 this.properties.clientId(),
                                 this.properties.clientSecret(),
                                 code,
                                 this.properties.redirectUri()));
         String extractedAccessToken = extractAccessToken(accessToken);
-        GithubUser authorizedGithubUser = this.githubApi.getUser(extractedAccessToken);
+        GitHubUser authorizedGithubUser = this.githubApi.getUser(extractedAccessToken);
         return new OAuthUserInfo(
                 String.valueOf(authorizedGithubUser.id()),
                 authorizedGithubUser.login(),

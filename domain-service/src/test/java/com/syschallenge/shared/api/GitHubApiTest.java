@@ -30,21 +30,21 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import com.syschallenge.shared.api.payload.response.GithubUser;
+import com.syschallenge.shared.api.payload.response.GitHubUser;
 
 /**
  * @author therepanic
  * @since 1.0.0
  */
-class GithubApiTest {
+class GitHubApiTest {
 
-    private GithubApi githubApi;
+    private GitHubApi githubApi;
     private MockRestServiceServer mockRestServiceServer;
 
     @BeforeEach
     void setUp() {
         RestTemplate restTemplate = new RestTemplate();
-        this.githubApi = new GithubApi(restTemplate);
+        this.githubApi = new GitHubApi(restTemplate);
         this.mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
 
@@ -100,7 +100,7 @@ class GithubApiTest {
                 .andRespond(withSuccess(expectedResponseBody, MediaType.APPLICATION_JSON));
 
         // When
-        GithubUser user = githubApi.getUser(accessToken);
+        GitHubUser user = githubApi.getUser(accessToken);
 
         // Then
         assertEquals("panic08", user.login());

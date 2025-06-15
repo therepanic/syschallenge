@@ -18,7 +18,7 @@ package com.syschallenge.oauth;
 
 import org.springframework.stereotype.Service;
 
-import com.syschallenge.oauth.github.GithubOAuthProvider;
+import com.syschallenge.oauth.github.GitHubOAuthProvider;
 import com.syschallenge.oauth.google.GoogleOAuthProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class OAuthProviderFactory {
 
     private final GoogleOAuthProvider googleProvider;
-    private final GithubOAuthProvider githubProvider;
+    private final GitHubOAuthProvider githubProvider;
 
     /**
      * Returns OAuth provider implementation for specified type

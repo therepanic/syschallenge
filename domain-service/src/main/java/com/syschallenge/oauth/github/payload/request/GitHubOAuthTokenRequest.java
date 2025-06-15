@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package com.syschallenge.oauth.github;
+package com.syschallenge.oauth.github.payload.request;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-@ConfigurationProperties("github.oauth")
-public record GithubOAuthProperty(String clientId, String clientSecret, String redirectUri) {}
+/**
+ * Represents a request payload for GitHub OAuth token request
+ *
+ * @author therepanic
+ * @since 1.0.0
+ */
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record GitHubOAuthTokenRequest(
+        String clientId, String clientSecret, String code, String redirectUri) {}

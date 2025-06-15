@@ -29,22 +29,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.shared.api.GithubApi;
-import com.syschallenge.shared.api.payload.response.GithubUser;
+import com.syschallenge.shared.api.GitHubApi;
+import com.syschallenge.shared.api.payload.response.GitHubUser;
 
 /**
  * @author therepanic
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
-class GithubOAuthProviderTest {
-    @Mock private GithubOAuthApi githubOAuthApi;
+class GitHubOAuthProviderTest {
+    @Mock private GitHubOAuthApi githubOAuthApi;
 
-    @Mock private GithubApi githubApi;
+    @Mock private GitHubApi githubApi;
 
-    @Mock private GithubOAuthProperty properties;
+    @Mock private GitHubOAuthProperty properties;
 
-    @InjectMocks private GithubOAuthProvider githubOAuthProvider;
+    @InjectMocks private GitHubOAuthProvider githubOAuthProvider;
 
     private final String testCode = "test_code";
     private final String testAccessTokenResponse =
@@ -53,8 +53,8 @@ class GithubOAuthProviderTest {
 
     @Test
     void extractUser_ValidCode_ReturnsUserInfo() {
-        GithubUser testGithubUser =
-                new GithubUser(
+        GitHubUser testGitHubUser =
+                new GitHubUser(
                         "testuser", // login
                         123, // id
                         "node_id_example", // nodeId
@@ -95,7 +95,7 @@ class GithubOAuthProviderTest {
         when(properties.clientSecret()).thenReturn("client_secret");
         when(properties.redirectUri()).thenReturn("redirect_uri");
         when(githubOAuthApi.requestToken(any())).thenReturn(testAccessTokenResponse);
-        when(githubApi.getUser(testAccessToken)).thenReturn(testGithubUser);
+        when(githubApi.getUser(testAccessToken)).thenReturn(testGitHubUser);
 
         // Act
         OAuthUserInfo userInfo = githubOAuthProvider.extractUser(testCode);
