@@ -30,7 +30,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.syschallenge.shared.service.impl.AwsS3StorageService;
+import com.syschallenge.shared.service.impl.AwsS3FileStorageService;
 
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -48,10 +48,10 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
-class AwsS3StorageServiceTest {
+class AwsS3FileStorageServiceTest {
     @Mock private S3Client s3Client;
 
-    @InjectMocks private AwsS3StorageService awsS3StorageService;
+    @InjectMocks private AwsS3FileStorageService awsS3StorageService;
 
     private static final String BUCKET_NAME = "test-bucket";
     private static final String FILE_NAME = "test-file.txt";

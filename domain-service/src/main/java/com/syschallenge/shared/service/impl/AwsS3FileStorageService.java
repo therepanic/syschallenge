@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.syschallenge.shared.service.StorageService;
+import com.syschallenge.shared.service.FileStorageService;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.ResponseBytes;
@@ -40,7 +40,7 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
  */
 @Service
 @RequiredArgsConstructor
-public class AwsS3StorageService implements StorageService {
+public class AwsS3FileStorageService implements FileStorageService {
 
     private final S3Client client;
 

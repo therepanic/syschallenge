@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.syschallenge.oauth.OAuthUserInfo;
 import com.syschallenge.shared.exception.PermissionDeniedException;
-import com.syschallenge.shared.service.StorageService;
+import com.syschallenge.shared.service.FileStorageService;
 import com.syschallenge.user.model.User;
 import com.syschallenge.user.model.UserBasicInfo;
 import com.syschallenge.user.model.UserPhoto;
@@ -59,7 +59,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserPhotoRepository userPhotoRepository;
     private final UserBasicInfoRepository userBasicInfoRepository;
-    private final StorageService storageService;
+    private final FileStorageService storageService;
 
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".png", ".jpg", ".jpeg");
     private static final String USERS_PHOTO_BUCKET = "users-photo";

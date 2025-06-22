@@ -31,7 +31,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.syschallenge.oauth.OAuthUserInfo;
-import com.syschallenge.shared.service.StorageService;
+import com.syschallenge.shared.service.FileStorageService;
 import com.syschallenge.user.model.User;
 import com.syschallenge.user.model.UserBasicInfo;
 import com.syschallenge.user.model.UserRole;
@@ -53,7 +53,7 @@ class UserServiceTest {
 
     @Mock private UserBasicInfoRepository userBasicInfoRepository;
 
-    @Mock private StorageService storageService;
+    @Mock private FileStorageService storageService;
 
     @InjectMocks private UserService userService;
 

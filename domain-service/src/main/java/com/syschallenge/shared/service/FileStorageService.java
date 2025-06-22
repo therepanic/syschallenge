@@ -22,7 +22,7 @@ package com.syschallenge.shared.service;
  * @author therepanic
  * @since 1.0.0
  */
-public interface StorageService {
+public interface FileStorageService {
 
     /**
      * Downloads a file from the specified bucket
