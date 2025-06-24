@@ -58,6 +58,7 @@ public class GoogleOAuthProvider implements OAuthProvider {
         return parseIdToken(response.idToken());
     }
 
+    @SuppressWarnings("unchecked")
     private OAuthUserInfo parseIdToken(String idToken) {
         // highlight the center of the token
         String idTokenBody = idToken.replaceFirst("^[^.]+\\.([^.]+)\\.[^.]+$", "$1");

@@ -1,11 +1,12 @@
 [versions]
-springBoot = "3.3.4"
-springDependencyManagement = "1.1.6"
+springBoot = "3.5.3"
+springDependencyManagement = "1.1.7"
 flyway = "9.22.3"
-jooqPlugin = "9.0"
-springdoc = "2.6.0"
-micrometer = "1.13.6"
-awsSdk = "2.30.30"
+jooq = "3.19.24"
+jooqPlugin = "10.1"
+springdoc = "2.8.9"
+micrometer = "1.15.1"
+awsSdk = "2.31.68"
 jjwt = "0.12.6"
 mapstruct = "1.5.5.Final"
 thumbnailator = "0.4.20"
@@ -29,3 +30,4 @@ jjwJackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
 thumbnailator = { module = "net.coobird:thumbnailator", version.ref = "thumbnailator" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstructProcessor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+jooqCodegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
