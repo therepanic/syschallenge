@@ -28,7 +28,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  * @author therepanic
  * @since 1.0.0
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class JacksonConfiguration {
 
     /**

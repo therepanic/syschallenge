@@ -35,7 +35,7 @@ import software.amazon.awssdk.services.s3.S3Client;
  * @author therepanic
  * @since 1.0.0
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
 public class AwsS3Configuration {
 

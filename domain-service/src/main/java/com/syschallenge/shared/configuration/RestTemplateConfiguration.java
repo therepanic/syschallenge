@@ -26,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
  * @author therepanic
  * @since 1.0.0
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class RestTemplateConfiguration {
 
     /**
