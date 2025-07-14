@@ -17,7 +17,7 @@
 package com.syschallenge.oauth.github;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.syschallenge.oauth.github.payload.request.GitHubOAuthTokenRequest;
 
@@ -35,7 +35,7 @@ public class GitHubOAuthApi {
 
     private static final String GITHUB_OAUTH_API_URI = "https://github.com/login/oauth";
 
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
 
     /**
      * Requests an OAuth token from GitHub using the provided request data
@@ -44,7 +44,12 @@ public class GitHubOAuthApi {
      * @return containing access token
      */
     public String requestToken(GitHubOAuthTokenRequest request) {
-        return this.restTemplate.postForObject(
-                GITHUB_OAUTH_API_URI + "/access_token", request, String.class);
+        return this.restClient
+                .post()
+                .uri(GITHUB_OAUTH_API_URI + "/access_token")
+                .body(request)
+                .retrieve()
+                .toEntity(String.class)
+                .getBody();
     }
 }

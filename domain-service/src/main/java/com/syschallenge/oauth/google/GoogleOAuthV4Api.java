@@ -17,7 +17,7 @@
 package com.syschallenge.oauth.google;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
 import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class GoogleOAuthV4Api {
     private static final String GOOGLE_OAUTH_V4_API_URI = "https://www.googleapis.com/oauth2/v4";
 
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
 
     /**
      * Requests an OAuth token from Google using the provided request data
@@ -44,7 +44,12 @@ public class GoogleOAuthV4Api {
      * @return {@link GoogleOAuthV4TokenResponse} containing response details
      */
     public GoogleOAuthV4TokenResponse requestToken(GoogleOAuthV4TokenRequest request) {
-        return this.restTemplate.postForObject(
-                GOOGLE_OAUTH_V4_API_URI + "/token", request, GoogleOAuthV4TokenResponse.class);
+        return this.restClient
+                .post()
+                .uri(GOOGLE_OAUTH_V4_API_URI + "/token")
+                .body(request)
+                .retrieve()
+                .toEntity(GoogleOAuthV4TokenResponse.class)
+                .getBody();
     }
 }

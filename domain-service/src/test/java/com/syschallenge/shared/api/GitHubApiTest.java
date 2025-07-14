@@ -24,11 +24,14 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.syschallenge.shared.api.payload.response.GitHubUser;
 
@@ -36,16 +39,19 @@ import com.syschallenge.shared.api.payload.response.GitHubUser;
  * @author therepanic
  * @since 1.0.0
  */
+@RestClientTest
+@DirtiesContext
 class GitHubApiTest {
 
+    @Autowired private RestClient.Builder restClient;
+
     private GitHubApi githubApi;
-    private MockRestServiceServer mockRestServiceServer;
+
+    @Autowired private MockRestServiceServer mockRestServiceServer;
 
     @BeforeEach
     void setUp() {
-        RestTemplate restTemplate = new RestTemplate();
-        this.githubApi = new GitHubApi(restTemplate);
-        this.mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
+        this.githubApi = new GitHubApi(restClient.build());
     }
 
     @Test

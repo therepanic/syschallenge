@@ -18,24 +18,24 @@ package com.syschallenge.shared.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 /**
- * Configuration class for setting up {@link RestTemplate} in the application
+ * Configuration class for setting up {@link RestClient} in the application
  *
  * @author therepanic
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-public class RestTemplateConfiguration {
+public class RestClientConfiguration {
 
     /**
-     * Creates a {@link RestTemplate} bean for performing HTTP requests
+     * Creates a {@link RestClient} bean for performing HTTP requests
      *
-     * @return new {@link RestTemplate} instance
+     * @return new {@link RestClient} instance
      */
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public RestClient restClient() {
+        return RestClient.create();
     }
 }

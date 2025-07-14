@@ -16,18 +16,15 @@
 
 package com.syschallenge.shared.api;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.syschallenge.shared.api.payload.response.GitHubUser;
 
 import lombok.RequiredArgsConstructor;
 
 /**
- * A component class for interacting with the Github API
+ * A component class for interacting with the GitHub API
  *
  * @author therepanic
  * @since 1.0.0
@@ -38,20 +35,15 @@ public class GitHubApi {
 
     private static final String GITHUB_API_URI = "https://api.github.com";
 
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
 
     public GitHubUser getUser(String accessToken) {
-        return this.restTemplate
-                .exchange(
-                        GITHUB_API_URI + "/user",
-                        HttpMethod.GET,
-                        new HttpEntity<>(
-                                new HttpHeaders() {
-                                    {
-                                        setBearerAuth(accessToken);
-                                    }
-                                }),
-                        GitHubUser.class)
+        return this.restClient
+                .get()
+                .uri(GITHUB_API_URI + "/user")
+                .header("Authorization", "Bearer " + accessToken)
+                .retrieve()
+                .toEntity(GitHubUser.class)
                 .getBody();
     }
 }

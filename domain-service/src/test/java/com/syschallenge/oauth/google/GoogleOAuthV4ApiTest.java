@@ -20,12 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.syschallenge.oauth.google.payload.request.GoogleOAuthV4TokenRequest;
 import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse;
@@ -34,17 +37,19 @@ import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse
  * @author therepanic
  * @since 1.0.0
  */
+@RestClientTest
+@DirtiesContext
 class GoogleOAuthV4ApiTest {
 
     private GoogleOAuthV4Api googleOAuthApi;
-    private MockRestServiceServer mockRestServiceServer;
+
+    @Autowired private RestClient.Builder restClient;
+
+    @Autowired private MockRestServiceServer mockRestServiceServer;
 
     @BeforeEach
     void setUp() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        this.googleOAuthApi = new GoogleOAuthV4Api(restTemplate);
-        this.mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
+        this.googleOAuthApi = new GoogleOAuthV4Api(restClient.build());
     }
 
     @Test
