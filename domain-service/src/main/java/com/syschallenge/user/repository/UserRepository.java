@@ -51,7 +51,7 @@ public class UserRepository {
                 .set(UsersTable.USERS_TABLE.EMAIL, user.getEmail())
                 .set(UsersTable.USERS_TABLE.USERNAME, user.getUsername())
                 .set(UsersTable.USERS_TABLE.PASSWORD, user.getPassword())
-                .set(UsersTable.USERS_TABLE.ROLE, user.getRole().toString())
+                .set(UsersTable.USERS_TABLE.ROLE, com.syschallenge.public_.enums.UserRole.valueOf(user.getRole().name()))
                 .set(UsersTable.USERS_TABLE.REGISTERED_AT, user.getRegisteredAt())
                 .returningResult(UsersTable.USERS_TABLE)
                 .fetchOneInto(User.class);

@@ -1,9 +1,10 @@
+CREATE TYPE user_role AS ENUM ('DEFAULT', 'ADMIN');
 CREATE TABLE IF NOT EXISTS users_table(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     username VARCHAR(30) NOT NULL,
     email VARCHAR(320) UNIQUE NOT NULL,
     password VARCHAR(73),
-    role VARCHAR(20) NOT NULL,
+    role user_role NOT NULL,
     registered_at TIMESTAMP NOT NULL
 );
 
@@ -15,22 +16,24 @@ CREATE TABLE IF NOT EXISTS users_photo_table(
     FOREIGN KEY (user_id) REFERENCES users_table(id)
 );
 
+CREATE TYPE user_linked_social_type AS ENUM ('GOOGLE', 'GITHUB');
 CREATE TABLE IF NOT EXISTS users_linked_social_table(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
-    type VARCHAR(30) NOT NULL,
+    type user_linked_social_type NOT NULL,
     verification VARCHAR(100) NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users_table(id)
 );
 
+CREATE TYPE user_basic_info_gender AS ENUM ('MALE', 'FEMALE', 'OTHER');
 CREATE TABLE IF NOT EXISTS users_basic_info_table(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID UNIQUE NOT NULL,
     name VARCHAR(30) NOT NULL,
     summary VARCHAR(512),
     birthday TIMESTAMP,
-    gender VARCHAR(6),
+    gender user_basic_info_gender,
 
     FOREIGN KEY (user_id) REFERENCES users_table(id)
 );

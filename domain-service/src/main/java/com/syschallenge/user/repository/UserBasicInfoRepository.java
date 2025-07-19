@@ -19,6 +19,7 @@ package com.syschallenge.user.repository;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.syschallenge.public_.enums.UserBasicInfoGender;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
@@ -56,7 +57,7 @@ public class UserBasicInfoRepository {
                         userBasicInfo.getBirthday())
                 .set(
                         UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.GENDER,
-                        Objects.toString(userBasicInfo.getGender(), null))
+                        UserBasicInfoGender.valueOf(userBasicInfo.getGender().name()))
                 .returningResult(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
                 .fetchOneInto(UserBasicInfo.class);
     }

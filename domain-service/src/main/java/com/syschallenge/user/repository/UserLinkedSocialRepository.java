@@ -18,6 +18,7 @@ package com.syschallenge.user.repository;
 
 import java.util.UUID;
 
+import com.syschallenge.public_.enums.UserLinkedSocialType;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
@@ -52,7 +53,7 @@ public class UserLinkedSocialRepository {
                         userLinkedSocial.getUserId())
                 .set(
                         UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.TYPE,
-                        userLinkedSocial.getType().toString())
+                        UserLinkedSocialType.valueOf(userLinkedSocial.getType().name()))
                 .set(
                         UsersLinkedSocialTable.USERS_LINKED_SOCIAL_TABLE.VERIFICATION,
                         userLinkedSocial.getVerification())
