@@ -18,10 +18,10 @@ package com.syschallenge.user.repository;
 
 import java.util.UUID;
 
-import com.syschallenge.public_.enums.UserLinkedSocialType;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import com.syschallenge.public_.enums.UserLinkedSocialType;
 import com.syschallenge.public_.tables.UsersLinkedSocialTable;
 import com.syschallenge.user.model.UserLinkedSocial;
 

@@ -16,13 +16,12 @@
 
 package com.syschallenge.user.repository;
 
-import java.util.Objects;
 import java.util.UUID;
 
-import com.syschallenge.public_.enums.UserBasicInfoGender;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import com.syschallenge.public_.enums.UserBasicInfoGender;
 import com.syschallenge.public_.tables.UsersBasicInfoTable;
 import com.syschallenge.user.model.UserBasicInfo;
 
