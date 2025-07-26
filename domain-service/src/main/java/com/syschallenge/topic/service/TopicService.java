@@ -42,62 +42,58 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TopicService {
 
-    private final TopicRepository topicRepository;
-    private final TopicToTopicDtoMapper topicToTopicDtoMapper;
+	private final TopicRepository topicRepository;
 
-    /**
-     * Get list of topics
-     *
-     * @return list of topic DTOs
-     */
-    public Collection<TopicDto> getAll() {
-        return this.topicToTopicDtoMapper.topicListToTopicDtoList(this.topicRepository.findAll());
-    }
+	private final TopicToTopicDtoMapper topicToTopicDtoMapper;
 
-    /**
-     * Get a topic details
-     *
-     * @param id the topic id whose topic is being got
-     * @return a DTO containing the got topic information
-     */
-    public TopicDto get(UUID id) {
-        return this.topicToTopicDtoMapper.topicToTopicDto(this.topicRepository.findById(id));
-    }
+	/**
+	 * Get list of topics
+	 * @return list of topic DTOs
+	 */
+	public Collection<TopicDto> getAll() {
+		return this.topicToTopicDtoMapper.topicListToTopicDtoList(this.topicRepository.findAll());
+	}
 
-    /**
-     * Creates a topic
-     *
-     * @param request the topic create details
-     * @return a DTO containing the created topic information
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public TopicDto create(CreateTopicRequest request) {
-        Topic newTopic = Topic.builder().title(request.title()).build();
-        newTopic = this.topicRepository.save(newTopic);
-        return this.topicToTopicDtoMapper.topicToTopicDto(newTopic);
-    }
+	/**
+	 * Get a topic details
+	 * @param id the topic id whose topic is being got
+	 * @return a DTO containing the got topic information
+	 */
+	public TopicDto get(UUID id) {
+		return this.topicToTopicDtoMapper.topicToTopicDto(this.topicRepository.findById(id));
+	}
 
-    /**
-     * Updates a topic
-     *
-     * @param id the topic ID to update
-     * @param request the request containing updated topic details
-     * @return a DTO containing the updated topic information
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public TopicDto update(UUID id, UpdateTopicRequest request) {
-        Topic topicToUpdate = Topic.builder().id(id).title(request.title()).build();
-        return this.topicToTopicDtoMapper.topicToTopicDto(
-                this.topicRepository.update(topicToUpdate));
-    }
+	/**
+	 * Creates a topic
+	 * @param request the topic create details
+	 * @return a DTO containing the created topic information
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public TopicDto create(CreateTopicRequest request) {
+		Topic newTopic = Topic.builder().title(request.title()).build();
+		newTopic = this.topicRepository.save(newTopic);
+		return this.topicToTopicDtoMapper.topicToTopicDto(newTopic);
+	}
 
-    /**
-     * Deletes a topic details
-     *
-     * @param id the topic ID
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void delete(UUID id) {
-        this.topicRepository.deleteById(id);
-    }
+	/**
+	 * Updates a topic
+	 * @param id the topic ID to update
+	 * @param request the request containing updated topic details
+	 * @return a DTO containing the updated topic information
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public TopicDto update(UUID id, UpdateTopicRequest request) {
+		Topic topicToUpdate = Topic.builder().id(id).title(request.title()).build();
+		return this.topicToTopicDtoMapper.topicToTopicDto(this.topicRepository.update(topicToUpdate));
+	}
+
+	/**
+	 * Deletes a topic details
+	 * @param id the topic ID
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void delete(UUID id) {
+		this.topicRepository.deleteById(id);
+	}
+
 }

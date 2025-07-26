@@ -29,13 +29,13 @@ import org.springframework.web.client.RestClient;
 @Configuration(proxyBeanMethods = false)
 public class RestClientConfiguration {
 
-    /**
-     * Creates a {@link RestClient} bean for performing HTTP requests
-     *
-     * @return new {@link RestClient} instance
-     */
-    @Bean
-    public RestClient restClient() {
-        return RestClient.create();
-    }
+	/**
+	 * Creates a {@link RestClient} bean for performing HTTP requests
+	 * @return new {@link RestClient} instance
+	 */
+	@Bean
+	public RestClient restClient() {
+		return RestClient.create();
+	}
+
 }

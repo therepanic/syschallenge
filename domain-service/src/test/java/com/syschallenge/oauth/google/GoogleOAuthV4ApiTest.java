@@ -41,48 +41,40 @@ import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse
 @DirtiesContext
 class GoogleOAuthV4ApiTest {
 
-    private GoogleOAuthV4Api googleOAuthApi;
+	private GoogleOAuthV4Api googleOAuthApi;
 
-    @Autowired private RestClient.Builder restClient;
+	@Autowired
+	private RestClient.Builder restClient;
 
-    @Autowired private MockRestServiceServer mockRestServiceServer;
+	@Autowired
+	private MockRestServiceServer mockRestServiceServer;
 
-    @BeforeEach
-    void setUp() {
-        this.googleOAuthApi = new GoogleOAuthV4Api(restClient.build());
-    }
+	@BeforeEach
+	void setUp() {
+		this.googleOAuthApi = new GoogleOAuthV4Api(restClient.build());
+	}
 
-    @Test
-    void testRequestToken() {
-        GoogleOAuthV4TokenRequest request =
-                new GoogleOAuthV4TokenRequest(null, null, null, null, null);
+	@Test
+	void testRequestToken() {
+		GoogleOAuthV4TokenRequest request = new GoogleOAuthV4TokenRequest(null, null, null, null, null);
 
-        String expectedResponse =
-                "{ "
-                        + "\"access_token\": \"test-access_token\", "
-                        + "\"expires_in\": 1, "
-                        + "\"scope\": \"test-scope\", "
-                        + "\"token_type\": \"test-token_type\", "
-                        + "\"id_token\": \"test-id_token\" "
-                        + "}";
+		String expectedResponse = "{ " + "\"access_token\": \"test-access_token\", " + "\"expires_in\": 1, "
+				+ "\"scope\": \"test-scope\", " + "\"token_type\": \"test-token_type\", "
+				+ "\"id_token\": \"test-id_token\" " + "}";
 
-        mockRestServiceServer
-                .expect(MockRestRequestMatchers.method(HttpMethod.POST))
-                .andExpect(
-                        MockRestRequestMatchers.requestTo(
-                                "https://www.googleapis.com/oauth2/v4/token"))
-                .andRespond(
-                        MockRestResponseCreators.withSuccess(
-                                expectedResponse, MediaType.APPLICATION_JSON));
+		mockRestServiceServer.expect(MockRestRequestMatchers.method(HttpMethod.POST))
+			.andExpect(MockRestRequestMatchers.requestTo("https://www.googleapis.com/oauth2/v4/token"))
+			.andRespond(MockRestResponseCreators.withSuccess(expectedResponse, MediaType.APPLICATION_JSON));
 
-        GoogleOAuthV4TokenResponse response = googleOAuthApi.requestToken(request);
+		GoogleOAuthV4TokenResponse response = googleOAuthApi.requestToken(request);
 
-        assertEquals("test-access_token", response.accessToken());
-        assertEquals(1, response.expiresIn());
-        assertEquals("test-scope", response.scope());
-        assertEquals("test-token_type", response.tokenType());
-        assertEquals("test-id_token", response.idToken());
+		assertEquals("test-access_token", response.accessToken());
+		assertEquals(1, response.expiresIn());
+		assertEquals("test-scope", response.scope());
+		assertEquals("test-token_type", response.tokenType());
+		assertEquals("test-id_token", response.idToken());
 
-        mockRestServiceServer.verify();
-    }
+		mockRestServiceServer.verify();
+	}
+
 }

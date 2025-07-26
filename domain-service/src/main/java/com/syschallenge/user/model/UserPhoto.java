@@ -36,11 +36,13 @@ import lombok.Data;
 @Table(name = "users_photo_table")
 public class UserPhoto {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    @Column("user_id")
-    private UUID userId;
+	@Column("user_id")
+	private UUID userId;
 
-    @Column("object_key")
-    private String objectKey;
+	@Column("object_key")
+	private String objectKey;
+
 }

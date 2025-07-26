@@ -48,70 +48,64 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final AccessDeniedHandler accessDeniedHandler;
-    private final BaseAuthenticationEntryPoint authenticationEntryPoint;
-    private final JwtAuthFilter jwtAuthFilter;
+	private final AccessDeniedHandler accessDeniedHandler;
 
-    /**
-     * Configures the security filter chain for HTTP requests
-     *
-     * @param http HttpSecurity object to configure
-     * @return configured SecurityFilterChain
-     * @throws Exception if an error occurs during configuration
-     */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
-                .exceptionHandling(
-                        exception ->
-                                exception
-                                        .authenticationEntryPoint(this.authenticationEntryPoint)
-                                        .accessDeniedHandler(this.accessDeniedHandler))
-                .authorizeHttpRequests(
-                        auth -> {
-                            auth.requestMatchers("/api/v1/auth/social")
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/occupation")
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/photo")
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api/v1/company/all")
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api/v1/company/{id}")
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api/v1/topic/all")
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/api/v1/topic/{id}")
-                                    .permitAll()
-                                    .anyRequest()
-                                    .authenticated();
-                        })
-                .addFilterBefore(this.jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+	private final BaseAuthenticationEntryPoint authenticationEntryPoint;
 
-    /**
-     * Provides a PasswordEncoder bean for encoding passwords
-     *
-     * @return BCryptPasswordEncoder instance
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	private final JwtAuthFilter jwtAuthFilter;
 
-    /**
-     * Provides an AuthenticationManager bean for authentication
-     *
-     * @param authConfig AuthenticationConfiguration object
-     * @return configured AuthenticationManager
-     * @throws Exception if an error occurs during configuration
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
-            throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+	/**
+	 * Configures the security filter chain for HTTP requests
+	 * @param http HttpSecurity object to configure
+	 * @return configured SecurityFilterChain
+	 * @throws Exception if an error occurs during configuration
+	 */
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http.csrf(AbstractHttpConfigurer::disable)
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+			.exceptionHandling(exception -> exception.authenticationEntryPoint(this.authenticationEntryPoint)
+				.accessDeniedHandler(this.accessDeniedHandler))
+			.authorizeHttpRequests(auth -> {
+				auth.requestMatchers("/api/v1/auth/social")
+					.permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/occupation")
+					.permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/v1/user/{id}/photo")
+					.permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/v1/company/all")
+					.permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/v1/company/{id}")
+					.permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/v1/topic/all")
+					.permitAll()
+					.requestMatchers(HttpMethod.GET, "/api/v1/topic/{id}")
+					.permitAll()
+					.anyRequest()
+					.authenticated();
+			})
+			.addFilterBefore(this.jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+			.build();
+	}
+
+	/**
+	 * Provides a PasswordEncoder bean for encoding passwords
+	 * @return BCryptPasswordEncoder instance
+	 */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	/**
+	 * Provides an AuthenticationManager bean for authentication
+	 * @param authConfig AuthenticationConfiguration object
+	 * @return configured AuthenticationManager
+	 * @throws Exception if an error occurs during configuration
+	 */
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
+
 }

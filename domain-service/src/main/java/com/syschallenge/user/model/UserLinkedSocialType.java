@@ -23,6 +23,7 @@ package com.syschallenge.user.model;
  * @since 1.0.0
  */
 public enum UserLinkedSocialType {
-    GOOGLE,
-    GITHUB
+
+	GOOGLE, GITHUB
+
 }

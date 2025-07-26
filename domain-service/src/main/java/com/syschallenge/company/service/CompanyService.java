@@ -46,93 +46,77 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CompanyService {
 
-    private final CompanyRepository companyRepository;
-    private final CompanyToCompanyDtoMapper companyToCompanyDtoMapper;
+	private final CompanyRepository companyRepository;
 
-    /**
-     * Get paginated list of companies
-     *
-     * @param page the page number
-     * @param size the number of items per page
-     * @return a paginated list of company DTOs
-     */
-    public Page<CompanyDto> getAll(int page, int size, String sort) {
-        return this.companyRepository
-                .findAll(
-                        PageRequest.of(
-                                page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt")))
-                .map(this.companyToCompanyDtoMapper::companyToCompanyDto);
-    }
+	private final CompanyToCompanyDtoMapper companyToCompanyDtoMapper;
 
-    /**
-     * Get a company details
-     *
-     * @param id the company id whose company is being got
-     * @return a DTO containing the got company information
-     */
-    public CompanyDto get(UUID id) {
-        return this.companyToCompanyDtoMapper.companyToCompanyDto(
-                this.companyRepository.findById(id));
-    }
+	/**
+	 * Get paginated list of companies
+	 * @param page the page number
+	 * @param size the number of items per page
+	 * @return a paginated list of company DTOs
+	 */
+	public Page<CompanyDto> getAll(int page, int size, String sort) {
+		return this.companyRepository
+			.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sort), "updatedAt")))
+			.map(this.companyToCompanyDtoMapper::companyToCompanyDto);
+	}
 
-    /**
-     * Get a company details by slug
-     *
-     * @param slug the company slug whose company is being got
-     * @return a DTO containing the got company information
-     */
-    public CompanyDto getBySlug(String slug) {
-        return this.companyToCompanyDtoMapper.companyToCompanyDto(
-                this.companyRepository.findBySlug(slug));
-    }
+	/**
+	 * Get a company details
+	 * @param id the company id whose company is being got
+	 * @return a DTO containing the got company information
+	 */
+	public CompanyDto get(UUID id) {
+		return this.companyToCompanyDtoMapper.companyToCompanyDto(this.companyRepository.findById(id));
+	}
 
-    /**
-     * Creates a company
-     *
-     * @param request the company create details
-     * @return a DTO containing the created company information
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public CompanyDto create(CreateCompanyRequest request) {
-        if (this.companyRepository.existsBySlug(request.slug())) {
-            throw new CompanyAlreadyExistsException(
-                    "Company with slug '" + request.slug() + "' already exists");
-        }
-        return this.companyToCompanyDtoMapper.companyToCompanyDto(
-                this.companyRepository.save(
-                        Company.builder()
-                                .slug(request.slug())
-                                .name(request.name())
-                                .updatedAt(LocalDateTime.now())
-                                .build()));
-    }
+	/**
+	 * Get a company details by slug
+	 * @param slug the company slug whose company is being got
+	 * @return a DTO containing the got company information
+	 */
+	public CompanyDto getBySlug(String slug) {
+		return this.companyToCompanyDtoMapper.companyToCompanyDto(this.companyRepository.findBySlug(slug));
+	}
 
-    /**
-     * Updates a company
-     *
-     * @param id the company ID to update
-     * @param request the request containing updated company details
-     * @return a DTO containing the updated company information
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public CompanyDto update(UUID id, UpdateCompanyRequest request) {
-        return this.companyToCompanyDtoMapper.companyToCompanyDto(
-                this.companyRepository.update(
-                        Company.builder()
-                                .id(id)
-                                .name(request.name())
-                                .slug(request.slug())
-                                .updatedAt(LocalDateTime.now())
-                                .build()));
-    }
+	/**
+	 * Creates a company
+	 * @param request the company create details
+	 * @return a DTO containing the created company information
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public CompanyDto create(CreateCompanyRequest request) {
+		if (this.companyRepository.existsBySlug(request.slug())) {
+			throw new CompanyAlreadyExistsException("Company with slug '" + request.slug() + "' already exists");
+		}
+		return this.companyToCompanyDtoMapper.companyToCompanyDto(this.companyRepository
+			.save(Company.builder().slug(request.slug()).name(request.name()).updatedAt(LocalDateTime.now()).build()));
+	}
 
-    /**
-     * Deletes a company details
-     *
-     * @param id the company ID whose company is being deleted
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void delete(UUID id) {
-        this.companyRepository.deleteById(id);
-    }
+	/**
+	 * Updates a company
+	 * @param id the company ID to update
+	 * @param request the request containing updated company details
+	 * @return a DTO containing the updated company information
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public CompanyDto update(UUID id, UpdateCompanyRequest request) {
+		return this.companyToCompanyDtoMapper.companyToCompanyDto(this.companyRepository.update(Company.builder()
+			.id(id)
+			.name(request.name())
+			.slug(request.slug())
+			.updatedAt(LocalDateTime.now())
+			.build()));
+	}
+
+	/**
+	 * Deletes a company details
+	 * @param id the company ID whose company is being deleted
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void delete(UUID id) {
+		this.companyRepository.deleteById(id);
+	}
+
 }

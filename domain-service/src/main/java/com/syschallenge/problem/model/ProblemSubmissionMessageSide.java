@@ -17,6 +17,7 @@
 package com.syschallenge.problem.model;
 
 public enum ProblemSubmissionMessageSide {
-    USER,
-    ASSISTANT
+
+	USER, ASSISTANT
+
 }

@@ -23,7 +23,7 @@ package com.syschallenge.user.model;
  * @since 1.0.0
  */
 public enum UserBasicInfoGender {
-    MALE,
-    FEMALE,
-    OTHER
+
+	MALE, FEMALE, OTHER
+
 }

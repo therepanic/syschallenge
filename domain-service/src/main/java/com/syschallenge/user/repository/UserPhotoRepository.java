@@ -36,63 +36,55 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserPhotoRepository {
 
-    private final DSLContext ctx;
+	private final DSLContext ctx;
 
-    /**
-     * Finds the objectKey associated with user id
-     *
-     * @param userId user id to search for
-     * @return objectKey of the user photo associated with the given userId
-     */
-    public String findObjectKeyByUserId(UUID userId) {
-        return this.ctx
-                .select(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY)
-                .from(UsersPhotoTable.USERS_PHOTO_TABLE)
-                .where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId))
-                .fetchOneInto(String.class);
-    }
+	/**
+	 * Finds the objectKey associated with user id
+	 * @param userId user id to search for
+	 * @return objectKey of the user photo associated with the given userId
+	 */
+	public String findObjectKeyByUserId(UUID userId) {
+		return this.ctx.select(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY)
+			.from(UsersPhotoTable.USERS_PHOTO_TABLE)
+			.where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId))
+			.fetchOneInto(String.class);
+	}
 
-    /**
-     * Updates a user photo objectKey based on the user id
-     *
-     * @param userId user id to update objectKey
-     * @return updated user photo id objectKey
-     */
-    public String updateObjectKeyByUserId(String objectKey, UUID userId) {
-        return this.ctx
-                .update(UsersPhotoTable.USERS_PHOTO_TABLE)
-                .set(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY, objectKey)
-                .where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId))
-                .returningResult(UsersPhotoTable.USERS_PHOTO_TABLE)
-                .fetchOneInto(String.class);
-    }
+	/**
+	 * Updates a user photo objectKey based on the user id
+	 * @param userId user id to update objectKey
+	 * @return updated user photo id objectKey
+	 */
+	public String updateObjectKeyByUserId(String objectKey, UUID userId) {
+		return this.ctx.update(UsersPhotoTable.USERS_PHOTO_TABLE)
+			.set(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY, objectKey)
+			.where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId))
+			.returningResult(UsersPhotoTable.USERS_PHOTO_TABLE)
+			.fetchOneInto(String.class);
+	}
 
-    /**
-     * Saves a new user photo
-     *
-     * @param userPhoto user linked social entity to save
-     * @return user photo entity with updated information
-     */
-    public UserPhoto save(UserPhoto userPhoto) {
-        return this.ctx
-                .insertInto(UsersPhotoTable.USERS_PHOTO_TABLE)
-                .set(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID, userPhoto.getUserId())
-                .set(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY, userPhoto.getObjectKey())
-                .returningResult(UsersPhotoTable.USERS_PHOTO_TABLE)
-                .fetchOneInto(UserPhoto.class);
-    }
+	/**
+	 * Saves a new user photo
+	 * @param userPhoto user linked social entity to save
+	 * @return user photo entity with updated information
+	 */
+	public UserPhoto save(UserPhoto userPhoto) {
+		return this.ctx.insertInto(UsersPhotoTable.USERS_PHOTO_TABLE)
+			.set(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID, userPhoto.getUserId())
+			.set(UsersPhotoTable.USERS_PHOTO_TABLE.OBJECT_KEY, userPhoto.getObjectKey())
+			.returningResult(UsersPhotoTable.USERS_PHOTO_TABLE)
+			.fetchOneInto(UserPhoto.class);
+	}
 
-    /**
-     * Checks if a user photo exists for the given user id.
-     *
-     * @param userId the ID of the user
-     * @return true if a record exists, false otherwise
-     */
-    public boolean existsByUserId(UUID userId) {
-        return this.ctx.fetchExists(
-                this.ctx
-                        .selectOne()
-                        .from(UsersPhotoTable.USERS_PHOTO_TABLE)
-                        .where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId)));
-    }
+	/**
+	 * Checks if a user photo exists for the given user id.
+	 * @param userId the ID of the user
+	 * @return true if a record exists, false otherwise
+	 */
+	public boolean existsByUserId(UUID userId) {
+		return this.ctx.fetchExists(this.ctx.selectOne()
+			.from(UsersPhotoTable.USERS_PHOTO_TABLE)
+			.where(UsersPhotoTable.USERS_PHOTO_TABLE.USER_ID.eq(userId)));
+	}
+
 }

@@ -39,32 +39,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GitHubOAuthProvider implements OAuthProvider {
 
-    private final GitHubOAuthApi githubOAuthApi;
-    private final GitHubApi githubApi;
-    private final GitHubOAuthProperty properties;
+	private final GitHubOAuthApi githubOAuthApi;
 
-    private static final Pattern TOKEN_PATTERN = Pattern.compile("access_token=([^&]+)");
+	private final GitHubApi githubApi;
 
-    @Override
-    public OAuthUserInfo extractUser(String code) {
-        String accessToken =
-                this.githubOAuthApi.requestToken(
-                        new GitHubOAuthTokenRequest(
-                                this.properties.clientId(),
-                                this.properties.clientSecret(),
-                                code,
-                                this.properties.redirectUri()));
-        String extractedAccessToken = extractAccessToken(accessToken);
-        GitHubUser authorizedGithubUser = this.githubApi.getUser(extractedAccessToken);
-        return new OAuthUserInfo(
-                String.valueOf(authorizedGithubUser.id()),
-                authorizedGithubUser.login(),
-                authorizedGithubUser.email(),
-                authorizedGithubUser.avatarUrl());
-    }
+	private final GitHubOAuthProperty properties;
 
-    private String extractAccessToken(String input) {
-        Matcher matcher = TOKEN_PATTERN.matcher(input);
-        return matcher.find() ? matcher.group(1) : null;
-    }
+	private static final Pattern TOKEN_PATTERN = Pattern.compile("access_token=([^&]+)");
+
+	@Override
+	public OAuthUserInfo extractUser(String code) {
+		String accessToken = this.githubOAuthApi.requestToken(new GitHubOAuthTokenRequest(this.properties.clientId(),
+				this.properties.clientSecret(), code, this.properties.redirectUri()));
+		String extractedAccessToken = extractAccessToken(accessToken);
+		GitHubUser authorizedGithubUser = this.githubApi.getUser(extractedAccessToken);
+		return new OAuthUserInfo(String.valueOf(authorizedGithubUser.id()), authorizedGithubUser.login(),
+				authorizedGithubUser.email(), authorizedGithubUser.avatarUrl());
+	}
+
+	private String extractAccessToken(String input) {
+		Matcher matcher = TOKEN_PATTERN.matcher(input);
+		return matcher.find() ? matcher.group(1) : null;
+	}
+
 }

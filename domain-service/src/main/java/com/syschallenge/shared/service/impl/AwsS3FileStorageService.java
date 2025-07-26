@@ -42,36 +42,36 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 @RequiredArgsConstructor
 public class AwsS3FileStorageService implements FileStorageService {
 
-    private final S3Client client;
+	private final S3Client client;
 
-    @Override
-    public byte[] downloadFile(String bucketName, String fileName) {
-        try {
-            ResponseBytes<GetObjectResponse> objectBytes =
-                    this.client.getObjectAsBytes(
-                            GetObjectRequest.builder().bucket(bucketName).key(fileName).build());
-            return objectBytes.asByteArray();
-        } catch (S3Exception e) {
-            throw new RuntimeException("File download error from S3", e);
-        }
-    }
+	@Override
+	public byte[] downloadFile(String bucketName, String fileName) {
+		try {
+			ResponseBytes<GetObjectResponse> objectBytes = this.client
+				.getObjectAsBytes(GetObjectRequest.builder().bucket(bucketName).key(fileName).build());
+			return objectBytes.asByteArray();
+		}
+		catch (S3Exception e) {
+			throw new RuntimeException("File download error from S3", e);
+		}
+	}
 
-    @Override
-    public String uploadFile(String bucketName, byte[] file, String extension) {
-        String fileName = UUID.randomUUID() + "-" + System.currentTimeMillis() + extension;
-        this.client.putObject(
-                PutObjectRequest.builder().bucket(bucketName).key(fileName).build(),
-                RequestBody.fromBytes(file));
-        return fileName;
-    }
+	@Override
+	public String uploadFile(String bucketName, byte[] file, String extension) {
+		String fileName = UUID.randomUUID() + "-" + System.currentTimeMillis() + extension;
+		this.client.putObject(PutObjectRequest.builder().bucket(bucketName).key(fileName).build(),
+				RequestBody.fromBytes(file));
+		return fileName;
+	}
 
-    @Override
-    public void deleteFile(String bucketName, String fileName) {
-        try {
-            this.client.deleteObject(
-                    DeleteObjectRequest.builder().bucket(bucketName).key(fileName).build());
-        } catch (S3Exception e) {
-            throw new RuntimeException("File deletion error from S3", e);
-        }
-    }
+	@Override
+	public void deleteFile(String bucketName, String fileName) {
+		try {
+			this.client.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(fileName).build());
+		}
+		catch (S3Exception e) {
+			throw new RuntimeException("File deletion error from S3", e);
+		}
+	}
+
 }

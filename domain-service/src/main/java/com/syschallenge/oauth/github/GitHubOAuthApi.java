@@ -33,23 +33,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GitHubOAuthApi {
 
-    private static final String GITHUB_OAUTH_API_URI = "https://github.com/login/oauth";
+	private static final String GITHUB_OAUTH_API_URI = "https://github.com/login/oauth";
 
-    private final RestClient restClient;
+	private final RestClient restClient;
 
-    /**
-     * Requests an OAuth token from GitHub using the provided request data
-     *
-     * @param request {@link GitHubOAuthTokenRequest} containing request details
-     * @return containing access token
-     */
-    public String requestToken(GitHubOAuthTokenRequest request) {
-        return this.restClient
-                .post()
-                .uri(GITHUB_OAUTH_API_URI + "/access_token")
-                .body(request)
-                .retrieve()
-                .toEntity(String.class)
-                .getBody();
-    }
+	/**
+	 * Requests an OAuth token from GitHub using the provided request data
+	 * @param request {@link GitHubOAuthTokenRequest} containing request details
+	 * @return containing access token
+	 */
+	public String requestToken(GitHubOAuthTokenRequest request) {
+		return this.restClient.post()
+			.uri(GITHUB_OAUTH_API_URI + "/access_token")
+			.body(request)
+			.retrieve()
+			.toEntity(String.class)
+			.getBody();
+	}
+
 }

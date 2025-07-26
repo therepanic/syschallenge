@@ -26,9 +26,8 @@ import jakarta.validation.constraints.Size;
  * @since 1.0.0
  */
 public record UpdateCompanyRequest(
-        @NotBlank(message = "Company slug is required")
-                @Size(max = 60, message = "Company slug must be less than 60 characters")
-                String slug,
-        @NotBlank(message = "Company name is required")
-                @Size(max = 60, message = "Company name must be less than 60 characters")
-                String name) {}
+		@NotBlank(message = "Company slug is required") @Size(max = 60,
+				message = "Company slug must be less than 60 characters") String slug,
+		@NotBlank(message = "Company name is required") @Size(max = 60,
+				message = "Company name must be less than 60 characters") String name) {
+}

@@ -32,17 +32,13 @@ import com.syschallenge.company.model.Company;
 @Mapper(componentModel = "spring")
 public interface CompanyToCompanyDtoMapper {
 
-    /**
-     * Converts Company entity to CompanyDto
-     *
-     * @param company the company entity to convert
-     * @return the corresponding CompanyDto
-     */
-    @Mappings({
-        @Mapping(target = "id", source = "id"),
-        @Mapping(target = "slug", source = "slug"),
-        @Mapping(target = "name", source = "name"),
-        @Mapping(target = "updatedAt", source = "updatedAt")
-    })
-    CompanyDto companyToCompanyDto(Company company);
+	/**
+	 * Converts Company entity to CompanyDto
+	 * @param company the company entity to convert
+	 * @return the corresponding CompanyDto
+	 */
+	@Mappings({ @Mapping(target = "id", source = "id"), @Mapping(target = "slug", source = "slug"),
+			@Mapping(target = "name", source = "name"), @Mapping(target = "updatedAt", source = "updatedAt") })
+	CompanyDto companyToCompanyDto(Company company);
+
 }

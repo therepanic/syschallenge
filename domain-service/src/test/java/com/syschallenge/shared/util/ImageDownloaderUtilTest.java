@@ -39,47 +39,49 @@ import org.springframework.web.multipart.MultipartFile;
 @ExtendWith(MockitoExtension.class)
 class ImageDownloaderUtilTest {
 
-    @Mock RestTemplate rest;
+	@Mock
+	RestTemplate rest;
 
-    @Test
-    void download_returnsJpgFile_whenContentTypeIsJpeg() throws IOException {
-        // arrange
-        ImageDownloaderUtil util = new ImageDownloaderUtil(rest);
+	@Test
+	void download_returnsJpgFile_whenContentTypeIsJpeg() throws IOException {
+		// arrange
+		ImageDownloaderUtil util = new ImageDownloaderUtil(rest);
 
-        byte[] fakeData = new byte[] {1, 2, 3};
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        ResponseEntity<byte[]> response = new ResponseEntity<>(fakeData, headers, 200);
+		byte[] fakeData = new byte[] { 1, 2, 3 };
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_JPEG);
+		ResponseEntity<byte[]> response = new ResponseEntity<>(fakeData, headers, 200);
 
-        when(rest.getForEntity("http://test.com/image.jpg", byte[].class)).thenReturn(response);
+		when(rest.getForEntity("http://test.com/image.jpg", byte[].class)).thenReturn(response);
 
-        // act
-        MultipartFile result = util.download("http://test.com/image.jpg");
+		// act
+		MultipartFile result = util.download("http://test.com/image.jpg");
 
-        // assert
-        assertEquals("downloaded.jpg", result.getOriginalFilename());
-        assertEquals("image/jpeg", result.getContentType());
-        assertArrayEquals(fakeData, result.getBytes());
-    }
+		// assert
+		assertEquals("downloaded.jpg", result.getOriginalFilename());
+		assertEquals("image/jpeg", result.getContentType());
+		assertArrayEquals(fakeData, result.getBytes());
+	}
 
-    @Test
-    void download_returnsFileWithUnknownExtension_whenContentTypeIsUnknown() throws IOException {
-        // arrange
-        ImageDownloaderUtil util = new ImageDownloaderUtil(rest);
+	@Test
+	void download_returnsFileWithUnknownExtension_whenContentTypeIsUnknown() throws IOException {
+		// arrange
+		ImageDownloaderUtil util = new ImageDownloaderUtil(rest);
 
-        byte[] fakeData = new byte[] {4, 5, 6};
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        ResponseEntity<byte[]> response = new ResponseEntity<>(fakeData, headers, 200);
+		byte[] fakeData = new byte[] { 4, 5, 6 };
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		ResponseEntity<byte[]> response = new ResponseEntity<>(fakeData, headers, 200);
 
-        when(rest.getForEntity("http://test.com/file.pdf", byte[].class)).thenReturn(response);
+		when(rest.getForEntity("http://test.com/file.pdf", byte[].class)).thenReturn(response);
 
-        // act
-        MultipartFile result = util.download("http://test.com/file.pdf");
+		// act
+		MultipartFile result = util.download("http://test.com/file.pdf");
 
-        // assert
-        assertEquals("downloaded", result.getOriginalFilename());
-        assertEquals("application/pdf", result.getContentType());
-        assertArrayEquals(fakeData, result.getBytes());
-    }
+		// assert
+		assertEquals("downloaded", result.getOriginalFilename());
+		assertEquals("application/pdf", result.getContentType());
+		assertArrayEquals(fakeData, result.getBytes());
+	}
+
 }

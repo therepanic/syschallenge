@@ -37,41 +37,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserBasicInfoRepository {
 
-    private final DSLContext ctx;
+	private final DSLContext ctx;
 
-    /**
-     * Saves a new user basic info to the database
-     *
-     * @param userBasicInfo user basic info entity to save
-     * @return user basic info entity with updated information
-     */
-    public UserBasicInfo save(UserBasicInfo userBasicInfo) {
-        return this.ctx
-                .insertInto(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
-                .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID, userBasicInfo.getUserId())
-                .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME, userBasicInfo.getName())
-                .set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.SUMMARY, userBasicInfo.getSummary())
-                .set(
-                        UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.BIRTHDAY,
-                        userBasicInfo.getBirthday())
-                .set(
-                        UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.GENDER,
-                        UserBasicInfoGender.valueOf(userBasicInfo.getGender().name()))
-                .returningResult(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
-                .fetchOneInto(UserBasicInfo.class);
-    }
+	/**
+	 * Saves a new user basic info to the database
+	 * @param userBasicInfo user basic info entity to save
+	 * @return user basic info entity with updated information
+	 */
+	public UserBasicInfo save(UserBasicInfo userBasicInfo) {
+		return this.ctx.insertInto(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
+			.set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID, userBasicInfo.getUserId())
+			.set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME, userBasicInfo.getName())
+			.set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.SUMMARY, userBasicInfo.getSummary())
+			.set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.BIRTHDAY, userBasicInfo.getBirthday())
+			.set(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.GENDER,
+					UserBasicInfoGender.valueOf(userBasicInfo.getGender().name()))
+			.returningResult(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
+			.fetchOneInto(UserBasicInfo.class);
+	}
 
-    /**
-     * Finds a name by their userId
-     *
-     * @param userId UUID of the user to find
-     * @return name associated with the given userId
-     */
-    public String findNameByUserId(UUID userId) {
-        return this.ctx
-                .select(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME)
-                .from(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
-                .where(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID.eq(userId))
-                .fetchOneInto(String.class);
-    }
+	/**
+	 * Finds a name by their userId
+	 * @param userId UUID of the user to find
+	 * @return name associated with the given userId
+	 */
+	public String findNameByUserId(UUID userId) {
+		return this.ctx.select(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.NAME)
+			.from(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE)
+			.where(UsersBasicInfoTable.USERS_BASIC_INFO_TABLE.USER_ID.eq(userId))
+			.fetchOneInto(String.class);
+	}
+
 }

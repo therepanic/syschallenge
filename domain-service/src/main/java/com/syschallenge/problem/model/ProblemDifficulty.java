@@ -17,7 +17,7 @@
 package com.syschallenge.problem.model;
 
 public enum ProblemDifficulty {
-    EASY,
-    MEDIUM,
-    HARD
+
+	EASY, MEDIUM, HARD
+
 }

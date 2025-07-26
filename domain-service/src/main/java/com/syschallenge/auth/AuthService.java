@@ -47,48 +47,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final OAuthProviderFactory providerFactory;
-    private final UserService userService;
-    private final UserLinkedSocialService userLinkedSocialService;
-    private final UserBasicInfoService userBasicInfoService;
-    private final JwtUtil jwtUtil;
-    private final ImageDownloaderUtil imageDownloaderUtil;
+	private final OAuthProviderFactory providerFactory;
 
-    /**
-     * Authenticates a user through OAuth using an authorization code
-     *
-     * @param type social type for OAuth
-     * @param code authorization code provided by OAuth
-     * @return response containing the authentication response with the JWT token
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public AuthResponse authBySocial(OAuthType type, String code) {
-        OAuthUserInfo userInfo = this.providerFactory.getProvider(type).extractUser(code);
-        if (this.userLinkedSocialService.existsByVerification(userInfo.providerUserId())) {
-            UUID userId =
-                    this.userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
-            User currentUser = this.userService.getById(userId);
-            String jwtToken =
-                    this.jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
-            return new AuthResponse(jwtToken);
-        } else {
-            User newUser = this.userService.create(userInfo);
-            if (userInfo.photo() != null) {
-                this.userService.uploadPhoto(
-                        newUser.getId(),
-                        imageDownloaderUtil.download(userInfo.photo()),
-                        newUser.getId());
-            }
-            this.userLinkedSocialService.create(newUser.getId(), type, userInfo.providerUserId());
-            String jwtToken = this.jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
-            return new AuthResponse(jwtToken);
-        }
-    }
+	private final UserService userService;
 
-    public Me me(UUID principalUserId) {
-        return new Me(
-                principalUserId,
-                this.userService.getUsernameById(principalUserId),
-                this.userBasicInfoService.getNameByUserId(principalUserId));
-    }
+	private final UserLinkedSocialService userLinkedSocialService;
+
+	private final UserBasicInfoService userBasicInfoService;
+
+	private final JwtUtil jwtUtil;
+
+	private final ImageDownloaderUtil imageDownloaderUtil;
+
+	/**
+	 * Authenticates a user through OAuth using an authorization code
+	 * @param type social type for OAuth
+	 * @param code authorization code provided by OAuth
+	 * @return response containing the authentication response with the JWT token
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public AuthResponse authBySocial(OAuthType type, String code) {
+		OAuthUserInfo userInfo = this.providerFactory.getProvider(type).extractUser(code);
+		if (this.userLinkedSocialService.existsByVerification(userInfo.providerUserId())) {
+			UUID userId = this.userLinkedSocialService.getUserIdByVerification(userInfo.providerUserId());
+			User currentUser = this.userService.getById(userId);
+			String jwtToken = this.jwtUtil.generateToken(new UserDetails(currentUser.getId(), null));
+			return new AuthResponse(jwtToken);
+		}
+		else {
+			User newUser = this.userService.create(userInfo);
+			if (userInfo.photo() != null) {
+				this.userService.uploadPhoto(newUser.getId(), imageDownloaderUtil.download(userInfo.photo()),
+						newUser.getId());
+			}
+			this.userLinkedSocialService.create(newUser.getId(), type, userInfo.providerUserId());
+			String jwtToken = this.jwtUtil.generateToken(new UserDetails(newUser.getId(), null));
+			return new AuthResponse(jwtToken);
+		}
+	}
+
+	public Me me(UUID principalUserId) {
+		return new Me(principalUserId, this.userService.getUsernameById(principalUserId),
+				this.userBasicInfoService.getNameByUserId(principalUserId));
+	}
+
 }

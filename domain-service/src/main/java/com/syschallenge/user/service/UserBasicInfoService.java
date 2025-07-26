@@ -34,9 +34,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserBasicInfoService {
 
-    private final UserBasicInfoRepository userBasicInfoRepository;
+	private final UserBasicInfoRepository userBasicInfoRepository;
 
-    public String getNameByUserId(UUID userId) {
-        return this.userBasicInfoRepository.findNameByUserId(userId);
-    }
+	public String getNameByUserId(UUID userId) {
+		return this.userBasicInfoRepository.findNameByUserId(userId);
+	}
+
 }

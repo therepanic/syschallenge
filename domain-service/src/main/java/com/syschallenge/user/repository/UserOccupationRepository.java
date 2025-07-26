@@ -36,96 +36,70 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserOccupationRepository {
 
-    private final DSLContext ctx;
+	private final DSLContext ctx;
 
-    /**
-     * Saves a new user occupation to the database
-     *
-     * @param userOccupation user occupation entity to save
-     * @return user occupation entity with updated information
-     */
-    public UserOccupation save(UserOccupation userOccupation) {
-        return this.ctx
-                .insertInto(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID,
-                        userOccupation.getUserId())
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY,
-                        userOccupation.getCompany())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.TITLE, userOccupation.getTitle())
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE,
-                        userOccupation.getStartDate())
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE,
-                        userOccupation.getEndDate())
-                .returningResult(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .fetchOneInto(UserOccupation.class);
-    }
+	/**
+	 * Saves a new user occupation to the database
+	 * @param userOccupation user occupation entity to save
+	 * @return user occupation entity with updated information
+	 */
+	public UserOccupation save(UserOccupation userOccupation) {
+		return this.ctx.insertInto(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID, userOccupation.getUserId())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY, userOccupation.getCompany())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.TITLE, userOccupation.getTitle())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE, userOccupation.getStartDate())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE, userOccupation.getEndDate())
+			.returningResult(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.fetchOneInto(UserOccupation.class);
+	}
 
-    /**
-     * Finds a user occupation by user ID
-     *
-     * @param userId user ID to search for
-     * @return user occupation entity or null if not found
-     */
-    public UserOccupation findByUserId(UUID userId) {
-        return this.ctx
-                .selectFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
-                .fetchOneInto(UserOccupation.class);
-    }
+	/**
+	 * Finds a user occupation by user ID
+	 * @param userId user ID to search for
+	 * @return user occupation entity or null if not found
+	 */
+	public UserOccupation findByUserId(UUID userId) {
+		return this.ctx.selectFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
+			.fetchOneInto(UserOccupation.class);
+	}
 
-    /**
-     * Updates a user occupation based on the user id to the database
-     *
-     * @param userOccupation user occupation entity to update
-     * @return user occupation entity with updated information
-     */
-    public UserOccupation updateByUserId(UserOccupation userOccupation) {
-        return this.ctx
-                .update(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY,
-                        userOccupation.getCompany())
-                .set(UsersOccupationTable.USERS_OCCUPATION_TABLE.TITLE, userOccupation.getTitle())
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE,
-                        userOccupation.getStartDate())
-                .set(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE,
-                        userOccupation.getEndDate())
-                .where(
-                        UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(
-                                userOccupation.getUserId()))
-                .returningResult(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .fetchOneInto(UserOccupation.class);
-    }
+	/**
+	 * Updates a user occupation based on the user id to the database
+	 * @param userOccupation user occupation entity to update
+	 * @return user occupation entity with updated information
+	 */
+	public UserOccupation updateByUserId(UserOccupation userOccupation) {
+		return this.ctx.update(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.COMPANY, userOccupation.getCompany())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.TITLE, userOccupation.getTitle())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.START_DATE, userOccupation.getStartDate())
+			.set(UsersOccupationTable.USERS_OCCUPATION_TABLE.END_DATE, userOccupation.getEndDate())
+			.where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userOccupation.getUserId()))
+			.returningResult(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.fetchOneInto(UserOccupation.class);
+	}
 
-    /**
-     * Deletes a user occupation based on the user id to the database
-     *
-     * @param userId the ID of the user
-     */
-    public void deleteByUserId(UUID userId) {
-        this.ctx
-                .deleteFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
-                .execute();
-    }
+	/**
+	 * Deletes a user occupation based on the user id to the database
+	 * @param userId the ID of the user
+	 */
+	public void deleteByUserId(UUID userId) {
+		this.ctx.deleteFrom(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId))
+			.execute();
+	}
 
-    /**
-     * Checks if a user occupation exists for the given user ID.
-     *
-     * @param userId the ID of the user
-     * @return true if a record exists, false otherwise
-     */
-    public boolean existsByUserId(UUID userId) {
-        return this.ctx.fetchExists(
-                this.ctx
-                        .selectOne()
-                        .from(UsersOccupationTable.USERS_OCCUPATION_TABLE)
-                        .where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId)));
-    }
+	/**
+	 * Checks if a user occupation exists for the given user ID.
+	 * @param userId the ID of the user
+	 * @return true if a record exists, false otherwise
+	 */
+	public boolean existsByUserId(UUID userId) {
+		return this.ctx.fetchExists(this.ctx.selectOne()
+			.from(UsersOccupationTable.USERS_OCCUPATION_TABLE)
+			.where(UsersOccupationTable.USERS_OCCUPATION_TABLE.USER_ID.eq(userId)));
+	}
+
 }

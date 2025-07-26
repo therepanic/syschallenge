@@ -47,59 +47,52 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserOccupationController {
 
-    private final UserOccupationService userOccupationService;
+	private final UserOccupationService userOccupationService;
 
-    /**
-     * Endpoint for retrieving the occupation information for a specific user
-     *
-     * @param id the UUID of the user to fetch occupation for
-     * @return the user occupation DTO containing employment details
-     */
-    @GetMapping("/{id}/occupation")
-    public UserOccupationDto get(@PathVariable("id") UUID id) {
-        return this.userOccupationService.get(id);
-    }
+	/**
+	 * Endpoint for retrieving the occupation information for a specific user
+	 * @param id the UUID of the user to fetch occupation for
+	 * @return the user occupation DTO containing employment details
+	 */
+	@GetMapping("/{id}/occupation")
+	public UserOccupationDto get(@PathVariable("id") UUID id) {
+		return this.userOccupationService.get(id);
+	}
 
-    /**
-     * Endpoint for creating a new occupation record for the specified user
-     *
-     * @param id the UUID of the user to create occupation for
-     * @param request the validated create occupation request payload
-     * @param auth the authentication token containing the requester's identity
-     * @return the created user occupation DTO with persisted data
-     */
-    @PostMapping("/{id}/occupation")
-    public UserOccupationDto create(
-            @PathVariable("id") UUID id,
-            @RequestBody @Validated CreateOccupationRequest request,
-            UsernamePasswordAuthenticationToken auth) {
-        return this.userOccupationService.create(id, request, UUID.fromString(auth.getName()));
-    }
+	/**
+	 * Endpoint for creating a new occupation record for the specified user
+	 * @param id the UUID of the user to create occupation for
+	 * @param request the validated create occupation request payload
+	 * @param auth the authentication token containing the requester's identity
+	 * @return the created user occupation DTO with persisted data
+	 */
+	@PostMapping("/{id}/occupation")
+	public UserOccupationDto create(@PathVariable("id") UUID id,
+			@RequestBody @Validated CreateOccupationRequest request, UsernamePasswordAuthenticationToken auth) {
+		return this.userOccupationService.create(id, request, UUID.fromString(auth.getName()));
+	}
 
-    /**
-     * Endpoint for updating existing occupation information for the specified user
-     *
-     * @param id the UUID of the user to update occupation for
-     * @param request the validated update occupation request payload
-     * @param auth the authentication token containing the requester's identity
-     * @return the updated user occupation DTO with modified data
-     */
-    @PutMapping("/{id}/occupation")
-    public UserOccupationDto update(
-            @PathVariable("id") UUID id,
-            @RequestBody @Validated UpdateOccupationRequest request,
-            UsernamePasswordAuthenticationToken auth) {
-        return this.userOccupationService.update(id, request, UUID.fromString(auth.getName()));
-    }
+	/**
+	 * Endpoint for updating existing occupation information for the specified user
+	 * @param id the UUID of the user to update occupation for
+	 * @param request the validated update occupation request payload
+	 * @param auth the authentication token containing the requester's identity
+	 * @return the updated user occupation DTO with modified data
+	 */
+	@PutMapping("/{id}/occupation")
+	public UserOccupationDto update(@PathVariable("id") UUID id,
+			@RequestBody @Validated UpdateOccupationRequest request, UsernamePasswordAuthenticationToken auth) {
+		return this.userOccupationService.update(id, request, UUID.fromString(auth.getName()));
+	}
 
-    /**
-     * Endpoint for deleting occupation information for the specified user
-     *
-     * @param id the UUID of the user to delete occupation for
-     * @param auth the authentication token containing the requester's identity
-     */
-    @DeleteMapping("/{id}/occupation")
-    public void delete(@PathVariable("id") UUID id, UsernamePasswordAuthenticationToken auth) {
-        this.userOccupationService.delete(id, UUID.fromString(auth.getName()));
-    }
+	/**
+	 * Endpoint for deleting occupation information for the specified user
+	 * @param id the UUID of the user to delete occupation for
+	 * @param auth the authentication token containing the requester's identity
+	 */
+	@DeleteMapping("/{id}/occupation")
+	public void delete(@PathVariable("id") UUID id, UsernamePasswordAuthenticationToken auth) {
+		this.userOccupationService.delete(id, UUID.fromString(auth.getName()));
+	}
+
 }

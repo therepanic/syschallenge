@@ -29,4 +29,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record CompanyDto(UUID id, String slug, String name, LocalDateTime updatedAt) {}
+public record CompanyDto(UUID id, String slug, String name, LocalDateTime updatedAt) {
+}

@@ -37,16 +37,18 @@ import lombok.Data;
 @Table(name = "users_basic_info_table")
 public class UserBasicInfo {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    @Column("user_id")
-    private UUID userId;
+	@Column("user_id")
+	private UUID userId;
 
-    private String name;
+	private String name;
 
-    private String summary;
+	private String summary;
 
-    private LocalDateTime birthday;
+	private LocalDateTime birthday;
 
-    private UserBasicInfoGender gender;
+	private UserBasicInfoGender gender;
+
 }

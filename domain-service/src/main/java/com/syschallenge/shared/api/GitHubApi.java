@@ -33,17 +33,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GitHubApi {
 
-    private static final String GITHUB_API_URI = "https://api.github.com";
+	private static final String GITHUB_API_URI = "https://api.github.com";
 
-    private final RestClient restClient;
+	private final RestClient restClient;
 
-    public GitHubUser getUser(String accessToken) {
-        return this.restClient
-                .get()
-                .uri(GITHUB_API_URI + "/user")
-                .header("Authorization", "Bearer " + accessToken)
-                .retrieve()
-                .toEntity(GitHubUser.class)
-                .getBody();
-    }
+	public GitHubUser getUser(String accessToken) {
+		return this.restClient.get()
+			.uri(GITHUB_API_URI + "/user")
+			.header("Authorization", "Bearer " + accessToken)
+			.retrieve()
+			.toEntity(GitHubUser.class)
+			.getBody();
+	}
+
 }

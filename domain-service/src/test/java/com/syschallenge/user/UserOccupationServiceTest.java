@@ -50,91 +50,68 @@ import com.syschallenge.user.service.UserOccupationService;
 @ExtendWith(MockitoExtension.class)
 class UserOccupationServiceTest {
 
-    @Mock private UserOccupationRepository userOccupationRepository;
+	@Mock
+	private UserOccupationRepository userOccupationRepository;
 
-    @Mock private UserOccupationToUserOccupationDtoMapper userOccupationToUserOccupationDtoMapper;
+	@Mock
+	private UserOccupationToUserOccupationDtoMapper userOccupationToUserOccupationDtoMapper;
 
-    @Mock private UserRepository userRepository;
+	@Mock
+	private UserRepository userRepository;
 
-    @InjectMocks private UserOccupationService userOccupationService;
+	@InjectMocks
+	private UserOccupationService userOccupationService;
 
-    @Test
-    void update_throwsPermissionDeniedException_whenIdNotEqualsPrincipalId() {
-        UUID id = UUID.randomUUID();
-        UUID principalId = UUID.randomUUID();
-        UpdateOccupationRequest request =
-                new UpdateOccupationRequest(
-                        "Acme Corp",
-                        "Software Engineer",
-                        LocalDateTime.now(),
-                        LocalDateTime.now().plusDays(30));
+	@Test
+	void update_throwsPermissionDeniedException_whenIdNotEqualsPrincipalId() {
+		UUID id = UUID.randomUUID();
+		UUID principalId = UUID.randomUUID();
+		UpdateOccupationRequest request = new UpdateOccupationRequest("Acme Corp", "Software Engineer",
+				LocalDateTime.now(), LocalDateTime.now().plusDays(30));
 
-        when(userRepository.findRoleById(principalId)).thenReturn(UserRole.DEFAULT);
+		when(userRepository.findRoleById(principalId)).thenReturn(UserRole.DEFAULT);
 
-        PermissionDeniedException exception =
-                assertThrows(
-                        PermissionDeniedException.class,
-                        () -> userOccupationService.update(id, request, principalId));
-        assertEquals("You can only update your own occupation.", exception.getMessage());
-    }
+		PermissionDeniedException exception = assertThrows(PermissionDeniedException.class,
+				() -> userOccupationService.update(id, request, principalId));
+		assertEquals("You can only update your own occupation.", exception.getMessage());
+	}
 
-    @Test
-    void update_updatesAndReturnsUserOccupationDto_whenIdNotEqualToPrincipalId() {
-        UUID id = UUID.randomUUID();
-        UUID principalId = UUID.randomUUID();
-        UpdateOccupationRequest request =
-                new UpdateOccupationRequest(
-                        "Acme Corp",
-                        "Software Engineer",
-                        LocalDateTime.now(),
-                        LocalDateTime.now().plusDays(30));
+	@Test
+	void update_updatesAndReturnsUserOccupationDto_whenIdNotEqualToPrincipalId() {
+		UUID id = UUID.randomUUID();
+		UUID principalId = UUID.randomUUID();
+		UpdateOccupationRequest request = new UpdateOccupationRequest("Acme Corp", "Software Engineer",
+				LocalDateTime.now(), LocalDateTime.now().plusDays(30));
 
-        when(userRepository.findRoleById(principalId)).thenReturn(UserRole.ADMIN);
+		when(userRepository.findRoleById(principalId)).thenReturn(UserRole.ADMIN);
 
-        UserOccupation occupationToUpdate =
-                UserOccupation.builder()
-                        .userId(id)
-                        .title(request.title())
-                        .company(request.company())
-                        .startDate(request.startDate())
-                        .endDate(request.endDate())
-                        .build();
+		UserOccupation occupationToUpdate = UserOccupation.builder()
+			.userId(id)
+			.title(request.title())
+			.company(request.company())
+			.startDate(request.startDate())
+			.endDate(request.endDate())
+			.build();
 
-        UserOccupation updatedOccupation = occupationToUpdate;
+		UserOccupation updatedOccupation = occupationToUpdate;
 
-        UserOccupationDto expectedDto =
-                new UserOccupationDto(
-                        id,
-                        request.company(),
-                        request.title(),
-                        request.startDate(),
-                        request.endDate());
+		UserOccupationDto expectedDto = new UserOccupationDto(id, request.company(), request.title(),
+				request.startDate(), request.endDate());
 
-        when(userOccupationRepository.updateByUserId(any(UserOccupation.class)))
-                .thenReturn(updatedOccupation);
-        when(userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                        updatedOccupation))
-                .thenReturn(expectedDto);
+		when(userOccupationRepository.updateByUserId(any(UserOccupation.class))).thenReturn(updatedOccupation);
+		when(userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(updatedOccupation))
+			.thenReturn(expectedDto);
 
-        UserOccupationDto actualDto = userOccupationService.update(id, request, principalId);
+		UserOccupationDto actualDto = userOccupationService.update(id, request, principalId);
 
-        assertNotNull(actualDto);
-        assertEquals(expectedDto, actualDto);
+		assertNotNull(actualDto);
+		assertEquals(expectedDto, actualDto);
 
-        verify(userOccupationRepository)
-                .updateByUserId(
-                        argThat(
-                                occupation ->
-                                        occupation.getUserId().equals(id)
-                                                && occupation.getTitle().equals(request.title())
-                                                && occupation.getCompany().equals(request.company())
-                                                && occupation
-                                                        .getStartDate()
-                                                        .equals(request.startDate())
-                                                && occupation
-                                                        .getEndDate()
-                                                        .equals(request.endDate())));
-        verify(userOccupationToUserOccupationDtoMapper)
-                .userOccupationToUserOccupationDto(updatedOccupation);
-    }
+		verify(userOccupationRepository).updateByUserId(argThat(occupation -> occupation.getUserId().equals(id)
+				&& occupation.getTitle().equals(request.title()) && occupation.getCompany().equals(request.company())
+				&& occupation.getStartDate().equals(request.startDate())
+				&& occupation.getEndDate().equals(request.endDate())));
+		verify(userOccupationToUserOccupationDtoMapper).userOccupationToUserOccupationDto(updatedOccupation);
+	}
+
 }

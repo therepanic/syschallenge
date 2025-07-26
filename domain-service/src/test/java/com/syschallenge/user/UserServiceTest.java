@@ -47,105 +47,110 @@ import com.syschallenge.user.service.UserService;
  */
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    @Mock private UserRepository userRepository;
 
-    @Mock private UserPhotoRepository userPhotoRepository;
+	@Mock
+	private UserRepository userRepository;
 
-    @Mock private UserBasicInfoRepository userBasicInfoRepository;
+	@Mock
+	private UserPhotoRepository userPhotoRepository;
 
-    @Mock private FileStorageService storageService;
+	@Mock
+	private UserBasicInfoRepository userBasicInfoRepository;
 
-    @InjectMocks private UserService userService;
+	@Mock
+	private FileStorageService storageService;
 
-    @Test
-    public void testCreateUser() {
-        // arrange
-        OAuthUserInfo userInfo =
-                new OAuthUserInfo("providerId", "username", "user@example.com", null);
-        when(userRepository.save(any(User.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
-        when(userBasicInfoRepository.save(any(UserBasicInfo.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+	@InjectMocks
+	private UserService userService;
 
-        // act
-        User result = userService.create(userInfo);
+	@Test
+	public void testCreateUser() {
+		// arrange
+		OAuthUserInfo userInfo = new OAuthUserInfo("providerId", "username", "user@example.com", null);
+		when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+		when(userBasicInfoRepository.save(any(UserBasicInfo.class)))
+			.thenAnswer(invocation -> invocation.getArgument(0));
 
-        // assert
-        assertEquals("user@example.com", result.getEmail());
-        assertEquals("username", result.getUsername());
-        assertEquals(UserRole.DEFAULT, result.getRole());
-        assertNotNull(result.getRegisteredAt());
+		// act
+		User result = userService.create(userInfo);
 
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userCaptor.capture());
-        User capturedUser = userCaptor.getValue();
-        assertEquals("user@example.com", capturedUser.getEmail());
-        assertEquals("username", capturedUser.getUsername());
-        assertEquals(UserRole.DEFAULT, capturedUser.getRole());
+		// assert
+		assertEquals("user@example.com", result.getEmail());
+		assertEquals("username", result.getUsername());
+		assertEquals(UserRole.DEFAULT, result.getRole());
+		assertNotNull(result.getRegisteredAt());
 
-        ArgumentCaptor<UserBasicInfo> infoCaptor = ArgumentCaptor.forClass(UserBasicInfo.class);
-        verify(userBasicInfoRepository).save(infoCaptor.capture());
-        UserBasicInfo capturedInfo = infoCaptor.getValue();
-        assertEquals(capturedUser.getId(), capturedInfo.getUserId());
-        assertEquals("username", capturedInfo.getName());
-    }
+		ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+		verify(userRepository).save(userCaptor.capture());
+		User capturedUser = userCaptor.getValue();
+		assertEquals("user@example.com", capturedUser.getEmail());
+		assertEquals("username", capturedUser.getUsername());
+		assertEquals(UserRole.DEFAULT, capturedUser.getRole());
 
-    @Test
-    public void testGetUsernameById() {
-        // arrange
-        UUID id = UUID.randomUUID();
-        when(userRepository.findUsernameById(id)).thenReturn("username");
+		ArgumentCaptor<UserBasicInfo> infoCaptor = ArgumentCaptor.forClass(UserBasicInfo.class);
+		verify(userBasicInfoRepository).save(infoCaptor.capture());
+		UserBasicInfo capturedInfo = infoCaptor.getValue();
+		assertEquals(capturedUser.getId(), capturedInfo.getUserId());
+		assertEquals("username", capturedInfo.getName());
+	}
 
-        // act
-        String username = userService.getUsernameById(id);
+	@Test
+	public void testGetUsernameById() {
+		// arrange
+		UUID id = UUID.randomUUID();
+		when(userRepository.findUsernameById(id)).thenReturn("username");
 
-        // assert
-        assertEquals("username", username);
-    }
+		// act
+		String username = userService.getUsernameById(id);
 
-    @Test
-    public void testGetById() {
-        // arrange
-        UUID id = UUID.randomUUID();
-        User user = User.builder().id(id).username("username").build();
-        when(userRepository.findById(id)).thenReturn(user);
+		// assert
+		assertEquals("username", username);
+	}
 
-        // act
-        User result = userService.getById(id);
+	@Test
+	public void testGetById() {
+		// arrange
+		UUID id = UUID.randomUUID();
+		User user = User.builder().id(id).username("username").build();
+		when(userRepository.findById(id)).thenReturn(user);
 
-        // assert
-        assertEquals(user, result);
-    }
+		// act
+		User result = userService.getById(id);
 
-    @Test
-    public void testGetPhoto_WhenPhotoExists() {
-        // arrange
-        UUID userId = UUID.randomUUID();
-        String objectKey = "photo-key";
-        byte[] photoData = new byte[] {1, 2, 3};
+		// assert
+		assertEquals(user, result);
+	}
 
-        when(userPhotoRepository.findObjectKeyByUserId(userId)).thenReturn(objectKey);
-        when(storageService.downloadFile("users-photo", objectKey)).thenReturn(photoData);
+	@Test
+	public void testGetPhoto_WhenPhotoExists() {
+		// arrange
+		UUID userId = UUID.randomUUID();
+		String objectKey = "photo-key";
+		byte[] photoData = new byte[] { 1, 2, 3 };
 
-        // act
-        PhotoResponse response = userService.getPhoto(userId);
+		when(userPhotoRepository.findObjectKeyByUserId(userId)).thenReturn(objectKey);
+		when(storageService.downloadFile("users-photo", objectKey)).thenReturn(photoData);
 
-        // assert
-        assertNotNull(response);
-        assertArrayEquals(photoData, response.photo());
-        assertEquals(objectKey, response.photoFileName());
-    }
+		// act
+		PhotoResponse response = userService.getPhoto(userId);
 
-    @Test
-    public void testGetPhoto_WhenPhotoDoesNotExist() {
-        // arrange
-        UUID userId = UUID.randomUUID();
-        when(userPhotoRepository.findObjectKeyByUserId(userId)).thenReturn(null);
+		// assert
+		assertNotNull(response);
+		assertArrayEquals(photoData, response.photo());
+		assertEquals(objectKey, response.photoFileName());
+	}
 
-        // act
-        PhotoResponse response = userService.getPhoto(userId);
+	@Test
+	public void testGetPhoto_WhenPhotoDoesNotExist() {
+		// arrange
+		UUID userId = UUID.randomUUID();
+		when(userPhotoRepository.findObjectKeyByUserId(userId)).thenReturn(null);
 
-        // assert
-        assertNull(response);
-    }
+		// act
+		PhotoResponse response = userService.getPhoto(userId);
+
+		// assert
+		assertNull(response);
+	}
+
 }

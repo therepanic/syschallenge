@@ -49,87 +49,87 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
  */
 @ExtendWith(MockitoExtension.class)
 class AwsS3FileStorageServiceTest {
-    @Mock private S3Client s3Client;
 
-    @InjectMocks private AwsS3FileStorageService awsS3StorageService;
+	@Mock
+	private S3Client s3Client;
 
-    private static final String BUCKET_NAME = "test-bucket";
-    private static final String FILE_NAME = "test-file.txt";
+	@InjectMocks
+	private AwsS3FileStorageService awsS3StorageService;
 
-    @Test
-    void testDownloadFile_success() {
-        // Arrange
-        byte[] expectedBytes = "test content".getBytes();
-        ResponseBytes<GetObjectResponse> responseBytes = mock(ResponseBytes.class);
-        when(responseBytes.asByteArray()).thenReturn(expectedBytes);
-        when(s3Client.getObjectAsBytes(any(GetObjectRequest.class))).thenReturn(responseBytes);
+	private static final String BUCKET_NAME = "test-bucket";
 
-        // Act
-        byte[] result = awsS3StorageService.downloadFile(BUCKET_NAME, FILE_NAME);
+	private static final String FILE_NAME = "test-file.txt";
 
-        // Assert
-        assertArrayEquals(expectedBytes, result);
-        verify(s3Client, times(1)).getObjectAsBytes(any(GetObjectRequest.class));
-    }
+	@Test
+	void testDownloadFile_success() {
+		// Arrange
+		byte[] expectedBytes = "test content".getBytes();
+		ResponseBytes<GetObjectResponse> responseBytes = mock(ResponseBytes.class);
+		when(responseBytes.asByteArray()).thenReturn(expectedBytes);
+		when(s3Client.getObjectAsBytes(any(GetObjectRequest.class))).thenReturn(responseBytes);
 
-    @Test
-    void testDownloadFile_failure() {
-        // Arrange
-        S3Exception s3Exception = (S3Exception) S3Exception.builder().message("S3 error").build();
-        when(s3Client.getObjectAsBytes(any(GetObjectRequest.class))).thenThrow(s3Exception);
+		// Act
+		byte[] result = awsS3StorageService.downloadFile(BUCKET_NAME, FILE_NAME);
 
-        // Act & Assert
-        RuntimeException exception =
-                assertThrows(
-                        RuntimeException.class,
-                        () -> awsS3StorageService.downloadFile(BUCKET_NAME, FILE_NAME));
-        assertEquals("File download error from S3", exception.getMessage());
-        verify(s3Client, times(1)).getObjectAsBytes(any(GetObjectRequest.class));
-    }
+		// Assert
+		assertArrayEquals(expectedBytes, result);
+		verify(s3Client, times(1)).getObjectAsBytes(any(GetObjectRequest.class));
+	}
 
-    @Test
-    void testUploadFile_success() {
-        // Arrange
-        byte[] fileContent = "test content".getBytes();
-        String extension = ".txt";
-        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
-                .thenReturn(PutObjectResponse.builder().build());
+	@Test
+	void testDownloadFile_failure() {
+		// Arrange
+		S3Exception s3Exception = (S3Exception) S3Exception.builder().message("S3 error").build();
+		when(s3Client.getObjectAsBytes(any(GetObjectRequest.class))).thenThrow(s3Exception);
 
-        // Act
-        String resultFileName = awsS3StorageService.uploadFile(BUCKET_NAME, fileContent, extension);
+		// Act & Assert
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> awsS3StorageService.downloadFile(BUCKET_NAME, FILE_NAME));
+		assertEquals("File download error from S3", exception.getMessage());
+		verify(s3Client, times(1)).getObjectAsBytes(any(GetObjectRequest.class));
+	}
 
-        // Assert
-        assertNotNull(resultFileName);
-        assertTrue(resultFileName.endsWith(extension));
-        assertTrue(resultFileName.contains("-"));
-        verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
-    }
+	@Test
+	void testUploadFile_success() {
+		// Arrange
+		byte[] fileContent = "test content".getBytes();
+		String extension = ".txt";
+		when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
+			.thenReturn(PutObjectResponse.builder().build());
 
-    @Test
-    void testDeleteFile_success() {
-        // Arrange
-        when(s3Client.deleteObject(any(DeleteObjectRequest.class)))
-                .thenReturn(DeleteObjectResponse.builder().build());
+		// Act
+		String resultFileName = awsS3StorageService.uploadFile(BUCKET_NAME, fileContent, extension);
 
-        // Act
-        awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME);
+		// Assert
+		assertNotNull(resultFileName);
+		assertTrue(resultFileName.endsWith(extension));
+		assertTrue(resultFileName.contains("-"));
+		verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
+	}
 
-        // Assert
-        verify(s3Client, times(1)).deleteObject(any(DeleteObjectRequest.class));
-    }
+	@Test
+	void testDeleteFile_success() {
+		// Arrange
+		when(s3Client.deleteObject(any(DeleteObjectRequest.class))).thenReturn(DeleteObjectResponse.builder().build());
 
-    @Test
-    void testDeleteFile_failure() {
-        // Arrange
-        S3Exception s3Exception = (S3Exception) S3Exception.builder().message("S3 error").build();
-        when(s3Client.deleteObject(any(DeleteObjectRequest.class))).thenThrow(s3Exception);
+		// Act
+		awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME);
 
-        // Act & Assert
-        RuntimeException exception =
-                assertThrows(
-                        RuntimeException.class,
-                        () -> awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME));
-        assertEquals("File deletion error from S3", exception.getMessage());
-        verify(s3Client, times(1)).deleteObject(any(DeleteObjectRequest.class));
-    }
+		// Assert
+		verify(s3Client, times(1)).deleteObject(any(DeleteObjectRequest.class));
+	}
+
+	@Test
+	void testDeleteFile_failure() {
+		// Arrange
+		S3Exception s3Exception = (S3Exception) S3Exception.builder().message("S3 error").build();
+		when(s3Client.deleteObject(any(DeleteObjectRequest.class))).thenThrow(s3Exception);
+
+		// Act & Assert
+		RuntimeException exception = assertThrows(RuntimeException.class,
+				() -> awsS3StorageService.deleteFile(BUCKET_NAME, FILE_NAME));
+		assertEquals("File deletion error from S3", exception.getMessage());
+		verify(s3Client, times(1)).deleteObject(any(DeleteObjectRequest.class));
+	}
+
 }

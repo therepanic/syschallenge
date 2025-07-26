@@ -43,63 +43,65 @@ import com.syschallenge.user.service.UserLinkedSocialService;
  */
 @ExtendWith(MockitoExtension.class)
 class UserLinkedSocialServiceTest {
-    @Mock private UserLinkedSocialRepository userLinkedSocialRepository;
 
-    @InjectMocks private UserLinkedSocialService userLinkedSocialService;
+	@Mock
+	private UserLinkedSocialRepository userLinkedSocialRepository;
 
-    @Test
-    public void testCreateUserLinkedSocial() {
-        // arrange
-        UUID userId = UUID.randomUUID();
-        OAuthType type = OAuthType.GOOGLE;
-        String verification = "verificationCode";
-        UserLinkedSocial savedEntity =
-                UserLinkedSocial.builder()
-                        .id(UUID.randomUUID())
-                        .userId(userId)
-                        .type(UserLinkedSocialType.valueOf(type.name()))
-                        .verification(verification)
-                        .build();
-        when(userLinkedSocialRepository.save(any(UserLinkedSocial.class))).thenReturn(savedEntity);
+	@InjectMocks
+	private UserLinkedSocialService userLinkedSocialService;
 
-        // act
-        UserLinkedSocial result = userLinkedSocialService.create(userId, type, verification);
+	@Test
+	public void testCreateUserLinkedSocial() {
+		// arrange
+		UUID userId = UUID.randomUUID();
+		OAuthType type = OAuthType.GOOGLE;
+		String verification = "verificationCode";
+		UserLinkedSocial savedEntity = UserLinkedSocial.builder()
+			.id(UUID.randomUUID())
+			.userId(userId)
+			.type(UserLinkedSocialType.valueOf(type.name()))
+			.verification(verification)
+			.build();
+		when(userLinkedSocialRepository.save(any(UserLinkedSocial.class))).thenReturn(savedEntity);
 
-        // assert
-        ArgumentCaptor<UserLinkedSocial> captor = ArgumentCaptor.forClass(UserLinkedSocial.class);
-        verify(userLinkedSocialRepository).save(captor.capture());
-        UserLinkedSocial capturedEntity = captor.getValue();
-        assertEquals(userId, capturedEntity.getUserId());
-        assertEquals(UserLinkedSocialType.valueOf(type.name()), capturedEntity.getType());
-        assertEquals(verification, capturedEntity.getVerification());
-        assertEquals(savedEntity, result);
-    }
+		// act
+		UserLinkedSocial result = userLinkedSocialService.create(userId, type, verification);
 
-    @Test
-    public void testGetUserIdByVerification() {
-        // arrange
-        String verification = "testVerification";
-        UUID expectedUserId = UUID.randomUUID();
-        when(userLinkedSocialRepository.findUserIdByVerification(verification))
-                .thenReturn(expectedUserId);
+		// assert
+		ArgumentCaptor<UserLinkedSocial> captor = ArgumentCaptor.forClass(UserLinkedSocial.class);
+		verify(userLinkedSocialRepository).save(captor.capture());
+		UserLinkedSocial capturedEntity = captor.getValue();
+		assertEquals(userId, capturedEntity.getUserId());
+		assertEquals(UserLinkedSocialType.valueOf(type.name()), capturedEntity.getType());
+		assertEquals(verification, capturedEntity.getVerification());
+		assertEquals(savedEntity, result);
+	}
 
-        // act
-        UUID userId = userLinkedSocialService.getUserIdByVerification(verification);
+	@Test
+	public void testGetUserIdByVerification() {
+		// arrange
+		String verification = "testVerification";
+		UUID expectedUserId = UUID.randomUUID();
+		when(userLinkedSocialRepository.findUserIdByVerification(verification)).thenReturn(expectedUserId);
 
-        // assert
-        assertEquals(expectedUserId, userId);
-    }
+		// act
+		UUID userId = userLinkedSocialService.getUserIdByVerification(verification);
 
-    @Test
-    public void testExistsByVerification() {
-        // arrange
-        String verification = "existsVerification";
-        when(userLinkedSocialRepository.existsByVerification(verification)).thenReturn(true);
+		// assert
+		assertEquals(expectedUserId, userId);
+	}
 
-        // act
-        boolean exists = userLinkedSocialService.existsByVerification(verification);
+	@Test
+	public void testExistsByVerification() {
+		// arrange
+		String verification = "existsVerification";
+		when(userLinkedSocialRepository.existsByVerification(verification)).thenReturn(true);
 
-        // assert
-        assertTrue(exists);
-    }
+		// act
+		boolean exists = userLinkedSocialService.existsByVerification(verification);
+
+		// assert
+		assertTrue(exists);
+	}
+
 }

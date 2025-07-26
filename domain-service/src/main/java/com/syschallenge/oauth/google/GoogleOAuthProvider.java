@@ -41,40 +41,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GoogleOAuthProvider implements OAuthProvider {
 
-    private final GoogleOAuthV4Api googleOAuthApi;
-    private final ObjectMapper mapper;
-    private final GoogleOAuthProperty properties;
+	private final GoogleOAuthV4Api googleOAuthApi;
 
-    @Override
-    public OAuthUserInfo extractUser(String code) {
-        GoogleOAuthV4TokenResponse response =
-                this.googleOAuthApi.requestToken(
-                        new GoogleOAuthV4TokenRequest(
-                                this.properties.clientId(),
-                                this.properties.clientSecret(),
-                                this.properties.redirectUri(),
-                                code,
-                                this.properties.grantType()));
-        return parseIdToken(response.idToken());
-    }
+	private final ObjectMapper mapper;
 
-    @SuppressWarnings("unchecked")
-    private OAuthUserInfo parseIdToken(String idToken) {
-        // highlight the center of the token
-        String idTokenBody = idToken.replaceFirst("^[^.]+\\.([^.]+)\\.[^.]+$", "$1");
-        String decodedIdTokenBody =
-                new String(Base64.getDecoder().decode(idTokenBody), StandardCharsets.UTF_8);
-        Map<String, Object> decodedIdTokenBodyMap;
-        try {
-            decodedIdTokenBodyMap = this.mapper.readValue(decodedIdTokenBody, Map.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        String email = (String) decodedIdTokenBodyMap.get("email");
-        return new OAuthUserInfo(
-                (String) decodedIdTokenBodyMap.get("sub"),
-                email.split("@")[0],
-                email,
-                (String) decodedIdTokenBodyMap.get("picture"));
-    }
+	private final GoogleOAuthProperty properties;
+
+	@Override
+	public OAuthUserInfo extractUser(String code) {
+		GoogleOAuthV4TokenResponse response = this.googleOAuthApi
+			.requestToken(new GoogleOAuthV4TokenRequest(this.properties.clientId(), this.properties.clientSecret(),
+					this.properties.redirectUri(), code, this.properties.grantType()));
+		return parseIdToken(response.idToken());
+	}
+
+	@SuppressWarnings("unchecked")
+	private OAuthUserInfo parseIdToken(String idToken) {
+		// highlight the center of the token
+		String idTokenBody = idToken.replaceFirst("^[^.]+\\.([^.]+)\\.[^.]+$", "$1");
+		String decodedIdTokenBody = new String(Base64.getDecoder().decode(idTokenBody), StandardCharsets.UTF_8);
+		Map<String, Object> decodedIdTokenBodyMap;
+		try {
+			decodedIdTokenBodyMap = this.mapper.readValue(decodedIdTokenBody, Map.class);
+		}
+		catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+		String email = (String) decodedIdTokenBodyMap.get("email");
+		return new OAuthUserInfo((String) decodedIdTokenBodyMap.get("sub"), email.split("@")[0], email,
+				(String) decodedIdTokenBodyMap.get("picture"));
+	}
+
 }

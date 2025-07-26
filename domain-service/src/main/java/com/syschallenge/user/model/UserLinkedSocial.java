@@ -36,12 +36,14 @@ import lombok.Data;
 @Table(name = "users_linked_social_table")
 public class UserLinkedSocial {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    @Column("user_id")
-    private UUID userId;
+	@Column("user_id")
+	private UUID userId;
 
-    private UserLinkedSocialType type;
+	private UserLinkedSocialType type;
 
-    private String verification;
+	private String verification;
+
 }

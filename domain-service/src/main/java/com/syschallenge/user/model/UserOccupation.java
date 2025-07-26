@@ -37,18 +37,20 @@ import lombok.Data;
 @Table(name = "users_occupation_table")
 public class UserOccupation {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    @Column("user_id")
-    private UUID userId;
+	@Column("user_id")
+	private UUID userId;
 
-    private String company;
+	private String company;
 
-    private String title;
+	private String title;
 
-    @Column("start_date")
-    private LocalDateTime startDate;
+	@Column("start_date")
+	private LocalDateTime startDate;
 
-    @Column("end_date")
-    private LocalDateTime endDate;
+	@Column("end_date")
+	private LocalDateTime endDate;
+
 }

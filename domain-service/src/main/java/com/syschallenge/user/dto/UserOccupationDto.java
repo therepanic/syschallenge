@@ -29,9 +29,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * @since 1.0.0
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record UserOccupationDto(
-        UUID userId,
-        String company,
-        String title,
-        LocalDateTime startDate,
-        LocalDateTime endDate) {}
+public record UserOccupationDto(UUID userId, String company, String title, LocalDateTime startDate,
+		LocalDateTime endDate) {
+}

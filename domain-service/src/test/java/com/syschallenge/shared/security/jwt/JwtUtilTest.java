@@ -38,50 +38,52 @@ import com.syschallenge.shared.security.UserDetails;
  */
 class JwtUtilTest {
 
-    private JwtUtil jwtUtil;
-    @Mock private UserDetails userDetails;
+	private JwtUtil jwtUtil;
 
-    @BeforeEach
-    void setUp() {
-        this.jwtUtil = new JwtUtil();
+	@Mock
+	private UserDetails userDetails;
 
-        MockitoAnnotations.openMocks(this);
-        when(userDetails.getUsername()).thenReturn("test-UUID");
+	@BeforeEach
+	void setUp() {
+		this.jwtUtil = new JwtUtil();
 
-        ReflectionTestUtils.setField(
-                jwtUtil, "SECRET", "Z3dlZ2VHR0dHRVdnd2Vhc2Rhc2RzYWRhc2Rhc2RzYWQ=");
-    }
+		MockitoAnnotations.openMocks(this);
+		when(userDetails.getUsername()).thenReturn("test-UUID");
 
-    @Test
-    void testGenerateToken() {
-        String token = jwtUtil.generateToken(userDetails);
-        assertNotNull(token);
-        assertEquals("test-UUID", jwtUtil.extractIdFromToken(token));
-    }
+		ReflectionTestUtils.setField(jwtUtil, "SECRET", "Z3dlZ2VHR0dHRVdnd2Vhc2Rhc2RzYWRhc2Rhc2RzYWQ=");
+	}
 
-    @Test
-    void testExtractExpiration() {
-        String token = jwtUtil.generateToken(userDetails);
-        Date expiration = jwtUtil.extractExpiration(token);
-        assertNotNull(expiration);
-        assertTrue(expiration.after(new Date()));
-    }
+	@Test
+	void testGenerateToken() {
+		String token = jwtUtil.generateToken(userDetails);
+		assertNotNull(token);
+		assertEquals("test-UUID", jwtUtil.extractIdFromToken(token));
+	}
 
-    @Test
-    void testIsTokenValid() {
-        String token = jwtUtil.generateToken(userDetails);
-        assertTrue(jwtUtil.isTokenValid(token));
-    }
+	@Test
+	void testExtractExpiration() {
+		String token = jwtUtil.generateToken(userDetails);
+		Date expiration = jwtUtil.extractExpiration(token);
+		assertNotNull(expiration);
+		assertTrue(expiration.after(new Date()));
+	}
 
-    @Test
-    void testIsTokenExpired() {
-        String token = jwtUtil.generateToken(userDetails);
-        assertFalse(jwtUtil.isTokenExpired(token));
-    }
+	@Test
+	void testIsTokenValid() {
+		String token = jwtUtil.generateToken(userDetails);
+		assertTrue(jwtUtil.isTokenValid(token));
+	}
 
-    @Test
-    void testExtractIdFromToken() {
-        String token = jwtUtil.generateToken(userDetails);
-        assertEquals("test-UUID", jwtUtil.extractIdFromToken(token));
-    }
+	@Test
+	void testIsTokenExpired() {
+		String token = jwtUtil.generateToken(userDetails);
+		assertFalse(jwtUtil.isTokenExpired(token));
+	}
+
+	@Test
+	void testExtractIdFromToken() {
+		String token = jwtUtil.generateToken(userDetails);
+		assertEquals("test-UUID", jwtUtil.extractIdFromToken(token));
+	}
+
 }

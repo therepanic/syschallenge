@@ -37,66 +37,57 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserRepository {
 
-    private final DSLContext ctx;
+	private final DSLContext ctx;
 
-    /**
-     * Saves a new user to the database
-     *
-     * @param user user entity to save
-     * @return user entity with updated information
-     */
-    public User save(User user) {
-        return this.ctx
-                .insertInto(UsersTable.USERS_TABLE)
-                .set(UsersTable.USERS_TABLE.EMAIL, user.getEmail())
-                .set(UsersTable.USERS_TABLE.USERNAME, user.getUsername())
-                .set(UsersTable.USERS_TABLE.PASSWORD, user.getPassword())
-                .set(
-                        UsersTable.USERS_TABLE.ROLE,
-                        com.syschallenge.public_.enums.UserRole.valueOf(user.getRole().name()))
-                .set(UsersTable.USERS_TABLE.REGISTERED_AT, user.getRegisteredAt())
-                .returningResult(UsersTable.USERS_TABLE)
-                .fetchOneInto(User.class);
-    }
+	/**
+	 * Saves a new user to the database
+	 * @param user user entity to save
+	 * @return user entity with updated information
+	 */
+	public User save(User user) {
+		return this.ctx.insertInto(UsersTable.USERS_TABLE)
+			.set(UsersTable.USERS_TABLE.EMAIL, user.getEmail())
+			.set(UsersTable.USERS_TABLE.USERNAME, user.getUsername())
+			.set(UsersTable.USERS_TABLE.PASSWORD, user.getPassword())
+			.set(UsersTable.USERS_TABLE.ROLE, com.syschallenge.public_.enums.UserRole.valueOf(user.getRole().name()))
+			.set(UsersTable.USERS_TABLE.REGISTERED_AT, user.getRegisteredAt())
+			.returningResult(UsersTable.USERS_TABLE)
+			.fetchOneInto(User.class);
+	}
 
-    /**
-     * Finds a user by their id
-     *
-     * @param id UUID of the user to find
-     * @return user entity associated with the given id
-     */
-    public User findById(UUID id) {
-        return this.ctx
-                .selectFrom(UsersTable.USERS_TABLE)
-                .where(UsersTable.USERS_TABLE.ID.eq(id))
-                .fetchOneInto(User.class);
-    }
+	/**
+	 * Finds a user by their id
+	 * @param id UUID of the user to find
+	 * @return user entity associated with the given id
+	 */
+	public User findById(UUID id) {
+		return this.ctx.selectFrom(UsersTable.USERS_TABLE)
+			.where(UsersTable.USERS_TABLE.ID.eq(id))
+			.fetchOneInto(User.class);
+	}
 
-    /**
-     * Finds a username by their id
-     *
-     * @param id UUID of the user to find
-     * @return username associated with the given id
-     */
-    public String findUsernameById(UUID id) {
-        return this.ctx
-                .select(UsersTable.USERS_TABLE.USERNAME)
-                .from(UsersTable.USERS_TABLE)
-                .where(UsersTable.USERS_TABLE.ID.eq(id))
-                .fetchOneInto(String.class);
-    }
+	/**
+	 * Finds a username by their id
+	 * @param id UUID of the user to find
+	 * @return username associated with the given id
+	 */
+	public String findUsernameById(UUID id) {
+		return this.ctx.select(UsersTable.USERS_TABLE.USERNAME)
+			.from(UsersTable.USERS_TABLE)
+			.where(UsersTable.USERS_TABLE.ID.eq(id))
+			.fetchOneInto(String.class);
+	}
 
-    /**
-     * Finds a role by their id
-     *
-     * @param id UUID of the user to find
-     * @return role associated with the given id
-     */
-    public UserRole findRoleById(UUID id) {
-        return this.ctx
-                .select(UsersTable.USERS_TABLE.ROLE)
-                .from(UsersTable.USERS_TABLE)
-                .where(UsersTable.USERS_TABLE.ID.eq(id))
-                .fetchOneInto(UserRole.class);
-    }
+	/**
+	 * Finds a role by their id
+	 * @param id UUID of the user to find
+	 * @return role associated with the given id
+	 */
+	public UserRole findRoleById(UUID id) {
+		return this.ctx.select(UsersTable.USERS_TABLE.ROLE)
+			.from(UsersTable.USERS_TABLE)
+			.where(UsersTable.USERS_TABLE.ID.eq(id))
+			.fetchOneInto(UserRole.class);
+	}
+
 }

@@ -33,23 +33,23 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class GoogleOAuthV4Api {
-    private static final String GOOGLE_OAUTH_V4_API_URI = "https://www.googleapis.com/oauth2/v4";
 
-    private final RestClient restClient;
+	private static final String GOOGLE_OAUTH_V4_API_URI = "https://www.googleapis.com/oauth2/v4";
 
-    /**
-     * Requests an OAuth token from Google using the provided request data
-     *
-     * @param request {@link GoogleOAuthV4TokenRequest} containing request details
-     * @return {@link GoogleOAuthV4TokenResponse} containing response details
-     */
-    public GoogleOAuthV4TokenResponse requestToken(GoogleOAuthV4TokenRequest request) {
-        return this.restClient
-                .post()
-                .uri(GOOGLE_OAUTH_V4_API_URI + "/token")
-                .body(request)
-                .retrieve()
-                .toEntity(GoogleOAuthV4TokenResponse.class)
-                .getBody();
-    }
+	private final RestClient restClient;
+
+	/**
+	 * Requests an OAuth token from Google using the provided request data
+	 * @param request {@link GoogleOAuthV4TokenRequest} containing request details
+	 * @return {@link GoogleOAuthV4TokenResponse} containing response details
+	 */
+	public GoogleOAuthV4TokenResponse requestToken(GoogleOAuthV4TokenRequest request) {
+		return this.restClient.post()
+			.uri(GOOGLE_OAUTH_V4_API_URI + "/token")
+			.body(request)
+			.retrieve()
+			.toEntity(GoogleOAuthV4TokenResponse.class)
+			.getBody();
+	}
+
 }

@@ -32,18 +32,14 @@ import com.syschallenge.user.model.UserOccupation;
 @Mapper(componentModel = "spring")
 public interface UserOccupationToUserOccupationDtoMapper {
 
-    /**
-     * Converts UserOccupation entity to UserOccupationDto
-     *
-     * @param userOccupation the user occupation entity to convert
-     * @return the corresponding UserOccupationDto
-     */
-    @Mappings({
-        @Mapping(target = "userId", source = "userId"),
-        @Mapping(target = "company", source = "company"),
-        @Mapping(target = "title", source = "title"),
-        @Mapping(target = "startDate", source = "startDate"),
-        @Mapping(target = "endDate", source = "endDate"),
-    })
-    UserOccupationDto userOccupationToUserOccupationDto(UserOccupation userOccupation);
+	/**
+	 * Converts UserOccupation entity to UserOccupationDto
+	 * @param userOccupation the user occupation entity to convert
+	 * @return the corresponding UserOccupationDto
+	 */
+	@Mappings({ @Mapping(target = "userId", source = "userId"), @Mapping(target = "company", source = "company"),
+			@Mapping(target = "title", source = "title"), @Mapping(target = "startDate", source = "startDate"),
+			@Mapping(target = "endDate", source = "endDate"), })
+	UserOccupationDto userOccupationToUserOccupationDto(UserOccupation userOccupation);
+
 }

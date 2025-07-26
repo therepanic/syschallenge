@@ -40,29 +40,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BaseAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    /**
-     * Commences an authentication scheme, returning an unauthorized response
-     *
-     * @param request incoming HTTP request
-     * @param response outgoing HTTP response
-     * @param authException authentication exception
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    public void commence(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException authException)
-            throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        Map<String, Object> body =
-                Map.ofEntries(
-                        Map.entry("error", "Unauthorized"),
-                        Map.entry("message", authException.getMessage()),
-                        Map.entry("path", request.getServletPath()));
-        this.mapper.writeValue(response.getOutputStream(), body);
-    }
+	/**
+	 * Commences an authentication scheme, returning an unauthorized response
+	 * @param request incoming HTTP request
+	 * @param response outgoing HTTP response
+	 * @param authException authentication exception
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException {
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		Map<String, Object> body = Map.ofEntries(Map.entry("error", "Unauthorized"),
+				Map.entry("message", authException.getMessage()), Map.entry("path", request.getServletPath()));
+		this.mapper.writeValue(response.getOutputStream(), body);
+	}
+
 }

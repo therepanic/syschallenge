@@ -35,7 +35,9 @@ import lombok.Data;
 @Table(name = "topics_table")
 public class Topic {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    private String title;
+	private String title;
+
 }

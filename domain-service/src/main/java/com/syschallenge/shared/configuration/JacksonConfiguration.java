@@ -31,15 +31,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration(proxyBeanMethods = false)
 public class JacksonConfiguration {
 
-    /**
-     * Creates a {@link ObjectMapper} bean
-     *
-     * @return new {@link ObjectMapper} instance
-     */
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
+	/**
+	 * Creates a {@link ObjectMapper} bean
+	 * @return new {@link ObjectMapper} instance
+	 */
+	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		return mapper;
+	}
+
 }

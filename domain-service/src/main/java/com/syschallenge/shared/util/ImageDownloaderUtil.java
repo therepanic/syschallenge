@@ -28,19 +28,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageDownloaderUtil {
 
-    private final RestTemplate rest;
+	private final RestTemplate rest;
 
-    public MultipartFile download(String url) {
-        ResponseEntity<byte[]> response = rest.getForEntity(url, byte[].class);
-        MediaType contentType = response.getHeaders().getContentType();
-        String mimeType = contentType != null ? contentType.toString() : "application/octet-stream";
-        String extension =
-                switch (mimeType) {
-                    case "image/jpeg", "image/jpg" -> ".jpg";
-                    case "image/png" -> ".png";
-                    default -> "";
-                };
-        String filename = "downloaded" + extension;
-        return new SimpleMultipartFile("file", filename, mimeType, response.getBody());
-    }
+	public MultipartFile download(String url) {
+		ResponseEntity<byte[]> response = rest.getForEntity(url, byte[].class);
+		MediaType contentType = response.getHeaders().getContentType();
+		String mimeType = contentType != null ? contentType.toString() : "application/octet-stream";
+		String extension = switch (mimeType) {
+			case "image/jpeg", "image/jpg" -> ".jpg";
+			case "image/png" -> ".png";
+			default -> "";
+		};
+		String filename = "downloaded" + extension;
+		return new SimpleMultipartFile("file", filename, mimeType, response.getBody());
+	}
+
 }

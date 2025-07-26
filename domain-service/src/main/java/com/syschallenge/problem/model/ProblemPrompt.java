@@ -36,14 +36,16 @@ import lombok.Data;
 @Table(name = "problem_prompts_table")
 public class ProblemPrompt {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    @Column("problem_id")
-    private Long problemId;
+	@Column("problem_id")
+	private Long problemId;
 
-    @Column("generate_text")
-    private String generateText;
+	@Column("generate_text")
+	private String generateText;
 
-    @Column("think_text")
-    private String thinkText;
+	@Column("think_text")
+	private String thinkText;
+
 }

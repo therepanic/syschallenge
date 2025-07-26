@@ -33,11 +33,13 @@ import lombok.Data;
 @Table(name = "problems_table")
 public class Problem {
 
-    @Id private Long id;
+	@Id
+	private Long id;
 
-    private String title;
+	private String title;
 
-    private ProblemDifficulty difficulty;
+	private ProblemDifficulty difficulty;
 
-    private String description;
+	private String description;
+
 }

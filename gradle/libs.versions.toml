@@ -1,5 +1,6 @@
 [versions]
 springBoot = "3.5.3"
+springJavaFormat = "0.0.47"
 springDependencyManagement = "1.1.7"
 flyway = "9.22.3"
 jooq = "3.19.24"
@@ -10,14 +11,13 @@ awsSdk = "2.31.68"
 jjwt = "0.12.6"
 mapstruct = "1.5.5.Final"
 thumbnailator = "0.4.20"
-spotless = "7.0.2"
 
 [plugins]
 springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
+springJavaFormat = { id = "io.spring.javaformat", version.ref = "springJavaFormat" }
 dependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 jooq = { id = "nu.studer.jooq", version.ref = "jooqPlugin" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
 springdocApi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }

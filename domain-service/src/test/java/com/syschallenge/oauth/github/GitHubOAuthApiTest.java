@@ -42,52 +42,46 @@ import com.syschallenge.oauth.github.payload.request.GitHubOAuthTokenRequest;
 @DirtiesContext
 class GitHubOAuthApiTest {
 
-    private GitHubOAuthApi githubOAuthApi;
+	private GitHubOAuthApi githubOAuthApi;
 
-    @Autowired private RestClient.Builder restClient;
+	@Autowired
+	private RestClient.Builder restClient;
 
-    @Autowired private MockRestServiceServer mockRestServiceServer;
+	@Autowired
+	private MockRestServiceServer mockRestServiceServer;
 
-    @BeforeEach
-    void setUp() {
-        this.githubOAuthApi = new GitHubOAuthApi(restClient.build());
-    }
+	@BeforeEach
+	void setUp() {
+		this.githubOAuthApi = new GitHubOAuthApi(restClient.build());
+	}
 
-    @Test
-    void testRequestToken() {
-        // Given
-        GitHubOAuthTokenRequest request =
-                new GitHubOAuthTokenRequest(
-                        "test-client-id",
-                        "test-client-secret",
-                        "test-code",
-                        "http://test-redirect-uri");
+	@Test
+	void testRequestToken() {
+		// Given
+		GitHubOAuthTokenRequest request = new GitHubOAuthTokenRequest("test-client-id", "test-client-secret",
+				"test-code", "http://test-redirect-uri");
 
-        String expectedResponseBody = "access_token=gho_testToken&scope=repo&token_type=bearer";
+		String expectedResponseBody = "access_token=gho_testToken&scope=repo&token_type=bearer";
 
-        mockRestServiceServer
-                .expect(requestTo("https://github.com/login/oauth/access_token"))
-                .andExpect(method(HttpMethod.POST))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(
-                        content()
-                                .json(
-                                        """
-						{
-						    "client_id": "test-client-id",
-						    "client_secret": "test-client-secret",
-						    "code": "test-code",
-						    "redirect_uri": "http://test-redirect-uri"
-						}
-						"""))
-                .andRespond(
-                        withSuccess(expectedResponseBody, MediaType.APPLICATION_FORM_URLENCODED));
+		mockRestServiceServer.expect(requestTo("https://github.com/login/oauth/access_token"))
+			.andExpect(method(HttpMethod.POST))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(content().json("""
+					{
+					    "client_id": "test-client-id",
+					    "client_secret": "test-client-secret",
+					    "code": "test-code",
+					    "redirect_uri": "http://test-redirect-uri"
+					}
+					"""))
+			.andRespond(withSuccess(expectedResponseBody, MediaType.APPLICATION_FORM_URLENCODED));
 
-        // When
-        String response = githubOAuthApi.requestToken(request);
+		// When
+		String response = githubOAuthApi.requestToken(request);
 
-        // Then
-        assertEquals(expectedResponseBody, response);
-        mockRestServiceServer.verify();
-    }
+		// Then
+		assertEquals(expectedResponseBody, response);
+		mockRestServiceServer.verify();
+	}
+
 }

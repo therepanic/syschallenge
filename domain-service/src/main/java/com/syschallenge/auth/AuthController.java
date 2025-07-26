@@ -42,29 +42,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+	private final AuthService authService;
 
-    /**
-     * Endpoint for OAuth authentication
-     *
-     * @param type social type for OAuth
-     * @param code authorization code received from OAuth
-     * @return auth data
-     */
-    @PostMapping("/social")
-    public AuthResponse authBySocial(
-            @RequestParam("type") OAuthType type, @RequestParam("code") String code) {
-        return this.authService.authBySocial(type, code);
-    }
+	/**
+	 * Endpoint for OAuth authentication
+	 * @param type social type for OAuth
+	 * @param code authorization code received from OAuth
+	 * @return auth data
+	 */
+	@PostMapping("/social")
+	public AuthResponse authBySocial(@RequestParam("type") OAuthType type, @RequestParam("code") String code) {
+		return this.authService.authBySocial(type, code);
+	}
 
-    /**
-     * Endpoint for retrieve the information about the authenticated user
-     *
-     * @param auth the authentication token, which contains the user ID as the principal name
-     * @return user information (Me) for the authenticated user
-     */
-    @GetMapping("/me")
-    public Me me(UsernamePasswordAuthenticationToken auth) {
-        return this.authService.me(UUID.fromString(auth.getName()));
-    }
+	/**
+	 * Endpoint for retrieve the information about the authenticated user
+	 * @param auth the authentication token, which contains the user ID as the principal
+	 * name
+	 * @return user information (Me) for the authenticated user
+	 */
+	@GetMapping("/me")
+	public Me me(UsernamePasswordAuthenticationToken auth) {
+		return this.authService.me(UUID.fromString(auth.getName()));
+	}
+
 }

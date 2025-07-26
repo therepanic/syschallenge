@@ -39,27 +39,22 @@ import software.amazon.awssdk.services.s3.S3Client;
 @RequiredArgsConstructor
 public class AwsS3Configuration {
 
-    private final AwsS3Property awsS3Property;
+	private final AwsS3Property awsS3Property;
 
-    /**
-     * Creates and configures an {@link S3Client} bean.
-     *
-     * @return the configured {@link S3Client} instance
-     */
-    @Bean
-    public S3Client s3Client() {
-        return S3Client.builder()
-                .region(Region.of(this.awsS3Property.region()))
-                .credentialsProvider(
-                        StaticCredentialsProvider.create(
-                                AwsBasicCredentials.create(
-                                        this.awsS3Property.accessKey(),
-                                        this.awsS3Property.secretKey())))
-                .endpointOverride(URI.create(this.awsS3Property.endpoint()))
-                .serviceConfiguration(
-                        software.amazon.awssdk.services.s3.S3Configuration.builder()
-                                .pathStyleAccessEnabled(true)
-                                .build())
-                .build();
-    }
+	/**
+	 * Creates and configures an {@link S3Client} bean.
+	 * @return the configured {@link S3Client} instance
+	 */
+	@Bean
+	public S3Client s3Client() {
+		return S3Client.builder()
+			.region(Region.of(this.awsS3Property.region()))
+			.credentialsProvider(StaticCredentialsProvider
+				.create(AwsBasicCredentials.create(this.awsS3Property.accessKey(), this.awsS3Property.secretKey())))
+			.endpointOverride(URI.create(this.awsS3Property.endpoint()))
+			.serviceConfiguration(
+					software.amazon.awssdk.services.s3.S3Configuration.builder().pathStyleAccessEnabled(true).build())
+			.build();
+	}
+
 }

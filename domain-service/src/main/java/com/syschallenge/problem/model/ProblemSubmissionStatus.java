@@ -17,6 +17,7 @@
 package com.syschallenge.problem.model;
 
 public enum ProblemSubmissionStatus {
-    PENDING,
-    PROCESSED
+
+	PENDING, PROCESSED
+
 }

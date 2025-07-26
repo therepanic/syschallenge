@@ -48,63 +48,58 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TopicController {
 
-    private final TopicService topicService;
+	private final TopicService topicService;
 
-    /**
-     * Endpoint for retrieving a collection of topics
-     *
-     * @return collection of topics
-     */
-    @GetMapping("/all")
-    public Collection<TopicDto> getAll() {
-        return this.topicService.getAll();
-    }
+	/**
+	 * Endpoint for retrieving a collection of topics
+	 * @return collection of topics
+	 */
+	@GetMapping("/all")
+	public Collection<TopicDto> getAll() {
+		return this.topicService.getAll();
+	}
 
-    /**
-     * Endpoint for retrieving topic information by ID
-     *
-     * @param id the UUID of the topic
-     * @return the retrieved topic DTO with persisted data
-     */
-    @GetMapping("/{id}")
-    public TopicDto get(@PathVariable("id") UUID id) {
-        return this.topicService.get(id);
-    }
+	/**
+	 * Endpoint for retrieving topic information by ID
+	 * @param id the UUID of the topic
+	 * @return the retrieved topic DTO with persisted data
+	 */
+	@GetMapping("/{id}")
+	public TopicDto get(@PathVariable("id") UUID id) {
+		return this.topicService.get(id);
+	}
 
-    /**
-     * Endpoint for creating a new topic
-     *
-     * @param request the validated create topic request payload
-     * @return the created topic DTO with persisted data
-     */
-    @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public TopicDto create(@RequestBody @Validated CreateTopicRequest request) {
-        return this.topicService.create(request);
-    }
+	/**
+	 * Endpoint for creating a new topic
+	 * @param request the validated create topic request payload
+	 * @return the created topic DTO with persisted data
+	 */
+	@PostMapping
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public TopicDto create(@RequestBody @Validated CreateTopicRequest request) {
+		return this.topicService.create(request);
+	}
 
-    /**
-     * Endpoint for updating topic information
-     *
-     * @param id the UUID of the topic to update
-     * @param request the validated update topic request payload
-     * @return the updated topic DTO with persisted data
-     */
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public TopicDto update(
-            @PathVariable("id") UUID id, @RequestBody @Validated UpdateTopicRequest request) {
-        return this.topicService.update(id, request);
-    }
+	/**
+	 * Endpoint for updating topic information
+	 * @param id the UUID of the topic to update
+	 * @param request the validated update topic request payload
+	 * @return the updated topic DTO with persisted data
+	 */
+	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public TopicDto update(@PathVariable("id") UUID id, @RequestBody @Validated UpdateTopicRequest request) {
+		return this.topicService.update(id, request);
+	}
 
-    /**
-     * Endpoint for deleting a topic
-     *
-     * @param id the UUID of the topic to delete
-     */
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void delete(@PathVariable("id") UUID id) {
-        this.topicService.delete(id);
-    }
+	/**
+	 * Endpoint for deleting a topic
+	 * @param id the UUID of the topic to delete
+	 */
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public void delete(@PathVariable("id") UUID id) {
+		this.topicService.delete(id);
+	}
+
 }

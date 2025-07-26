@@ -34,14 +34,11 @@ import jakarta.validation.constraints.Size;
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record CreateOccupationRequest(
-        @NotBlank(message = "Company name is required")
-                @Size(max = 60, message = "Company name must be less than 60 characters")
-                String company,
-        @NotBlank(message = "Title is required")
-                @Size(max = 60, message = "Title must be less than 60 characters")
-                String title,
-        @NotNull(message = "Start date is required")
-                @PastOrPresent(message = "Start date must be in the present or past")
-                LocalDateTime startDate,
-        @PastOrPresent(message = "End date must be in the present or future")
-                LocalDateTime endDate) {}
+		@NotBlank(message = "Company name is required") @Size(max = 60,
+				message = "Company name must be less than 60 characters") String company,
+		@NotBlank(message = "Title is required") @Size(max = 60,
+				message = "Title must be less than 60 characters") String title,
+		@NotNull(message = "Start date is required") @PastOrPresent(
+				message = "Start date must be in the present or past") LocalDateTime startDate,
+		@PastOrPresent(message = "End date must be in the present or future") LocalDateTime endDate) {
+}

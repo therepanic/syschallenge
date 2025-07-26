@@ -49,80 +49,72 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CompanyController {
 
-    private final CompanyService companyService;
+	private final CompanyService companyService;
 
-    /**
-     * Endpoint for retrieving a paginated list of companies
-     *
-     * @param page the page number (default is 0)
-     * @param size the number of items per page (default is 20)
-     * @param sort the sorting order (default is descending)
-     * @return a paginated list of companies
-     */
-    @GetMapping("/all")
-    public Page<CompanyDto> getAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "desc") String sort) {
-        return this.companyService.getAll(page, size, sort);
-    }
+	/**
+	 * Endpoint for retrieving a paginated list of companies
+	 * @param page the page number (default is 0)
+	 * @param size the number of items per page (default is 20)
+	 * @param sort the sorting order (default is descending)
+	 * @return a paginated list of companies
+	 */
+	@GetMapping("/all")
+	public Page<CompanyDto> getAll(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size, @RequestParam(defaultValue = "desc") String sort) {
+		return this.companyService.getAll(page, size, sort);
+	}
 
-    /**
-     * Endpoint for retrieving company information by ID
-     *
-     * @param id the UUID of the company
-     * @return the retrieved company DTO with persisted data
-     */
-    @GetMapping("/{id}")
-    public CompanyDto get(@PathVariable("id") UUID id) {
-        return this.companyService.get(id);
-    }
+	/**
+	 * Endpoint for retrieving company information by ID
+	 * @param id the UUID of the company
+	 * @return the retrieved company DTO with persisted data
+	 */
+	@GetMapping("/{id}")
+	public CompanyDto get(@PathVariable("id") UUID id) {
+		return this.companyService.get(id);
+	}
 
-    /**
-     * Endpoint for retrieving company information by slug
-     *
-     * @param slug the slug of the company
-     * @return the retrieved company DTO with persisted data
-     */
-    @GetMapping
-    public CompanyDto getBySlug(@RequestParam("slug") String slug) {
-        return this.companyService.getBySlug(slug);
-    }
+	/**
+	 * Endpoint for retrieving company information by slug
+	 * @param slug the slug of the company
+	 * @return the retrieved company DTO with persisted data
+	 */
+	@GetMapping
+	public CompanyDto getBySlug(@RequestParam("slug") String slug) {
+		return this.companyService.getBySlug(slug);
+	}
 
-    /**
-     * Endpoint for creating a new company
-     *
-     * @param request the validated create company request payload
-     * @return the created company DTO with persisted data
-     */
-    @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public CompanyDto create(@RequestBody @Validated CreateCompanyRequest request) {
-        return this.companyService.create(request);
-    }
+	/**
+	 * Endpoint for creating a new company
+	 * @param request the validated create company request payload
+	 * @return the created company DTO with persisted data
+	 */
+	@PostMapping
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public CompanyDto create(@RequestBody @Validated CreateCompanyRequest request) {
+		return this.companyService.create(request);
+	}
 
-    /**
-     * Endpoint for updating company information
-     *
-     * @param id the UUID of the company to update
-     * @param request the validated update company request payload
-     * @return the updated company DTO with persisted data
-     */
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public CompanyDto update(
-            @PathVariable("id") UUID id, @RequestBody @Validated UpdateCompanyRequest request) {
-        return this.companyService.update(id, request);
-    }
+	/**
+	 * Endpoint for updating company information
+	 * @param id the UUID of the company to update
+	 * @param request the validated update company request payload
+	 * @return the updated company DTO with persisted data
+	 */
+	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public CompanyDto update(@PathVariable("id") UUID id, @RequestBody @Validated UpdateCompanyRequest request) {
+		return this.companyService.update(id, request);
+	}
 
-    /**
-     * Endpoint for deleting a company
-     *
-     * @param id the UUID of the company to delete
-     */
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void delete(@PathVariable("id") UUID id) {
-        this.companyService.delete(id);
-    }
+	/**
+	 * Endpoint for deleting a company
+	 * @param id the UUID of the company to delete
+	 */
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public void delete(@PathVariable("id") UUID id) {
+		this.companyService.delete(id);
+	}
+
 }

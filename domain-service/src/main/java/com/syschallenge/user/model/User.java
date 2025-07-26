@@ -36,15 +36,17 @@ import lombok.Data;
 @Table(name = "users_table")
 public class User {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    private String username;
+	private String username;
 
-    private String email;
+	private String email;
 
-    private String password;
+	private String password;
 
-    private UserRole role;
+	private UserRole role;
 
-    private LocalDateTime registeredAt;
+	private LocalDateTime registeredAt;
+
 }

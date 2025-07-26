@@ -37,15 +37,17 @@ import lombok.Data;
 @Table(name = "problem_submission_messages_table")
 public class ProblemSubmissionMessage {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    @Column("problem_submission_id")
-    private UUID problemSubmissionId;
+	@Column("problem_submission_id")
+	private UUID problemSubmissionId;
 
-    private ProblemSubmissionMessageSide side;
+	private ProblemSubmissionMessageSide side;
 
-    private String text;
+	private String text;
 
-    @Column("created_at")
-    private LocalDateTime createdAt;
+	@Column("created_at")
+	private LocalDateTime createdAt;
+
 }

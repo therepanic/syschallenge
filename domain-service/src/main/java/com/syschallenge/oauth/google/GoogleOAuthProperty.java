@@ -19,5 +19,5 @@ package com.syschallenge.oauth.google;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("google.oauth")
-public record GoogleOAuthProperty(
-        String clientId, String clientSecret, String redirectUri, String grantType) {}
+public record GoogleOAuthProperty(String clientId, String clientSecret, String redirectUri, String grantType) {
+}

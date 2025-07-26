@@ -45,40 +45,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
+	private final UserRepository userRepository;
 
-    /**
-     * Processes the JWT from the request and sets authentication in the security context
-     *
-     * @param request incoming HTTP request
-     * @param response outgoing HTTP response
-     * @param filterChain filter chain
-     * @throws ServletException if an error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            String token = authorization.substring(7).trim();
+	private final JwtUtil jwtUtil;
 
-            if (this.jwtUtil.isTokenValid(token) && !this.jwtUtil.isTokenExpired(token)) {
-                UUID id = UUID.fromString(this.jwtUtil.extractIdFromToken(token));
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                id,
-                                "",
-                                List.of(
-                                        new SimpleGrantedAuthority(
-                                                this.userRepository.findRoleById(id).name())));
-                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-                securityContext.setAuthentication(authentication);
-                SecurityContextHolder.setContext(securityContext);
-            }
-        }
-        filterChain.doFilter(request, response);
-    }
+	/**
+	 * Processes the JWT from the request and sets authentication in the security context
+	 * @param request incoming HTTP request
+	 * @param response outgoing HTTP response
+	 * @param filterChain filter chain
+	 * @throws ServletException if an error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		String authorization = request.getHeader("Authorization");
+		if (authorization != null && authorization.startsWith("Bearer ")) {
+			String token = authorization.substring(7).trim();
+
+			if (this.jwtUtil.isTokenValid(token) && !this.jwtUtil.isTokenExpired(token)) {
+				UUID id = UUID.fromString(this.jwtUtil.extractIdFromToken(token));
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(id, "",
+						List.of(new SimpleGrantedAuthority(this.userRepository.findRoleById(id).name())));
+				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+				securityContext.setAuthentication(authentication);
+				SecurityContextHolder.setContext(securityContext);
+			}
+		}
+		filterChain.doFilter(request, response);
+	}
+
 }

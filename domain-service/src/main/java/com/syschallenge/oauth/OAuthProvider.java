@@ -24,11 +24,11 @@ package com.syschallenge.oauth;
  */
 public interface OAuthProvider {
 
-    /**
-     * Extracts user information from OAuth provider using authorization code
-     *
-     * @param code authorization code received from OAuth provider
-     * @return user information
-     */
-    OAuthUserInfo extractUser(String code);
+	/**
+	 * Extracts user information from OAuth provider using authorization code
+	 * @param code authorization code received from OAuth provider
+	 * @return user information
+	 */
+	OAuthUserInfo extractUser(String code);
+
 }

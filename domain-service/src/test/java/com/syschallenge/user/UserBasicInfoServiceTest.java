@@ -36,20 +36,24 @@ import com.syschallenge.user.service.UserBasicInfoService;
  */
 @ExtendWith(MockitoExtension.class)
 class UserBasicInfoServiceTest {
-    @Mock private UserBasicInfoRepository userBasicInfoRepository;
 
-    @InjectMocks private UserBasicInfoService userBasicInfoService;
+	@Mock
+	private UserBasicInfoRepository userBasicInfoRepository;
 
-    @Test
-    public void testGetNameByUserId() {
-        // arrange
-        UUID userId = UUID.randomUUID();
-        when(userBasicInfoRepository.findNameByUserId(userId)).thenReturn("Test Name");
+	@InjectMocks
+	private UserBasicInfoService userBasicInfoService;
 
-        // act
-        String name = userBasicInfoService.getNameByUserId(userId);
+	@Test
+	public void testGetNameByUserId() {
+		// arrange
+		UUID userId = UUID.randomUUID();
+		when(userBasicInfoRepository.findNameByUserId(userId)).thenReturn("Test Name");
 
-        // assert
-        assertEquals("Test Name", name);
-    }
+		// act
+		String name = userBasicInfoService.getNameByUserId(userId);
+
+		// assert
+		assertEquals("Test Name", name);
+	}
+
 }

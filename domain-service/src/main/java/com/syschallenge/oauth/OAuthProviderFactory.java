@@ -33,21 +33,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OAuthProviderFactory {
 
-    private final GoogleOAuthProvider googleProvider;
-    private final GitHubOAuthProvider githubProvider;
+	private final GoogleOAuthProvider googleProvider;
 
-    /**
-     * Returns OAuth provider implementation for specified type
-     *
-     * @param type OAuth provider type
-     * @return configured OAuth provider implementation
-     * @throws IllegalArgumentException if provider type is not supported
-     */
-    public OAuthProvider getProvider(OAuthType type) {
-        return switch (type) {
-            case GOOGLE -> this.googleProvider;
-            case GITHUB -> this.githubProvider;
-            default -> throw new IllegalArgumentException("Unsupported OAuth provider");
-        };
-    }
+	private final GitHubOAuthProvider githubProvider;
+
+	/**
+	 * Returns OAuth provider implementation for specified type
+	 * @param type OAuth provider type
+	 * @return configured OAuth provider implementation
+	 * @throws IllegalArgumentException if provider type is not supported
+	 */
+	public OAuthProvider getProvider(OAuthType type) {
+		return switch (type) {
+			case GOOGLE -> this.googleProvider;
+			case GITHUB -> this.githubProvider;
+			default -> throw new IllegalArgumentException("Unsupported OAuth provider");
+		};
+	}
+
 }

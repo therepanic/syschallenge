@@ -25,9 +25,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 1.0.0
  */
 @ConfigurationProperties("aws.s3")
-public record AwsS3Property(
-        String region,
-        String accessKey,
-        String secretKey,
-        String endpoint,
-        Boolean pathStyleAccessEnabled) {}
+public record AwsS3Property(String region, String accessKey, String secretKey, String endpoint,
+		Boolean pathStyleAccessEnabled) {
+}

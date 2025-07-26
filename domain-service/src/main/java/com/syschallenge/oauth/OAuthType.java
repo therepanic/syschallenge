@@ -23,7 +23,9 @@ package com.syschallenge.oauth;
  * @since 1.0.0
  */
 public enum OAuthType {
-    GOOGLE,
 
-    GITHUB
+	GOOGLE,
+
+	GITHUB
+
 }

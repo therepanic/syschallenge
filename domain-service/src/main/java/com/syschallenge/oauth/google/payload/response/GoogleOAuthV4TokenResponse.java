@@ -24,9 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author therepanic
  * @since 1.0.0
  */
-public record GoogleOAuthV4TokenResponse(
-        @JsonProperty("access_token") String accessToken,
-        @JsonProperty("expires_in") int expiresIn,
-        String scope,
-        @JsonProperty("token_type") String tokenType,
-        @JsonProperty("id_token") String idToken) {}
+public record GoogleOAuthV4TokenResponse(@JsonProperty("access_token") String accessToken,
+		@JsonProperty("expires_in") int expiresIn, String scope, @JsonProperty("token_type") String tokenType,
+		@JsonProperty("id_token") String idToken) {
+}

@@ -28,35 +28,33 @@ import org.springframework.security.core.GrantedAuthority;
  * @since 1.0.0
  */
 public record UserDetails(UUID id, Collection<? extends GrantedAuthority> authorities)
-        implements org.springframework.security.core.userdetails.UserDetails {
+		implements
+			org.springframework.security.core.userdetails.UserDetails {
 
-    /**
-     * Returns the authorities granted to the user
-     *
-     * @return the authorities granted to the user
-     */
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
+	/**
+	 * Returns the authorities granted to the user
+	 * @return the authorities granted to the user
+	 */
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.authorities;
+	}
 
-    /**
-     * Returns the password used for authentication
-     *
-     * @return empty string as this implementation does not use a password
-     */
-    @Override
-    public String getPassword() {
-        return "";
-    }
+	/**
+	 * Returns the password used for authentication
+	 * @return empty string as this implementation does not use a password
+	 */
+	@Override
+	public String getPassword() {
+		return "";
+	}
 
-    /**
-     * Returns the username for the user
-     *
-     * @return user's unique identifier as a string
-     */
-    @Override
-    public String getUsername() {
-        return this.id.toString();
-    }
+	/**
+	 * Returns the username for the user
+	 * @return user's unique identifier as a string
+	 */
+	@Override
+	public String getUsername() {
+		return this.id.toString();
+	}
 }

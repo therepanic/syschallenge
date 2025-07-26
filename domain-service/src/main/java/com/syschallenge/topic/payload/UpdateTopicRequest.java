@@ -25,7 +25,6 @@ import jakarta.validation.constraints.Size;
  * @author therepanic
  * @since 1.0.0
  */
-public record UpdateTopicRequest(
-        @NotBlank(message = "Topic title is required")
-                @Size(max = 50, message = "Topic title must be less than 50 characters")
-                String title) {}
+public record UpdateTopicRequest(@NotBlank(message = "Topic title is required") @Size(max = 50,
+		message = "Topic title must be less than 50 characters") String title) {
+}

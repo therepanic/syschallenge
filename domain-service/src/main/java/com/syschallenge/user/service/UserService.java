@@ -56,98 +56,95 @@ import net.coobird.thumbnailator.Thumbnails;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserPhotoRepository userPhotoRepository;
-    private final UserBasicInfoRepository userBasicInfoRepository;
-    private final FileStorageService storageService;
+	private final UserRepository userRepository;
 
-    private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".png", ".jpg", ".jpeg");
-    private static final String USERS_PHOTO_BUCKET = "users-photo";
+	private final UserPhotoRepository userPhotoRepository;
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public User create(OAuthUserInfo userInfo) {
-        User newUser =
-                User.builder()
-                        .email(userInfo.email())
-                        .username(userInfo.username())
-                        .role(UserRole.DEFAULT)
-                        .registeredAt(LocalDateTime.now())
-                        .build();
-        newUser = this.userRepository.save(newUser);
-        this.userBasicInfoRepository.save(
-                UserBasicInfo.builder()
-                        .userId(newUser.getId())
-                        .name(newUser.getUsername())
-                        .build());
-        return newUser;
-    }
+	private final UserBasicInfoRepository userBasicInfoRepository;
 
-    public String getUsernameById(UUID id) {
-        return this.userRepository.findUsernameById(id);
-    }
+	private final FileStorageService storageService;
 
-    public User getById(UUID id) {
-        return this.userRepository.findById(id);
-    }
+	private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".png", ".jpg", ".jpeg");
 
-    public PhotoResponse getPhoto(UUID id) {
-        String objectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
-        if (objectKey == null) return null;
-        return new PhotoResponse(
-                this.storageService.downloadFile(USERS_PHOTO_BUCKET, objectKey), objectKey);
-    }
+	private static final String USERS_PHOTO_BUCKET = "users-photo";
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public PhotoResponse uploadPhoto(UUID id, MultipartFile photoFile, UUID principalId)
-            throws PermissionDeniedException {
-        if (!isExtensionValid(photoFile)) {
-            throw new IllegalArgumentException("Unsupported extension type");
-        }
-        if (!id.equals(principalId)
-                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
-            throw new PermissionDeniedException("You can only update your own occupation");
-        }
-        byte[] resizedPhotoFile;
-        String extension =
-                photoFile
-                        .getOriginalFilename()
-                        .substring(photoFile.getOriginalFilename().lastIndexOf("."));
-        String extensionWithoutPoint = extension.substring(1);
-        try (InputStream inputStream = photoFile.getInputStream()) {
-            BufferedImage resizedImage =
-                    Thumbnails.of(inputStream)
-                            .size(200, 200)
-                            .outputFormat(extensionWithoutPoint)
-                            .asBufferedImage();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ImageIO.write(resizedImage, extensionWithoutPoint, outputStream);
-            resizedPhotoFile = outputStream.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (this.userPhotoRepository.existsByUserId(id)) {
-            String userPhotoObjectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
-            this.storageService.deleteFile(USERS_PHOTO_BUCKET, userPhotoObjectKey);
-            String newUserPhotoObjectKey =
-                    this.storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile, extension);
-            this.userPhotoRepository.updateObjectKeyByUserId(newUserPhotoObjectKey, id);
-            return new PhotoResponse(resizedPhotoFile, newUserPhotoObjectKey);
-        } else {
-            String newUserPhotoObjectKey =
-                    this.storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile, extension);
-            UserPhoto newUserPhoto =
-                    UserPhoto.builder().userId(id).objectKey(newUserPhotoObjectKey).build();
-            this.userPhotoRepository.save(newUserPhoto);
-            return new PhotoResponse(resizedPhotoFile, newUserPhotoObjectKey);
-        }
-    }
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public User create(OAuthUserInfo userInfo) {
+		User newUser = User.builder()
+			.email(userInfo.email())
+			.username(userInfo.username())
+			.role(UserRole.DEFAULT)
+			.registeredAt(LocalDateTime.now())
+			.build();
+		newUser = this.userRepository.save(newUser);
+		this.userBasicInfoRepository
+			.save(UserBasicInfo.builder().userId(newUser.getId()).name(newUser.getUsername()).build());
+		return newUser;
+	}
 
-    private boolean isExtensionValid(MultipartFile file) {
-        String filename = file.getOriginalFilename();
-        if (!filename.contains(".")) {
-            return false;
-        }
-        String extension = filename.substring(filename.lastIndexOf(".")).toLowerCase();
-        return ALLOWED_EXTENSIONS.contains(extension);
-    }
+	public String getUsernameById(UUID id) {
+		return this.userRepository.findUsernameById(id);
+	}
+
+	public User getById(UUID id) {
+		return this.userRepository.findById(id);
+	}
+
+	public PhotoResponse getPhoto(UUID id) {
+		String objectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
+		if (objectKey == null)
+			return null;
+		return new PhotoResponse(this.storageService.downloadFile(USERS_PHOTO_BUCKET, objectKey), objectKey);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public PhotoResponse uploadPhoto(UUID id, MultipartFile photoFile, UUID principalId)
+			throws PermissionDeniedException {
+		if (!isExtensionValid(photoFile)) {
+			throw new IllegalArgumentException("Unsupported extension type");
+		}
+		if (!id.equals(principalId) && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+			throw new PermissionDeniedException("You can only update your own occupation");
+		}
+		byte[] resizedPhotoFile;
+		String extension = photoFile.getOriginalFilename().substring(photoFile.getOriginalFilename().lastIndexOf("."));
+		String extensionWithoutPoint = extension.substring(1);
+		try (InputStream inputStream = photoFile.getInputStream()) {
+			BufferedImage resizedImage = Thumbnails.of(inputStream)
+				.size(200, 200)
+				.outputFormat(extensionWithoutPoint)
+				.asBufferedImage();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			ImageIO.write(resizedImage, extensionWithoutPoint, outputStream);
+			resizedPhotoFile = outputStream.toByteArray();
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		if (this.userPhotoRepository.existsByUserId(id)) {
+			String userPhotoObjectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
+			this.storageService.deleteFile(USERS_PHOTO_BUCKET, userPhotoObjectKey);
+			String newUserPhotoObjectKey = this.storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile,
+					extension);
+			this.userPhotoRepository.updateObjectKeyByUserId(newUserPhotoObjectKey, id);
+			return new PhotoResponse(resizedPhotoFile, newUserPhotoObjectKey);
+		}
+		else {
+			String newUserPhotoObjectKey = this.storageService.uploadFile(USERS_PHOTO_BUCKET, resizedPhotoFile,
+					extension);
+			UserPhoto newUserPhoto = UserPhoto.builder().userId(id).objectKey(newUserPhotoObjectKey).build();
+			this.userPhotoRepository.save(newUserPhoto);
+			return new PhotoResponse(resizedPhotoFile, newUserPhotoObjectKey);
+		}
+	}
+
+	private boolean isExtensionValid(MultipartFile file) {
+		String filename = file.getOriginalFilename();
+		if (!filename.contains(".")) {
+			return false;
+		}
+		String extension = filename.substring(filename.lastIndexOf(".")).toLowerCase();
+		return ALLOWED_EXTENSIONS.contains(extension);
+	}
+
 }

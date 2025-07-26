@@ -34,15 +34,10 @@ import com.syschallenge.topic.model.Topic;
 @Mapper(componentModel = "spring")
 public interface TopicToTopicDtoMapper {
 
-    @Mappings({
-        @Mapping(target = "id", source = "id"),
-        @Mapping(target = "title", source = "title")
-    })
-    TopicDto topicToTopicDto(Topic topic);
+	@Mappings({ @Mapping(target = "id", source = "id"), @Mapping(target = "title", source = "title") })
+	TopicDto topicToTopicDto(Topic topic);
 
-    @Mappings({
-        @Mapping(target = "id", source = "id"),
-        @Mapping(target = "title", source = "title")
-    })
-    List<TopicDto> topicListToTopicDtoList(List<Topic> topicList);
+	@Mappings({ @Mapping(target = "id", source = "id"), @Mapping(target = "title", source = "title") })
+	List<TopicDto> topicListToTopicDtoList(List<Topic> topicList);
+
 }

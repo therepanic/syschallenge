@@ -36,19 +36,17 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class CompanyExceptionHandler {
 
-    /**
-     * Handles exceptions thrown when attempting to create a company which already exists
-     *
-     * @param exception the exception thrown when a company which already exists
-     * @return a standardized error response with HTTP status 409 (Conflict)
-     */
-    @ExceptionHandler(CompanyAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, Object> handleCompanyAlreadyExistsException(
-            HttpServletRequest request, CompanyAlreadyExistsException exception) {
-        return Map.ofEntries(
-                Map.entry("error", "Conflict"),
-                Map.entry("message", exception.getMessage()),
-                Map.entry("path", request.getServletPath()));
-    }
+	/**
+	 * Handles exceptions thrown when attempting to create a company which already exists
+	 * @param exception the exception thrown when a company which already exists
+	 * @return a standardized error response with HTTP status 409 (Conflict)
+	 */
+	@ExceptionHandler(CompanyAlreadyExistsException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	public Map<String, Object> handleCompanyAlreadyExistsException(HttpServletRequest request,
+			CompanyAlreadyExistsException exception) {
+		return Map.ofEntries(Map.entry("error", "Conflict"), Map.entry("message", exception.getMessage()),
+				Map.entry("path", request.getServletPath()));
+	}
+
 }

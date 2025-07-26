@@ -40,48 +40,42 @@ import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse
  */
 @ExtendWith(MockitoExtension.class)
 class GoogleOAuthProviderTest {
-    @Mock private GoogleOAuthV4Api googleOAuthApi;
-    @Mock private ObjectMapper mapper;
-    @Mock private GoogleOAuthProperty properties;
 
-    @InjectMocks private GoogleOAuthProvider googleOAuthProvider;
+	@Mock
+	private GoogleOAuthV4Api googleOAuthApi;
 
-    private final String testCode = "test_code";
-    private final String testIdToken =
-            "header.eyJzdWIiOiJnb29nbGVfdXNlcl8xMjMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ==.signature";
+	@Mock
+	private ObjectMapper mapper;
 
-    @Test
-    void extractUser_ValidCode_ReturnsUserInfo() throws Exception {
-        // Arrange
-        GoogleOAuthV4TokenResponse tokenResponse =
-                new GoogleOAuthV4TokenResponse(
-                        "access_token_123", 3600, "openid profile email", "Bearer", testIdToken);
+	@Mock
+	private GoogleOAuthProperty properties;
 
-        Map<String, Object> testClaims =
-                Map.of(
-                        "sub",
-                        "google_user_123",
-                        "email",
-                        "test@example.com",
-                        "email_verified",
-                        true,
-                        "name",
-                        "Test User",
-                        "picture",
-                        "http://picture.url",
-                        "given_name",
-                        "Test");
+	@InjectMocks
+	private GoogleOAuthProvider googleOAuthProvider;
 
-        when(properties.clientId()).thenReturn("client_id");
-        when(googleOAuthApi.requestToken(any())).thenReturn(tokenResponse);
-        when(mapper.readValue(anyString(), eq(Map.class))).thenReturn(testClaims);
+	private final String testCode = "test_code";
 
-        // Act
-        OAuthUserInfo userInfo = googleOAuthProvider.extractUser(testCode);
+	private final String testIdToken = "header.eyJzdWIiOiJnb29nbGVfdXNlcl8xMjMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20ifQ==.signature";
 
-        // Assert
-        assertThat(userInfo)
-                .hasFieldOrPropertyWithValue("providerUserId", "google_user_123")
-                .hasFieldOrPropertyWithValue("email", "test@example.com");
-    }
+	@Test
+	void extractUser_ValidCode_ReturnsUserInfo() throws Exception {
+		// Arrange
+		GoogleOAuthV4TokenResponse tokenResponse = new GoogleOAuthV4TokenResponse("access_token_123", 3600,
+				"openid profile email", "Bearer", testIdToken);
+
+		Map<String, Object> testClaims = Map.of("sub", "google_user_123", "email", "test@example.com", "email_verified",
+				true, "name", "Test User", "picture", "http://picture.url", "given_name", "Test");
+
+		when(properties.clientId()).thenReturn("client_id");
+		when(googleOAuthApi.requestToken(any())).thenReturn(tokenResponse);
+		when(mapper.readValue(anyString(), eq(Map.class))).thenReturn(testClaims);
+
+		// Act
+		OAuthUserInfo userInfo = googleOAuthProvider.extractUser(testCode);
+
+		// Assert
+		assertThat(userInfo).hasFieldOrPropertyWithValue("providerUserId", "google_user_123")
+			.hasFieldOrPropertyWithValue("email", "test@example.com");
+	}
+
 }

@@ -35,30 +35,36 @@ import com.syschallenge.oauth.google.GoogleOAuthProvider;
  */
 @ExtendWith(MockitoExtension.class)
 class OAuthProviderFactoryTest {
-    @Mock private GoogleOAuthProvider googleProvider;
-    @Mock private GitHubOAuthProvider githubOAuthProvider;
 
-    @InjectMocks private OAuthProviderFactory factory;
+	@Mock
+	private GoogleOAuthProvider googleProvider;
 
-    @Test
-    void getProvider_GoogleType_ReturnsGoogleProvider() {
-        // Act
-        OAuthProvider result = factory.getProvider(OAuthType.GOOGLE);
+	@Mock
+	private GitHubOAuthProvider githubOAuthProvider;
 
-        // Assert
-        assertNotNull(result);
-        assertInstanceOf(GoogleOAuthProvider.class, result);
-        assertEquals(googleProvider, result);
-    }
+	@InjectMocks
+	private OAuthProviderFactory factory;
 
-    @Test
-    void getProvider_GitHubType_ReturnsGitHubProvider() {
-        // Act
-        OAuthProvider result = factory.getProvider(OAuthType.GITHUB);
+	@Test
+	void getProvider_GoogleType_ReturnsGoogleProvider() {
+		// Act
+		OAuthProvider result = factory.getProvider(OAuthType.GOOGLE);
 
-        // Assert
-        assertNotNull(result);
-        assertInstanceOf(GitHubOAuthProvider.class, result);
-        assertEquals(githubOAuthProvider, result);
-    }
+		// Assert
+		assertNotNull(result);
+		assertInstanceOf(GoogleOAuthProvider.class, result);
+		assertEquals(googleProvider, result);
+	}
+
+	@Test
+	void getProvider_GitHubType_ReturnsGitHubProvider() {
+		// Act
+		OAuthProvider result = factory.getProvider(OAuthType.GITHUB);
+
+		// Assert
+		assertNotNull(result);
+		assertInstanceOf(GitHubOAuthProvider.class, result);
+		assertEquals(githubOAuthProvider, result);
+	}
+
 }

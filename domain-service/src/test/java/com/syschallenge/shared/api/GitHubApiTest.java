@@ -43,23 +43,24 @@ import com.syschallenge.shared.api.payload.response.GitHubUser;
 @DirtiesContext
 class GitHubApiTest {
 
-    @Autowired private RestClient.Builder restClient;
+	@Autowired
+	private RestClient.Builder restClient;
 
-    private GitHubApi githubApi;
+	private GitHubApi githubApi;
 
-    @Autowired private MockRestServiceServer mockRestServiceServer;
+	@Autowired
+	private MockRestServiceServer mockRestServiceServer;
 
-    @BeforeEach
-    void setUp() {
-        this.githubApi = new GitHubApi(restClient.build());
-    }
+	@BeforeEach
+	void setUp() {
+		this.githubApi = new GitHubApi(restClient.build());
+	}
 
-    @Test
-    void testGetUser() {
-        // Given
-        String accessToken = "test-access-token";
-        String expectedResponseBody =
-                """
+	@Test
+	void testGetUser() {
+		// Given
+		String accessToken = "test-access-token";
+		String expectedResponseBody = """
 				    {
 				    "login": "panic08",
 				    "id": 120543954,
@@ -98,22 +99,22 @@ class GitHubApiTest {
 				}
 				    """;
 
-        // Expect a GET request to be sent from the Bearer Token
-        mockRestServiceServer
-                .expect(requestTo("https://api.github.com/user"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
-                .andRespond(withSuccess(expectedResponseBody, MediaType.APPLICATION_JSON));
+		// Expect a GET request to be sent from the Bearer Token
+		mockRestServiceServer.expect(requestTo("https://api.github.com/user"))
+			.andExpect(method(HttpMethod.GET))
+			.andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+			.andRespond(withSuccess(expectedResponseBody, MediaType.APPLICATION_JSON));
 
-        // When
-        GitHubUser user = githubApi.getUser(accessToken);
+		// When
+		GitHubUser user = githubApi.getUser(accessToken);
 
-        // Then
-        assertEquals("panic08", user.login());
-        assertEquals(120543954L, user.id());
-        assertEquals("Andrey Litvitski", user.name());
-        assertEquals(84, user.publicRepos());
+		// Then
+		assertEquals("panic08", user.login());
+		assertEquals(120543954L, user.id());
+		assertEquals("Andrey Litvitski", user.name());
+		assertEquals(84, user.publicRepos());
 
-        mockRestServiceServer.verify();
-    }
+		mockRestServiceServer.verify();
+	}
+
 }

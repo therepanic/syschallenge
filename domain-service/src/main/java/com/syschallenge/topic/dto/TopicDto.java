@@ -24,4 +24,5 @@ import java.util.UUID;
  * @author therepanic
  * @since 1.0.0
  */
-public record TopicDto(UUID id, String title) {}
+public record TopicDto(UUID id, String title) {
+}

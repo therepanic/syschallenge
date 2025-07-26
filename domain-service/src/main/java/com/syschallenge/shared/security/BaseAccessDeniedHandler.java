@@ -40,29 +40,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BaseAccessDeniedHandler implements AccessDeniedHandler {
 
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    /**
-     * Handles an access denial scenario, returning a forbidden response
-     *
-     * @param request incoming HTTP request
-     * @param response outgoing HTTP response
-     * @param accessDeniedException access denial exception
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    public void handle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AccessDeniedException accessDeniedException)
-            throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        Map<String, Object> body =
-                Map.ofEntries(
-                        Map.entry("error", "Forbidden"),
-                        Map.entry("message", "You don't have the rights"),
-                        Map.entry("path", request.getServletPath()));
-        this.mapper.writeValue(response.getOutputStream(), body);
-    }
+	/**
+	 * Handles an access denial scenario, returning a forbidden response
+	 * @param request incoming HTTP request
+	 * @param response outgoing HTTP response
+	 * @param accessDeniedException access denial exception
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	public void handle(HttpServletRequest request, HttpServletResponse response,
+			AccessDeniedException accessDeniedException) throws IOException {
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		Map<String, Object> body = Map.ofEntries(Map.entry("error", "Forbidden"),
+				Map.entry("message", "You don't have the rights"), Map.entry("path", request.getServletPath()));
+		this.mapper.writeValue(response.getOutputStream(), body);
+	}
+
 }

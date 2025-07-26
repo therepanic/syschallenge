@@ -44,91 +44,85 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserOccupationService {
 
-    private final UserRepository userRepository;
-    private final UserOccupationRepository userOccupationRepository;
-    private final UserOccupationToUserOccupationDtoMapper userOccupationToUserOccupationDtoMapper;
+	private final UserRepository userRepository;
 
-    /**
-     * Get a user's occupation details
-     *
-     * @param id the user ID whose occupation is being got
-     * @return a DTO containing the got user occupation information
-     */
-    public UserOccupationDto get(UUID id) {
-        return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                this.userOccupationRepository.findByUserId(id));
-    }
+	private final UserOccupationRepository userOccupationRepository;
 
-    /**
-     * Creates a user's occupation details
-     *
-     * @param id the user ID whose occupation is being created
-     * @param request the occupation create details
-     * @param principalId the authenticated user ID performing the operation
-     * @return a DTO containing the created user occupation information
-     * @throws PermissionDeniedException if the user does not have permission to update this
-     *     occupation
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto create(UUID id, CreateOccupationRequest request, UUID principalId)
-            throws PermissionDeniedException {
-        if (!id.equals(principalId)
-                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
-            throw new PermissionDeniedException("You can only create your own occupation.");
-        }
-        return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                this.userOccupationRepository.save(
-                        UserOccupation.builder()
-                                .userId(id)
-                                .title(request.title())
-                                .company(request.company())
-                                .startDate(request.startDate())
-                                .endDate(request.endDate())
-                                .build()));
-    }
+	private final UserOccupationToUserOccupationDtoMapper userOccupationToUserOccupationDtoMapper;
 
-    /**
-     * Updates a user's occupation details
-     *
-     * @param id the user ID whose occupation is being updated
-     * @param request the occupation update details
-     * @param principalId the authenticated user ID performing the operation
-     * @return a DTO containing the updated user occupation information
-     * @throws PermissionDeniedException if the user does not have permission to save this
-     *     occupation
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserOccupationDto update(UUID id, UpdateOccupationRequest request, UUID principalId)
-            throws PermissionDeniedException {
-        if (!id.equals(principalId)
-                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
-            throw new PermissionDeniedException("You can only update your own occupation.");
-        }
-        return this.userOccupationToUserOccupationDtoMapper.userOccupationToUserOccupationDto(
-                this.userOccupationRepository.updateByUserId(
-                        UserOccupation.builder()
-                                .userId(id)
-                                .title(request.title())
-                                .company(request.company())
-                                .startDate(request.startDate())
-                                .endDate(request.endDate())
-                                .build()));
-    }
+	/**
+	 * Get a user's occupation details
+	 * @param id the user ID whose occupation is being got
+	 * @return a DTO containing the got user occupation information
+	 */
+	public UserOccupationDto get(UUID id) {
+		return this.userOccupationToUserOccupationDtoMapper
+			.userOccupationToUserOccupationDto(this.userOccupationRepository.findByUserId(id));
+	}
 
-    /**
-     * Deletes a user's occupation details
-     *
-     * @param id the user ID whose occupation is being deleted
-     * @param principalId the authenticated user ID performing the operation
-     * @throws PermissionDeniedException if the user does not have permission to delete this
-     *     occupation
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void delete(UUID id, UUID principalId) throws PermissionDeniedException {
-        if (!id.equals(principalId)
-                && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
-            throw new PermissionDeniedException("You can only delete your own occupation.");
-        }
-        this.userOccupationRepository.deleteByUserId(id);
-    }
+	/**
+	 * Creates a user's occupation details
+	 * @param id the user ID whose occupation is being created
+	 * @param request the occupation create details
+	 * @param principalId the authenticated user ID performing the operation
+	 * @return a DTO containing the created user occupation information
+	 * @throws PermissionDeniedException if the user does not have permission to update
+	 * this occupation
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public UserOccupationDto create(UUID id, CreateOccupationRequest request, UUID principalId)
+			throws PermissionDeniedException {
+		if (!id.equals(principalId) && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+			throw new PermissionDeniedException("You can only create your own occupation.");
+		}
+		return this.userOccupationToUserOccupationDtoMapper
+			.userOccupationToUserOccupationDto(this.userOccupationRepository.save(UserOccupation.builder()
+				.userId(id)
+				.title(request.title())
+				.company(request.company())
+				.startDate(request.startDate())
+				.endDate(request.endDate())
+				.build()));
+	}
+
+	/**
+	 * Updates a user's occupation details
+	 * @param id the user ID whose occupation is being updated
+	 * @param request the occupation update details
+	 * @param principalId the authenticated user ID performing the operation
+	 * @return a DTO containing the updated user occupation information
+	 * @throws PermissionDeniedException if the user does not have permission to save this
+	 * occupation
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public UserOccupationDto update(UUID id, UpdateOccupationRequest request, UUID principalId)
+			throws PermissionDeniedException {
+		if (!id.equals(principalId) && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+			throw new PermissionDeniedException("You can only update your own occupation.");
+		}
+		return this.userOccupationToUserOccupationDtoMapper
+			.userOccupationToUserOccupationDto(this.userOccupationRepository.updateByUserId(UserOccupation.builder()
+				.userId(id)
+				.title(request.title())
+				.company(request.company())
+				.startDate(request.startDate())
+				.endDate(request.endDate())
+				.build()));
+	}
+
+	/**
+	 * Deletes a user's occupation details
+	 * @param id the user ID whose occupation is being deleted
+	 * @param principalId the authenticated user ID performing the operation
+	 * @throws PermissionDeniedException if the user does not have permission to delete
+	 * this occupation
+	 */
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void delete(UUID id, UUID principalId) throws PermissionDeniedException {
+		if (!id.equals(principalId) && this.userRepository.findRoleById(principalId).equals(UserRole.DEFAULT)) {
+			throw new PermissionDeniedException("You can only delete your own occupation.");
+		}
+		this.userOccupationRepository.deleteByUserId(id);
+	}
+
 }

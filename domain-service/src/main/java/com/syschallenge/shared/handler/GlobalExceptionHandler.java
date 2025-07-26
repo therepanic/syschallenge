@@ -37,47 +37,40 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Handles exceptions when a user attempts an action without sufficient permissions
-     *
-     * @param exception the exception thrown when permission is denied
-     * @return a standardized error response with HTTP status 403 (Forbidden)
-     */
-    @ExceptionHandler(PermissionDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public Map<String, Object> handlePermissionDeniedException(
-            HttpServletRequest request, PermissionDeniedException exception) {
-        return Map.ofEntries(
-                Map.entry("error", "Forbidden"),
-                Map.entry("message", exception.getMessage()),
-                Map.entry("path", request.getServletPath()));
-    }
+	/**
+	 * Handles exceptions when a user attempts an action without sufficient permissions
+	 * @param exception the exception thrown when permission is denied
+	 * @return a standardized error response with HTTP status 403 (Forbidden)
+	 */
+	@ExceptionHandler(PermissionDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public Map<String, Object> handlePermissionDeniedException(HttpServletRequest request,
+			PermissionDeniedException exception) {
+		return Map.ofEntries(Map.entry("error", "Forbidden"), Map.entry("message", exception.getMessage()),
+				Map.entry("path", request.getServletPath()));
+	}
 
-    /**
-     * Handles exceptions thrown when request validation fails.
-     *
-     * <p>This method captures validation errors from {@link MethodArgumentNotValidException} and
-     * returns the first error message encountered in a standardized error response.
-     *
-     * @param exception the exception thrown when request validation fails
-     * @return a standardized error response with HTTP status 400 (Bad Request)
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleValidationException(
-            HttpServletRequest request, MethodArgumentNotValidException exception) {
-        String errorMessage =
-                exception.getBindingResult().getFieldErrors().stream()
-                        .findFirst()
-                        .map(
-                                fieldError ->
-                                        fieldError.getField()
-                                                + ": "
-                                                + fieldError.getDefaultMessage())
-                        .orElse("Validation error");
-        return Map.ofEntries(
-                Map.entry("error", "Forbidden"),
-                Map.entry("message", errorMessage),
-                Map.entry("path", request.getServletPath()));
-    }
+	/**
+	 * Handles exceptions thrown when request validation fails.
+	 *
+	 * <p>
+	 * This method captures validation errors from {@link MethodArgumentNotValidException}
+	 * and returns the first error message encountered in a standardized error response.
+	 * @param exception the exception thrown when request validation fails
+	 * @return a standardized error response with HTTP status 400 (Bad Request)
+	 */
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public Map<String, Object> handleValidationException(HttpServletRequest request,
+			MethodArgumentNotValidException exception) {
+		String errorMessage = exception.getBindingResult()
+			.getFieldErrors()
+			.stream()
+			.findFirst()
+			.map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+			.orElse("Validation error");
+		return Map.ofEntries(Map.entry("error", "Forbidden"), Map.entry("message", errorMessage),
+				Map.entry("path", request.getServletPath()));
+	}
+
 }

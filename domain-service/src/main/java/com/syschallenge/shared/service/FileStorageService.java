@@ -24,30 +24,28 @@ package com.syschallenge.shared.service;
  */
 public interface FileStorageService {
 
-    /**
-     * Downloads a file from the specified bucket
-     *
-     * @param bucketName the name of the bucket containing the file
-     * @param fileName the name of the file to download
-     * @return a byte array containing the downloaded file content
-     */
-    byte[] downloadFile(String bucketName, String fileName);
+	/**
+	 * Downloads a file from the specified bucket
+	 * @param bucketName the name of the bucket containing the file
+	 * @param fileName the name of the file to download
+	 * @return a byte array containing the downloaded file content
+	 */
+	byte[] downloadFile(String bucketName, String fileName);
 
-    /**
-     * Uploads a file to the specified bucket
-     *
-     * @param bucketName the name of the bucket where the file will be uploaded
-     * @param file the file to upload
-     * @param extension the file extension
-     * @return the file key or URL of the uploaded file
-     */
-    String uploadFile(String bucketName, byte[] file, String extension);
+	/**
+	 * Uploads a file to the specified bucket
+	 * @param bucketName the name of the bucket where the file will be uploaded
+	 * @param file the file to upload
+	 * @param extension the file extension
+	 * @return the file key or URL of the uploaded file
+	 */
+	String uploadFile(String bucketName, byte[] file, String extension);
 
-    /**
-     * Deletes a file from the specified bucket
-     *
-     * @param bucketName the name of the bucket containing the file
-     * @param fileName the name of the file to delete
-     */
-    void deleteFile(String bucketName, String fileName);
+	/**
+	 * Deletes a file from the specified bucket
+	 * @param bucketName the name of the bucket containing the file
+	 * @param fileName the name of the file to delete
+	 */
+	void deleteFile(String bucketName, String fileName);
+
 }

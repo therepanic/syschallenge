@@ -38,71 +38,75 @@ import com.syschallenge.shared.api.payload.response.GitHubUser;
  */
 @ExtendWith(MockitoExtension.class)
 class GitHubOAuthProviderTest {
-    @Mock private GitHubOAuthApi githubOAuthApi;
 
-    @Mock private GitHubApi githubApi;
+	@Mock
+	private GitHubOAuthApi githubOAuthApi;
 
-    @Mock private GitHubOAuthProperty properties;
+	@Mock
+	private GitHubApi githubApi;
 
-    @InjectMocks private GitHubOAuthProvider githubOAuthProvider;
+	@Mock
+	private GitHubOAuthProperty properties;
 
-    private final String testCode = "test_code";
-    private final String testAccessTokenResponse =
-            "access_token=test_access_token&other_param=value";
-    private final String testAccessToken = "test_access_token";
+	@InjectMocks
+	private GitHubOAuthProvider githubOAuthProvider;
 
-    @Test
-    void extractUser_ValidCode_ReturnsUserInfo() {
-        GitHubUser testGitHubUser =
-                new GitHubUser(
-                        "testuser", // login
-                        123, // id
-                        "node_id_example", // nodeId
-                        "http://avatar.url", // avatarUrl
-                        "", // gravatarId
-                        "", // url
-                        "", // htmlUrl
-                        "", // followersUrl
-                        "", // followingUrl
-                        "", // gistsUrl
-                        "", // starredUrl
-                        "", // subscriptionsUrl
-                        "", // organizationsUrl
-                        "", // reposUrl
-                        "", // eventsUrl
-                        "", // receivedEventsUrl
-                        "User", // type
-                        "", // userViewType
-                        false, // siteAdmin
-                        "Test User", // name
-                        "", // company
-                        "", // blog
-                        "", // location
-                        "test@example.com", // email
-                        false, // hireable
-                        "Developer", // bio
-                        "", // twitterUsername
-                        "", // notificationEmail
-                        10, // publicRepos
-                        5, // publicGists
-                        100, // followers
-                        50, // following
-                        ZonedDateTime.now(), // createdAt
-                        ZonedDateTime.now() // updatedAt
-                        );
+	private final String testCode = "test_code";
 
-        when(properties.clientId()).thenReturn("client_id");
-        when(properties.clientSecret()).thenReturn("client_secret");
-        when(properties.redirectUri()).thenReturn("redirect_uri");
-        when(githubOAuthApi.requestToken(any())).thenReturn(testAccessTokenResponse);
-        when(githubApi.getUser(testAccessToken)).thenReturn(testGitHubUser);
+	private final String testAccessTokenResponse = "access_token=test_access_token&other_param=value";
 
-        // Act
-        OAuthUserInfo userInfo = githubOAuthProvider.extractUser(testCode);
+	private final String testAccessToken = "test_access_token";
 
-        // Assert
-        assertThat(userInfo)
-                .hasFieldOrPropertyWithValue("providerUserId", "123")
-                .hasFieldOrPropertyWithValue("email", "test@example.com");
-    }
+	@Test
+	void extractUser_ValidCode_ReturnsUserInfo() {
+		GitHubUser testGitHubUser = new GitHubUser("testuser", // login
+				123, // id
+				"node_id_example", // nodeId
+				"http://avatar.url", // avatarUrl
+				"", // gravatarId
+				"", // url
+				"", // htmlUrl
+				"", // followersUrl
+				"", // followingUrl
+				"", // gistsUrl
+				"", // starredUrl
+				"", // subscriptionsUrl
+				"", // organizationsUrl
+				"", // reposUrl
+				"", // eventsUrl
+				"", // receivedEventsUrl
+				"User", // type
+				"", // userViewType
+				false, // siteAdmin
+				"Test User", // name
+				"", // company
+				"", // blog
+				"", // location
+				"test@example.com", // email
+				false, // hireable
+				"Developer", // bio
+				"", // twitterUsername
+				"", // notificationEmail
+				10, // publicRepos
+				5, // publicGists
+				100, // followers
+				50, // following
+				ZonedDateTime.now(), // createdAt
+				ZonedDateTime.now() // updatedAt
+		);
+
+		when(properties.clientId()).thenReturn("client_id");
+		when(properties.clientSecret()).thenReturn("client_secret");
+		when(properties.redirectUri()).thenReturn("redirect_uri");
+		when(githubOAuthApi.requestToken(any())).thenReturn(testAccessTokenResponse);
+		when(githubApi.getUser(testAccessToken)).thenReturn(testGitHubUser);
+
+		// Act
+		OAuthUserInfo userInfo = githubOAuthProvider.extractUser(testCode);
+
+		// Assert
+		assertThat(userInfo).hasFieldOrPropertyWithValue("providerUserId", "123")
+			.hasFieldOrPropertyWithValue("email", "test@example.com");
+	}
+
 }

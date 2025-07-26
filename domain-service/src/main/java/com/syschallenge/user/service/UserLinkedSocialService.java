@@ -39,23 +39,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserLinkedSocialService {
 
-    private final UserLinkedSocialRepository userLinkedSocialRepository;
+	private final UserLinkedSocialRepository userLinkedSocialRepository;
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public UserLinkedSocial create(UUID userId, OAuthType type, String verification) {
-        return this.userLinkedSocialRepository.save(
-                UserLinkedSocial.builder()
-                        .userId(userId)
-                        .type(UserLinkedSocialType.valueOf(type.name()))
-                        .verification(verification)
-                        .build());
-    }
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public UserLinkedSocial create(UUID userId, OAuthType type, String verification) {
+		return this.userLinkedSocialRepository.save(UserLinkedSocial.builder()
+			.userId(userId)
+			.type(UserLinkedSocialType.valueOf(type.name()))
+			.verification(verification)
+			.build());
+	}
 
-    public UUID getUserIdByVerification(String verification) {
-        return this.userLinkedSocialRepository.findUserIdByVerification(verification);
-    }
+	public UUID getUserIdByVerification(String verification) {
+		return this.userLinkedSocialRepository.findUserIdByVerification(verification);
+	}
 
-    public boolean existsByVerification(String verification) {
-        return this.userLinkedSocialRepository.existsByVerification(verification);
-    }
+	public boolean existsByVerification(String verification) {
+		return this.userLinkedSocialRepository.existsByVerification(verification);
+	}
+
 }

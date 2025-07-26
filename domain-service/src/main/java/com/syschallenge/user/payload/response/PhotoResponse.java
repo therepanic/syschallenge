@@ -16,4 +16,5 @@
 
 package com.syschallenge.user.payload.response;
 
-public record PhotoResponse(byte[] photo, String photoFileName) {}
+public record PhotoResponse(byte[] photo, String photoFileName) {
+}

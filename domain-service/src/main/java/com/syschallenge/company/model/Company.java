@@ -37,12 +37,14 @@ import lombok.Data;
 @Table(name = "companies_table")
 public class Company {
 
-    @Id private UUID id;
+	@Id
+	private UUID id;
 
-    private String slug;
+	private String slug;
 
-    private String name;
+	private String name;
 
-    @Column("updated_at")
-    private LocalDateTime updatedAt;
+	@Column("updated_at")
+	private LocalDateTime updatedAt;
+
 }
