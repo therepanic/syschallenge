@@ -1,6 +1,7 @@
 [versions]
 springBoot = "3.5.3"
 springJavaFormat = "0.0.47"
+springAi = "1.0.0"
 springDependencyManagement = "1.1.7"
 flyway = "9.22.3"
 jooq = "3.19.24"
@@ -20,6 +21,7 @@ flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 jooq = { id = "nu.studer.jooq", version.ref = "jooqPlugin" }
 
 [libraries]
+springAiOpenai = { module = "org.springframework.ai:spring-ai-starter-model-openai", version.ref = "springAi" }
 springdocApi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 springdocUi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 micrometer = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }

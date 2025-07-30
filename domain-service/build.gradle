@@ -32,6 +32,7 @@ dependencies {
     jooqGenerator libs.jooqCodegen
     testImplementation libs.springdocUi
     implementation libs.springdocApi
+    implementation libs.springAiOpenai
     implementation libs.micrometer
     implementation libs.awsSdk
     implementation libs.thumbnailator
