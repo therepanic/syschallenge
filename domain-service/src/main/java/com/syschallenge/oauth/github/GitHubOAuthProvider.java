@@ -59,7 +59,10 @@ public class GitHubOAuthProvider implements OAuthProvider {
 
 	private String extractAccessToken(String input) {
 		Matcher matcher = TOKEN_PATTERN.matcher(input);
-		return matcher.find() ? matcher.group(1) : null;
+		if (!matcher.find()) {
+			throw new IllegalArgumentException("Access token not found in input: " + input);
+		}
+		return matcher.group(1);
 	}
 
 }

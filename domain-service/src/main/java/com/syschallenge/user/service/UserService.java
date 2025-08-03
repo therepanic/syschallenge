@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +91,7 @@ public class UserService {
 		return this.userRepository.findById(id);
 	}
 
-	public PhotoResponse getPhoto(UUID id) {
+	@Nullable public PhotoResponse getPhoto(UUID id) {
 		String objectKey = this.userPhotoRepository.findObjectKeyByUserId(id);
 		if (objectKey == null)
 			return null;

@@ -14,15 +14,5 @@
  * limitations under the License.
  */
 
-package com.syschallenge.oauth;
-
-import org.jspecify.annotations.Nullable;
-
-/**
- * Represents user information obtained from OAuth provider authentication
- *
- * @author therepanic
- * @since 1.0.0
- */
-public record OAuthUserInfo(String providerUserId, String username, String email, @Nullable String photo) {
-}
+@org.jspecify.annotations.NullMarked
+package com.syschallenge.topic.service;

@@ -53,7 +53,7 @@ public class UserController {
 	@GetMapping("/{id}/photo")
 	public ResponseEntity<byte[]> getPhoto(@PathVariable("id") UUID id) {
 		PhotoResponse photo = this.userService.getPhoto(id);
-		if (photo.photo() == null)
+		if (photo == null || photo.photo() == null)
 			return ResponseEntity.notFound().build();
 		String contentType;
 		try {

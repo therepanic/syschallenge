@@ -12,6 +12,7 @@ awsSdk = "2.31.68"
 jjwt = "0.12.6"
 mapstruct = "1.5.5.Final"
 thumbnailator = "0.4.20"
+jspecify = "1.0.0"
 
 [plugins]
 springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
@@ -33,3 +34,4 @@ thumbnailator = { module = "net.coobird:thumbnailator", version.ref = "thumbnail
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstructProcessor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
 jooqCodegen = { module = "org.jooq:jooq-codegen", version.ref = "jooq" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }

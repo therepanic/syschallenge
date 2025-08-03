@@ -59,7 +59,7 @@ public class SimpleMultipartFile implements MultipartFile {
 
 	@Override
 	public boolean isEmpty() {
-		return this.content == null || this.content.length == 0;
+		return this.content.length == 0;
 	}
 
 	@Override
