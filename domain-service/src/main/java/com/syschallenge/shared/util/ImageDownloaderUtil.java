@@ -32,10 +32,7 @@ public class ImageDownloaderUtil {
 	private final RestClient rest;
 
 	public MultipartFile download(String url) {
-		ResponseEntity<byte[]> response = rest.get()
-				.uri(url)
-				.retrieve()
-				.toEntity(byte[].class);
+		ResponseEntity<byte[]> response = rest.get().uri(url).retrieve().toEntity(byte[].class);
 		MediaType contentType = response.getHeaders().getContentType();
 		String mimeType = contentType != null ? contentType.toString() : "application/octet-stream";
 		String extension = switch (mimeType) {

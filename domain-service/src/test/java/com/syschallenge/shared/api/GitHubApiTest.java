@@ -29,7 +29,6 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
@@ -40,20 +39,19 @@ import com.syschallenge.shared.api.payload.response.GitHubUser;
  * @since 1.0.0
  */
 @RestClientTest
-@DirtiesContext
 class GitHubApiTest {
 
 	@Autowired
-	private RestClient.Builder restClient;
+	private RestClient.Builder builder;
+
+	private MockRestServiceServer mockRestServiceServer;
 
 	private GitHubApi githubApi;
 
-	@Autowired
-	private MockRestServiceServer mockRestServiceServer;
-
 	@BeforeEach
 	void setUp() {
-		this.githubApi = new GitHubApi(restClient.build());
+		this.mockRestServiceServer = MockRestServiceServer.bindTo(builder).build();
+		this.githubApi = new GitHubApi(builder.build());
 	}
 
 	@Test

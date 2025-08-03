@@ -24,7 +24,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import java.io.IOException;
 
-import com.syschallenge.oauth.github.GitHubOAuthApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,20 +42,19 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestClientTest
 @ExtendWith(MockitoExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ImageDownloaderUtilTest {
 
 	@Autowired
-	private RestClient.Builder restClient;
+	private RestClient.Builder builder;
 
-	@Autowired
 	private MockRestServiceServer mockRestServiceServer;
 
 	private ImageDownloaderUtil util;
 
 	@BeforeEach
 	void setUp() {
-		this.util = new ImageDownloaderUtil(restClient.build());
+		this.mockRestServiceServer = MockRestServiceServer.bindTo(this.builder).build();
+		this.util = new ImageDownloaderUtil(builder.build());
 	}
 
 	@Test
@@ -65,8 +62,8 @@ class ImageDownloaderUtilTest {
 		// arrange
 		byte[] fakeData = new byte[] { 1, 2, 3 };
 		mockRestServiceServer.expect(requestTo("http://test.com/image.jpg"))
-				.andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(fakeData, MediaType.IMAGE_JPEG));
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fakeData, MediaType.IMAGE_JPEG));
 
 		// act
 		MultipartFile result = util.download("http://test.com/image.jpg");
@@ -81,10 +78,10 @@ class ImageDownloaderUtilTest {
 	@Test
 	void download_returnsFileWithUnknownExtension_whenContentTypeIsUnknown() throws IOException {
 		// arrange
-		byte[] fakeData = new byte[] {4, 5, 6};
+		byte[] fakeData = new byte[] { 4, 5, 6 };
 		mockRestServiceServer.expect(requestTo("http://test.com/file.pdf"))
-				.andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(fakeData, MediaType.APPLICATION_PDF));
+			.andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fakeData, MediaType.APPLICATION_PDF));
 
 		// act
 		MultipartFile result = util.download("http://test.com/file.pdf");

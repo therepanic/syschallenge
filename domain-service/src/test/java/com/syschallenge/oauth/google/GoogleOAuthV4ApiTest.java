@@ -17,6 +17,7 @@
 package com.syschallenge.oauth.google;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
@@ -38,25 +38,24 @@ import com.syschallenge.oauth.google.payload.response.GoogleOAuthV4TokenResponse
  * @since 1.0.0
  */
 @RestClientTest
-@DirtiesContext
 class GoogleOAuthV4ApiTest {
 
 	private GoogleOAuthV4Api googleOAuthApi;
 
 	@Autowired
-	private RestClient.Builder restClient;
+	private RestClient.Builder builder;
 
-	@Autowired
 	private MockRestServiceServer mockRestServiceServer;
 
 	@BeforeEach
 	void setUp() {
-		this.googleOAuthApi = new GoogleOAuthV4Api(restClient.build());
+		this.mockRestServiceServer = MockRestServiceServer.bindTo(builder).build();
+		this.googleOAuthApi = new GoogleOAuthV4Api(builder.build());
 	}
 
 	@Test
 	void testRequestToken() {
-		GoogleOAuthV4TokenRequest request = new GoogleOAuthV4TokenRequest(null, null, null, null, null);
+		GoogleOAuthV4TokenRequest request = mock();
 
 		String expectedResponse = "{ " + "\"access_token\": \"test-access_token\", " + "\"expires_in\": 1, "
 				+ "\"scope\": \"test-scope\", " + "\"token_type\": \"test-token_type\", "

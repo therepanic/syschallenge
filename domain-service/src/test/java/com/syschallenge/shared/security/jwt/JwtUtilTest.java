@@ -26,8 +26,9 @@ import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.syschallenge.shared.security.UserDetails;
@@ -36,6 +37,7 @@ import com.syschallenge.shared.security.UserDetails;
  * @author therepanic
  * @since 1.0.0
  */
+@ExtendWith(MockitoExtension.class)
 class JwtUtilTest {
 
 	private JwtUtil jwtUtil;
@@ -47,7 +49,6 @@ class JwtUtilTest {
 	void setUp() {
 		this.jwtUtil = new JwtUtil();
 
-		MockitoAnnotations.openMocks(this);
 		when(userDetails.getUsername()).thenReturn("test-UUID");
 
 		ReflectionTestUtils.setField(jwtUtil, "SECRET", "Z3dlZ2VHR0dHRVdnd2Vhc2Rhc2RzYWRhc2Rhc2RzYWQ=");

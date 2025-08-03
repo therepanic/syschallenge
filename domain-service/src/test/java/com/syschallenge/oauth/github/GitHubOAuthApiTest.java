@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
@@ -39,20 +38,19 @@ import com.syschallenge.oauth.github.payload.request.GitHubOAuthTokenRequest;
  * @since 1.0.0
  */
 @RestClientTest
-@DirtiesContext
 class GitHubOAuthApiTest {
 
 	private GitHubOAuthApi githubOAuthApi;
 
 	@Autowired
-	private RestClient.Builder restClient;
+	private RestClient.Builder builder;
 
-	@Autowired
 	private MockRestServiceServer mockRestServiceServer;
 
 	@BeforeEach
 	void setUp() {
-		this.githubOAuthApi = new GitHubOAuthApi(restClient.build());
+		this.mockRestServiceServer = MockRestServiceServer.bindTo(builder).build();
+		this.githubOAuthApi = new GitHubOAuthApi(builder.build());
 	}
 
 	@Test
