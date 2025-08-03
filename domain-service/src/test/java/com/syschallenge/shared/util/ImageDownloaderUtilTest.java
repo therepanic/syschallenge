@@ -18,41 +18,55 @@ package com.syschallenge.shared.util;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import java.io.IOException;
 
+import com.syschallenge.oauth.github.GitHubOAuthApi;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author therepanic
  * @since 1.0.0
  */
+@RestClientTest
 @ExtendWith(MockitoExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ImageDownloaderUtilTest {
 
-	@Mock
-	RestTemplate rest;
+	@Autowired
+	private RestClient.Builder restClient;
+
+	@Autowired
+	private MockRestServiceServer mockRestServiceServer;
+
+	private ImageDownloaderUtil util;
+
+	@BeforeEach
+	void setUp() {
+		this.util = new ImageDownloaderUtil(restClient.build());
+	}
 
 	@Test
 	void download_returnsJpgFile_whenContentTypeIsJpeg() throws IOException {
 		// arrange
-		ImageDownloaderUtil util = new ImageDownloaderUtil(rest);
-
 		byte[] fakeData = new byte[] { 1, 2, 3 };
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_JPEG);
-		ResponseEntity<byte[]> response = new ResponseEntity<>(fakeData, headers, 200);
-
-		when(rest.getForEntity("http://test.com/image.jpg", byte[].class)).thenReturn(response);
+		mockRestServiceServer.expect(requestTo("http://test.com/image.jpg"))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withSuccess(fakeData, MediaType.IMAGE_JPEG));
 
 		// act
 		MultipartFile result = util.download("http://test.com/image.jpg");
@@ -61,19 +75,16 @@ class ImageDownloaderUtilTest {
 		assertEquals("downloaded.jpg", result.getOriginalFilename());
 		assertEquals("image/jpeg", result.getContentType());
 		assertArrayEquals(fakeData, result.getBytes());
+		mockRestServiceServer.verify();
 	}
 
 	@Test
 	void download_returnsFileWithUnknownExtension_whenContentTypeIsUnknown() throws IOException {
 		// arrange
-		ImageDownloaderUtil util = new ImageDownloaderUtil(rest);
-
-		byte[] fakeData = new byte[] { 4, 5, 6 };
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_PDF);
-		ResponseEntity<byte[]> response = new ResponseEntity<>(fakeData, headers, 200);
-
-		when(rest.getForEntity("http://test.com/file.pdf", byte[].class)).thenReturn(response);
+		byte[] fakeData = new byte[] {4, 5, 6};
+		mockRestServiceServer.expect(requestTo("http://test.com/file.pdf"))
+				.andExpect(method(HttpMethod.GET))
+				.andRespond(withSuccess(fakeData, MediaType.APPLICATION_PDF));
 
 		// act
 		MultipartFile result = util.download("http://test.com/file.pdf");
@@ -82,6 +93,7 @@ class ImageDownloaderUtilTest {
 		assertEquals("downloaded", result.getOriginalFilename());
 		assertEquals("application/pdf", result.getContentType());
 		assertArrayEquals(fakeData, result.getBytes());
+		mockRestServiceServer.verify();
 	}
 
 }

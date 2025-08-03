@@ -19,6 +19,7 @@ package com.syschallenge.shared.util;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,10 +29,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageDownloaderUtil {
 
-	private final RestTemplate rest;
+	private final RestClient rest;
 
 	public MultipartFile download(String url) {
-		ResponseEntity<byte[]> response = rest.getForEntity(url, byte[].class);
+		ResponseEntity<byte[]> response = rest.get()
+				.uri(url)
+				.retrieve()
+				.toEntity(byte[].class);
 		MediaType contentType = response.getHeaders().getContentType();
 		String mimeType = contentType != null ? contentType.toString() : "application/octet-stream";
 		String extension = switch (mimeType) {
